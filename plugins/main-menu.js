@@ -131,7 +131,7 @@ module.exports = {
 `.trim();
 
         try {
-            const imageUrl = myMenuImageUrl !== 'YAHAN_APNI_IMAGE_KI_LINK_DAALO' ? myMenuImageUrl : (global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg');
+            const imageUrl = myMenuImageUrl !== 'YAHAN_APNI_IMAGE_KI_LINK_DAALO' ? myMenuImageUrl : (global.menuImage || 'https://sam-cdn.zone.id/files/ZBp0sbXtJB.jpg');
             const imageBuffer = (await axios.get(imageUrl, {
                 responseType: 'arraybuffer'
             })).data;

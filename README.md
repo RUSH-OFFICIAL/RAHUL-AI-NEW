@@ -8,11 +8,6 @@
 <p align="center">
   
 
-
-### ℹ️ **About RAHUL-AI**
-RAHUL-AI is a versatile Multi-Device WhatsApp bot built by [R-A-H-U-L-M-A-S-T-E-R](https://github.com/rahulhiran44). founded by rahul  It offers a wide range of features, making it an advanced and user-friendly bot for various purposes.
-
-
 ### **Bot Statistics**
 ![Bot Repository Size](https://img.shields.io/github/repo-size/[R-A-H-U-L-M-A-S-T-E-R]/RAHUL-AI?style=for-the-badge)
 ![Bot Repository Issues](https://img.shields.io/github/issues/R-A-H-U-L-M-A-S-T-E-R/RAHUL-AI?style=for-the-badge)

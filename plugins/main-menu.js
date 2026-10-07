@@ -6,14 +6,14 @@ module.exports = {
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('✔️');
+        await m.react('🔥');
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
 
         const date = now.toLocaleDateString('en-GB', {
             day: 'numeric',
-            month: 'long',
+            month: 'short',
             year: 'numeric',
             timeZone: 'Africa/Accra'
         });
@@ -21,7 +21,6 @@ module.exports = {
         const time = now.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
             hour12: true,
             timeZone: 'Africa/Accra'
         });
@@ -31,87 +30,81 @@ module.exports = {
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
         const menuText = `
-┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ
-│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
-│ *ᴏᴡɴᴇʀ:* ${botOwner}
-│ *ᴜsᴇʀ:* ${user}
-│ *ᴅᴀᴛᴇ:* ${date}
-│ *ᴛɪᴍᴇ:* ${time} (GMT)
-│ *ᴘʀᴇғɪx:* ${prefix}
-╰──────────────────╯
+╭━━━❮ *🌐 ${botOwner.toUpperCase()} 🌐* ❯━━━╮
+┃ 👤 *User:* ${user}
+┃ 👑 *Founder:* ${Founder}
+┃ ⚡ *Prefix:* [ ${prefix} ]
+┃ 📅 *Date:* ${date}
+┃ ⏰ *Time:* ${time}
+╰━━━━━━━━━━━━━━━━━━━╯
 
-┌─ム ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
-│
-├─ム *ɢᴇɴᴇʀᴀʟ*
-│ ᪣ ${prefix}ᴀʟɪᴠᴇ
-│ ᪣ ${prefix}ᴘɪɴɢ
-│ ᪣ ${prefix}ᴜᴘᴛɪᴍᴇ
-│ ᪣ ${prefix}ᴏᴡɴᴇʀ
-│ ᪣ ${prefix}ɢᴜɪᴅᴇ
-│ ᪣ ${prefix}ᴍᴇɴᴜ2
-│
-├─ム *ᴅᴏᴡɴʟᴏᴀᴅᴇʀs*
-│ ᪣ ${prefix}ᴛɪᴋᴛᴏᴋ / ${prefix}ᴛᴛ
-│ ᪣ ${prefix}ʏᴛᴍᴘ3
-│ ᪣ ${prefix}ɪɢ
-│
-├─ム *ᴛᴏᴏʟs*
-│ ᪣ ${prefix}sᴛɪᴄᴋᴇʀ
-│ ᪣ ${prefix}ᴏᴄʀ
-│ ᪣ ${prefix}ᴛᴛs
-│ ᪣ ${prefix}ᴘᴏʟʟ
-│ ᪣ ${prefix}sʜᴀᴢᴀᴍ
-│ ᪣ ${prefix}ᴛᴇxᴛᴘʀᴏ
-│ ᪣ ${prefix}ᴄʜɪᴅ
-│
-├─ム *ᴀɪ*
-│ ᪣ ${prefix}ᴀɪ
-│ ᪣ ${prefix}ᴀɪ-sᴇᴀʀᴄʜ
-│ ᪣ ${prefix}ᴀɪᴠ
-│ ᪣ ${prefix}ɢᴇɴ
-│
-├─ム *ғᴜɴ*
-│ ᪣ ${prefix}ʙʟᴜᴇ
-│ ᪣ ${prefix}ғʟᴀɢ
-│
-├─ム *ɴᴇᴡ*
-│ ᪣ ${prefix}ʜɪᴅᴇ
-│ ᪣ ${prefix}ɢᴜᴇssɢᴇɴᴅᴇʀ
-│ ᪣ ${prefix}ᴀɢᴇᴄᴀʟᴄᴜʟᴀᴛᴏʀ
-│ ᪣ ${prefix}sᴛʏʟᴇ
-│
-├─ム *ꜱᴇᴀʀᴄʜ*
-│ ᪣ ${prefix}ᴡᴇᴀᴛʜᴇʀ
-│
-├─ム *ᴀɴɪᴍᴇ*
-│ ᪣ ${prefix}ᴡᴀɪғᴜ
-│ ᪣ ${prefix}ɴᴇᴋᴏ
-│ ᪣ ${prefix}ᴋɪᴛꜱᴜɴᴇ
-│ ᪣ ${prefix}ʜᴜꜱʙᴀɴᴅᴏ
-│
-├─ム *ɢʀᴏᴜᴘ*
-│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ
-│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ1
-│ ᪣ ${prefix}ᴛᴀɢᴍᴇ
-│ ᪣ ${prefix}ᴄᴏᴜᴘʟᴇᴘᴘ
-│ ᪣ ${prefix}ɢʀᴏᴜᴘ
-│ ᪣ ${prefix}ɢɪɴғᴏ
-│ ᪣ ${prefix}ᴀɴᴛɪɢsᴛ
-│
-├─ム *sᴛᴀᴛᴜs*
-│ ᪣ ${prefix}ɢsᴛᴀᴛᴜs
-│
-├─ム *ᴄʜᴀɴɴᴇ🇱*
-│ ᪣ ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
-│
-├─ム *ᴀᴅᴍɪɴ*
-│ ᪣ ${prefix}ᴋɪᴄᴋ
-│ ᪣ ${prefix}ᴘʀᴏᴍᴏᴛᴇ
-│ ᪣ ${prefix}ᴅᴇᴍᴏᴛᴇ
-│
-╰─────────◆────────╯
+> ┏──❑ *🚀 GENERAL COMMANDS*
+> ┃ ◈ ${prefix}alive
+> ┃ ◈ ${prefix}ping
+> ┃ ◈ ${prefix}uptime
+> ┃ ◈ ${prefix}owner
+> ┃ ◈ ${prefix}guide
+> ┃ ◈ ${prefix}menu2
+> ┗━━━━━━━━━━━━━━━━━━━
 
-> 「 ᴩᴏᴡᴇʀᴇᴀᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
+> ┏──❑ *📥 DOWNLOADERS*
+> ┃ ◈ ${prefix}tiktok / ${prefix}tt
+> ┃ ◈ ${prefix}ytmp3
+> ┃ ◈ ${prefix}ig
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *🛠️ TOOLS*
+> ┃ ◈ ${prefix}sticker | ${prefix}s
+> ┃ ◈ ${prefix}ocr
+> ┃ ◈ ${prefix}tts
+> ┃ ◈ ${prefix}poll
+> ┃ ◈ ${prefix}shazam
+> ┃ ◈ ${prefix}textpro
+> ┃ ◈ ${prefix}chid
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *🤖 ARTIFICIAL INTELLIGENCE*
+> ┃ ◈ ${prefix}ai
+> ┃ ◈ ${prefix}ai-search
+> ┃ ◈ ${prefix}aiv
+> ┃ ◈ ${prefix}gen
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *🎉 FUN & GAMES*
+> ┃ ◈ ${prefix}blue
+> ┃ ◈ ${prefix}flag
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *✨ NEW COMMANDS*
+> ┃ ◈ ${prefix}hide
+> ┃ ◈ ${prefix}guessgender
+> ┃ ◈ ${prefix}agecalculator
+> ┃ ◈ ${prefix}style
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *🔍 SEARCH & ANIME*
+> ┃ ◈ ${prefix}weather
+> ┃ ◈ ${prefix}waifu | ${prefix}neko
+> ┃ ◈ ${prefix}kitsune | ${prefix}husbando
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *👥 GROUP & ADMIN*
+> ┃ ◈ ${prefix}tagall | ${prefix}tagme
+> ┃ ◈ ${prefix}couplepp
+> ┃ ◈ ${prefix}group | ${prefix}ginfo
+> ┃ ◈ ${prefix}antigst
+> ┃ ◈ ${prefix}kick | ${prefix}promote
+> ┃ ◈ ${prefix}demote
+> ┗━━━━━━━━━━━━━━━━━━━
+
+> ┏──❑ *📢 STATUS & CHANNEL*
+> ┃ ◈ ${prefix}gstatus
+> ┃ ◈ ${prefix}channelid
+> ┗━━━━━━━━━━━━━━━━━━━
+
+╔═════════════════════╗
+║ ⚡ *POWERED BY RAHUL* ⚡
+╚═════════════════════╝
 `.trim();
 
         try {
@@ -125,9 +118,9 @@ module.exports = {
                 caption: menuText
             }, { quoted: m });
 
-        }cass(err) { // Yeh catch block error handle karega
+        } catch (err) {
             console.error('Menu error:', err);
-            await m.reply(menuText); // Agar image fetch fail ho toh sirf text bhej dega
+            await m.reply(menuText);
         }
     }
 };

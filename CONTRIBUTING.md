@@ -1,12 +1,12 @@
-# Contributing to XLICON-V2-MD
+# Contributing to RAHUL-AI-NEW
 
-Thank you for your interest in contributing to **XLICON-V2-MD**! We welcome all contributions from bug reports and feature requests to code contributions and documentation improvements.
+Thank you for your interest in contributing to **RAHUL-AI-NEW**! We welcome all contributions from bug reports and feature requests to code contributions and documentation improvements.
 
 ---
 
 ## Code of Conduct
 
-By participating in this project, you agree to abide by our [Code of Conduct](file:///d:/BOTS-DATA/XLICON-V2-MD/CODE_OF_CONDUCT.md). Please treat all members of the community with respect and courtesy.
+By participating in this project, you agree to abide by our [Code of Conduct](file:///d:/BOTS-DATA/RAHUL-AI-NEW/CODE_OF_CONDUCT.md). Please treat all members of the community with respect and courtesy.
 
 ---
 
@@ -32,7 +32,7 @@ We are always looking for new features and ideas! When submitting a feature requ
 
 ### 3. Adding or Updating Plugins
 
-XLICON-V2-MD uses a modular plugin structure located in the `plugins/` directory. When adding a new plugin:
+RAHUL-AI-NEW uses a modular plugin structure located in the `plugins/` directory. When adding a new plugin:
 
 - Follow existing plugin conventions and handler exports.
 - Include appropriate command triggers, categories, and help descriptions.
@@ -46,12 +46,12 @@ XLICON-V2-MD uses a modular plugin structure located in the `plugins/` directory
 Follow these steps to set up the project locally:
 
 1. **Fork the repository** on GitHub:
-   [Fork XLICON-V2-MD](https://github.com/ahmmikun/XLICON-V2-MD/fork)
+   [Fork RAHUL-AI-NEW](https://github.com/R-A-H-U-L-M-A-S-T-E-R/RAHUL-AI-NEW/fork)
 
 2. **Clone your fork**:
    ```bash
-   git clone https://github.com/<your-username>/XLICON-V2-MD.git
-   cd XLICON-V2-MD
+   git clone https://github.com/<your-username>/RAHUL-AI-NEW.git
+   cd RAHUL-AI-NEW
    ```
 
 3. **Install dependencies**:
@@ -100,7 +100,7 @@ Follow these steps to set up the project locally:
      ```bash
      git push origin feature/your-feature-name
      ```
-   - Open a PR against the `main` branch of [XLICON-V2-MD](https://github.com/ahmmikun/XLICON-V2-MD).
+   - Open a PR against the `main` branch of [RAHUL-AI-NEW](https://github.com/ahmmikun/RAHUL-AI-NEW).
    - Describe what changed and reference any related issues.
 
 ---
@@ -108,4 +108,4 @@ Follow these steps to set up the project locally:
 ## Community & Support
 
 - **WhatsApp Support Channel**: [Join Here](https://whatsapp.com/channel/0029VaMGgVL3WHTNkhzHik3c)
-- **Contact Email**: [salmansheikh2500@gmail.com](mailto:salmansheikh2500@gmail.com)
+- **Contact Email**: [rahulhiran44@gmail.com](mailto:rahulhiran6@gmail.com)

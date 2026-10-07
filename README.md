@@ -1,5 +1,4 @@
-# RAHUL-AI-NEW-
-Rahul Ai New WhatsApp Bots 
+
 # `RAHUL-AI-NEW`
 <br>
 
@@ -10,7 +9,7 @@ Rahul Ai New WhatsApp Bots
   
 
 ## 🌟 `Bot Intro and Features`
-[![RAHUL-AI](hhttps://sam-cdn.zone.id/files/xQer9GrIVT.jpg)](https://youtu.be/WcA7GZuaN0A)
+[![RAHUL-AI](hhttps://sam-cdn.zone.id/files/xQer9GrIVT.jpg)](https://youtube.com/@rahulhiran4733?si=PmXzDtRGHfrb8vms)
 
 ### ℹ️ **About RAHUL-AI**
 RAHUL-AI is a versatile Multi-Device WhatsApp bot built by [R-A-H-U-L-M-A-S-T-E-R](https://github.com/rahulhiran44). founded by Salman  It offers a wide range of features, making it an advanced and user-friendly bot for various purposes.

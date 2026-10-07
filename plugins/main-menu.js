@@ -10,16 +10,11 @@ module.exports = {
         await m.react('✔️');
         
         const prefix = global.BOT_PREFIX || '.';
-        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
+        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
 
         try {
-            // Menu image fetch kar rahe hain carousel header ke liye
-            const imageBuffer = (await axios.get(global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg', {
-                responseType: 'arraybuffer'
-            })).data;
-
-            // Carousel Cards Data Structure
+            // Cards Content Setup
             const cardsContent = [
                 {
                     title: "📌 GENERAL & DOWNLOADERS",
@@ -47,19 +42,13 @@ module.exports = {
                 }
             ];
 
-            // Cards ko Baileys Interactive Carousel format mein map karna
-            const cardsArray = [];
-            for (const card of cardsContent) {
-                const interactiveCard = {
+            const cardsArray = cardsContent.map(card => {
+                return proto.Message.InteractiveMessage.create({
                     body: proto.Message.InteractiveMessage.Body.create({
                         text: `┌─ム *${card.title}*\n│ \n${card.text}\n╰─────────◆────────╯`
                     }),
                     footer: proto.Message.InteractiveMessage.Footer.create({
                         text: `User: ${user} | Prefix: ${prefix}`
-                    }),
-                    header: proto.Message.InteractiveMessage.Header.create({
-                        hasMediaAttachment: true,
-                        imageMessage: await sock.prepareMessageMedia(imageBuffer, { upload: sock.waUploadToServer })
                     }),
                     nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
                         buttons: [
@@ -72,33 +61,41 @@ module.exports = {
                             }
                         ]
                     })
-                };
-                cardsArray.push(interactiveCard);
-            }
+                });
+            });
 
-            // Final Message Builder using generateWAMessageFromContent
-            const carouselMessage = generateWAMessageFromContent(m.chat, {
+            const interactiveMessage = proto.Message.InteractiveMessage.create({
+                body: proto.Message.InteractiveMessage.Body.create({
+                    text: `👋 Hello *${user}*, here is your interactive swipeable menu powered by *${botOwner}*:`
+                }),
+                carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.create({
+                    cards: cardsArray
+                })
+            });
+
+            const msg = generateWAMessageFromContent(m.chat, {
                 viewOnceMessage: {
                     message: {
-                        interactiveMessage: proto.Message.InteractiveMessage.create({
-                            body: proto.Message.InteractiveMessage.Body.create({
-                                text: `👋 Hello *${user}*, here is your interactive swipeable menu powered by *${botOwner}*:`
-                            }),
-                            carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.create({
-                                cards: cardsArray
-                            })
-                        })
+                        interactiveMessage: interactiveMessage
                     }
                 }
             }, { quoted: m });
 
-            await sock.relayMessage(m.chat, carouselMessage.message, { messageId: carouselMessage.key.id });
+            await sock.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
 
         } catch (err) {
-            console.error('Carousel Menu Error:', err);
+            console.error('Menu Execution Error:', err);
             
-            // Fallback: Agar kisi purane Baileys version ya client mein carousel support na ho toh normal text menu bhej dega
-            await m.reply(`❌ Carousel failed, sending standard text menu...\n\n┌─ム *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸* ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ\n│ *ᴏᴡɴᴇʀ:* ${botOwner}\n│ *ᴜsᴇʀ:* ${user}\n╰──────────────────╯`);
+            // Fallback text menu agar koi version compatibility issue ho toh
+            const fallbackText = `
+┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ
+│ *ᴏᴡɴᴇʀ:* ${botOwner}
+│ *ᴜsᴇʀ:* ${user}
+│ *ᴘʀᴇғɪx:* ${prefix}
+╰──────────────────╯
+❌ Carousel failed to render. Please check your Baileys version.
+            `.trim();
+            await m.reply(fallbackText);
         }
     }
 };

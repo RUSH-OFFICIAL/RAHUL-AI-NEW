@@ -6,14 +6,15 @@ module.exports = {
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('⚡');
+        await m.react('✔️');
         
         const prefix = global.BOT_PREFIX || '.';
+
         const now = new Date();
 
         const date = now.toLocaleDateString('en-GB', {
             day: 'numeric',
-            month: 'short',
+            month: 'long',
             year: 'numeric',
             timeZone: 'Africa/Accra'
         });
@@ -21,97 +22,97 @@ module.exports = {
         const time = now.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
+            second: '2-digit',
             hour12: true,
             timeZone: 'Africa/Accra'
         });
 
-        const botOwner = global.ownerName || 'R A H U L';
+        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const Founder = 'R A H U L - M A S T E R';
+        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
         const menuText = `
-╭━━━〔 ⚡ *ＲＡＨＵＬ - ＡＩ* ⚡ 〕━━━╮
+┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ
+│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
+│ *ᴏᴡɴᴇʀ:* ${botOwner}
+│ *ᴜsᴇʀ:* ${user}
+│ *ᴅᴀᴛᴇ:* ${date}
+│ *ᴛɪᴍᴇ:* ${time} (GMT)
+│ *ᴘʀᴇғɪx:* ${prefix}
+╰──────────────────╯
 
-  👤 *User:* ${user}
-  👑 *Owner:* ${botOwner}
-  💎 *Founder:* ${Founder}
-  📅 *Date:* ${date}
-  ⏰ *Time:* ${time} (GMT)
-  ⚙️ *Prefix:* [ ${prefix} ]
+┌─ム ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
+│
+├─ム *ɢᴇɴᴇʀᴀʟ*
+│ ᪣ ${prefix}ᴀʟɪᴠᴇ
+│ ᪣ ${prefix}ᴘɪɴɢ
+│ ᪣ ${prefix}ᴜᴘᴛɪᴍᴇ
+│ ᪣ ${prefix}ᴏᴡɴᴇʀ
+│ ᪣ ${prefix}ɢᴜɪᴅᴇ
+│ ᪣ ${prefix}ᴍᴇɴᴜ2
+│
+├─ム *ᴅᴏᴡɴʟᴏᴀᴅᴇʀs*
+│ ᪣ ${prefix}ᴛɪᴋᴛᴏᴋ / ${prefix}ᴛᴛ
+│ ᪣ ${prefix}ʏᴛᴍᴘ3
+│ ᪣ ${prefix}ɪɢ
+│
+├─ム *ᴛᴏᴏʟs*
+│ ᪣ ${prefix}sᴛɪᴄᴋᴇʀ
+│ ᪣ ${prefix}ᴏᴄʀ
+│ ᪣ ${prefix}ᴛᴛs
+│ ᪣ ${prefix}ᴘᴏʟʟ
+│ ᪣ ${prefix}sʜᴀᴢᴀᴍ
+│ ᪣ ${prefix}ᴛᴇxᴛᴘʀᴏ
+│ ᪣ ${prefix}ᴄʜɪᴅ
+│
+├─ム *ᴀɪ*
+│ ᪣ ${prefix}ᴀɪ
+│ ᪣ ${prefix}ᴀɪ-sᴇᴀʀᴄʜ
+│ ᪣ ${prefix}ᴀɪᴠ
+│ ᪣ ${prefix}ɢᴇɴ
+│
+├─ム *ғᴜɴ*
+│ ᪣ ${prefix}ʙʟᴜᴇ
+│ ᪣ ${prefix}ғʟᴀɢ
+│
+├─ム *ɴᴇᴡ*
+│ ᪣ ${prefix}ʜɪᴅᴇ
+│ ᪣ ${prefix}ɢᴜᴇssɢᴇɴᴅᴇʀ
+│ ᪣ ${prefix}ᴀɢᴇᴄᴀʟᴄᴜʟᴀᴛᴏʀ
+│ ᪣ ${prefix}sᴛʏʟᴇ
+│
+├─ム *ꜱᴇᴀʀᴄʜ*
+│ ᪣ ${prefix}ᴡᴇᴀᴛʜᴇʀ
+│
+├─ム *ᴀɴɪᴍᴇ*
+│ ᪣ ${prefix}ᴡᴀɪғᴜ
+│ ᪣ ${prefix}ɴᴇᴋᴏ
+│ ᪣ ${prefix}ᴋɪᴛꜱᴜɴᴇ
+│ ᪣ ${prefix}ʜᴜꜱʙᴀɴᴅᴏ
+│
+├─ム *ɢʀᴏᴜᴘ*
+│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ
+│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ1
+│ ᪣ ${prefix}ᴛᴀɢᴍᴇ
+│ ᪣ ${prefix}ᴄᴏᴜᴘʟᴇᴘᴘ
+│ ᪣ ${prefix}ɢʀᴏᴜᴘ
+│ ᪣ ${prefix}ɢɪɴғᴏ
+│ ᪣ ${prefix}ᴀɴᴛɪɢsᴛ
+│
+├─ム *sᴛᴀᴛᴜs*
+│ ᪣ ${prefix}ɢsᴛᴀᴛᴜs
+│
+├─ム *ᴄʜᴀɴɴᴇʟ*
+│ ᪣ ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
+│
+├─ム *ᴀᴅᴍɪɴ*
+│ ᪣ ${prefix}ᴋɪᴄᴋ
+│ ᪣ ${prefix}ᴘʀᴏᴍᴏᴛᴇ
+│ ᪣ ${prefix}ᴅᴇᴍᴏᴛᴇ
+│
+╰─────────◆────────╯
 
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 📌 *GENERAL* 〕━━━╮
-  › ${prefix}alive
-  › ${prefix}ping
-  › ${prefix}uptime
-  › ${prefix}owner
-  › ${prefix}guide
-  › ${prefix}menu2
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 📥 *DOWNLOADERS* 〕━━━╮
-  › ${prefix}tiktok | ${prefix}tt
-  › ${prefix}ytmp3
-  › ${prefix}ig
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 🛠️ *TOOLS* 〕━━━╮
-  › ${prefix}sticker
-  › ${prefix}ocr
-  › ${prefix}tts
-  › ${prefix}poll
-  › ${prefix}shazam
-  › ${prefix}textpro
-  › ${prefix}chid
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 🤖 *ARTIFICIAL INT.* 〕━━━╮
-  › ${prefix}ai
-  › ${prefix}ai-search
-  › ${prefix}aiv
-  › ${prefix}gen
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 🎮 *FUN & NEW* 〕━━━╮
-  › ${prefix}blue
-  › ${prefix}flag
-  › ${prefix}hide
-  › ${prefix}guessgender
-  › ${prefix}agecalculator
-  › ${prefix}style
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 🔍 *SEARCH & INFO* 〕━━━╮
-  › ${prefix}weather
-  › ${prefix}gstatus
-  › ${prefix}channelid
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 ⛩️ *ANIME* 〕━━━╮
-  › ${prefix}waifu
-  › ${prefix}neko
-  › ${prefix}kitsune
-  › ${prefix}husbando
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 👥 *GROUP* 〕━━━╮
-  › ${prefix}tagall
-  › ${prefix}tagall1
-  › ${prefix}tagme
-  › ${prefix}couplepp
-  › ${prefix}group
-  › ${prefix}ginfo
-  › ${prefix}antigst
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 🛡️ *ADMIN* 〕━━━╮
-  › ${prefix}kick
-  › ${prefix}promote
-  › ${prefix}demote
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
-
-> ⚡ *Powered by RAHUL MASTER*
+> 「 ᴩᴏᴡᴇʀᴇᴀᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
 `.trim();
 
         try {
@@ -125,8 +126,7 @@ module.exports = {
 
         } catch (err) {
             console.error('Menu error:', err);
-            // Fallback to text menu if image fails to load
-            await m.reply(menuText);
+            await m.reply('❌ Failed to load menu. Please try again later.');
         }
     }
 };

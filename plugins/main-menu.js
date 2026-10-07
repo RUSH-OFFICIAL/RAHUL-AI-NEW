@@ -1,93 +1,54 @@
 module.exports = {
     name: 'menu',
-    description: 'Safe Minimalist Wave Text Menu',
+    description: 'Safe Interactive Slide Menu',
     aliases: ['help', 'cmdlist', 'commands', 'menu2'],
     tags: ['main'],
     command: /^(menu|help|cmdlist|commands|menu2)$/i,
 
     async execute(sock, m) {
         try {
-            // React to show command is caught
             await m.react('⚡');
 
-            // Safe JID fallback for all structures
             const targetJid = m.from || m.chat || (m.key && m.key.remoteJid);
-            if (!targetJid) {
-                console.log("❌ Menu Error: Target JID is missing in message object:", m);
-                return;
-            }
+            if (!targetJid) return;
 
             const prefix = global.BOT_PREFIX || '.';
             const user = m.pushName || 'User';
 
-            const menuText = `
-🌊 ~~~~~~~~~~~~~~~~~~~~~~~ 🌊
-       ⚡ RAHUL - AI ⚡
-🌊 ~~~~~~~~~~~~~~~~~~~~~~~ 🌊
-👤 User   : ${user}
-🔑 Prefix : [ ${prefix} ]
-───────────────────────────
+            // Interactive List / Slide Menu Message Payload
+            const sections = [
+                {
+                    title: "⚡ SYSTEM CORE & DOWNLOADS",
+                    rows: [
+                        { title: "Alive Status", rowId: `${prefix}alive`, description: "Check if bot is active" },
+                        { title: "Ping & Uptime", rowId: `${prefix}ping`, description: "Check bot speed and uptime" },
+                        { title: "TikTok Downloader", rowId: `${prefix}tiktok`, description: "Download TikTok videos" },
+                        { title: "YouTube MP3", rowId: `${prefix}ytmp3`, description: "Download YT audio" }
+                    ]
+                },
+                {
+                    title: "🛠️ UTILITY & AI TOOLS",
+                    rows: [
+                        { title: "Sticker Maker", rowId: `${prefix}sticker`, description: "Convert image to sticker" },
+                        { title: "AI Assistant", rowId: `${prefix}ai`, description: "Chat with AI model" },
+                        { title: "OCR Tool", rowId: `${prefix}ocr`, description: "Extract text from images" },
+                        { title: "Weather Info", rowId: `${prefix}weather`, description: "Check live weather" }
+                    ]
+                }
+            ];
 
-✦ *SYSTEM CORE*
-  🔸 ${prefix}alive
-  🔸 ${prefix}ping
-  🔸 ${prefix}uptime
-  🔸 ${prefix}owner
-  🔸 ${prefix}guide
+            const listMessage = {
+                text: `*RAHUL - AI CONTROL HUB*\n\n👋 Hello *${user}*, select an option below from the slide menu list or type commands directly using prefix *[ ${prefix} ]*.\n\n> _POWERED BY RAHUL MASTER_`,
+                footer: "Rahul Master Bot Platform",
+                title: "🌟 INTERACTIVE MENU",
+                buttonText: "Click Here To View Menu",
+                sections
+            };
 
-✦ *DOWNLOAD HUB*
-  🔸 ${prefix}tiktok
-  🔸 ${prefix}ytmp3
-  🔸 ${prefix}ig
-
-✦ *UTILITY TOOLS*
-  🔸 ${prefix}sticker
-  🔸 ${prefix}ocr
-  🔸 ${prefix}tts
-  🔸 ${prefix}poll
-  🔸 ${prefix}shazam
-  🔸 ${prefix}chid
-
-✦ *AI INTELLIGENCE*
-  🔸 ${prefix}ai
-  🔸 ${prefix}ai-search
-  🔸 ${prefix}aiv
-  🔸 ${prefix}gen
-
-✦ *ENTERTAINMENT*
-  🔸 ${prefix}blue
-  🔸 ${prefix}flag
-  🔸 ${prefix}guessgender
-  🔸 ${prefix}agecalculator
-  🔸 ${prefix}style
-
-✦ *ANIME ARCHIVE*
-  🔸 ${prefix}weather
-  🔸 ${prefix}waifu
-  🔸 ${prefix}neko
-  🔸 ${prefix}kitsune
-  🔸 ${prefix}husbando
-
-✦ *GROUP SUITE*
-  🔸 ${prefix}tagall
-  🔸 ${prefix}tagme
-  🔸 ${prefix}couplepp
-  🔸 ${prefix}group
-  🔸 ${prefix}ginfo
-  🔸 ${prefix}kick
-  🔸 ${prefix}promote
-  🔸 ${prefix}demote
-
-───────────────────────────
-> _POWERED BY RAHUL MASTER_
-`.trim();
-
-            console.log("📤 Attempting to send menu to JID:", targetJid);
-            await sock.sendMessage(targetJid, { text: menuText }, { quoted: m });
-            console.log("✅ Menu sent successfully!");
+            await sock.sendMessage(targetJid, listMessage, { quoted: m });
 
         } catch (err) {
-            console.error('❌ Menu plugin execution error:', err);
+            console.error('❌ Interactive Menu plugin error:', err);
         }
     },
 };

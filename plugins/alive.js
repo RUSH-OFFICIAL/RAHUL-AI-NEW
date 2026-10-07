@@ -1,50 +1,53 @@
-const axios = require('axios');
-const os = require('os');
+const pix = require('pixcore');
 
 module.exports = {
     name: 'alive',
-    description: 'Check bot status in compact neon style',
-    aliases: ['botstatus', 'status'],
+    description: 'Check if the bot is alive',
+    aliases: [],
+    tags: ['main'],
+    command: /^(alive)$/i,
 
     async execute(sock, m) {
-        await m.react('🟢');
-
-        const prefix = global.BOT_PREFIX || '.';
-        const botOwner = global.ownerName || 'Rahul Hiran';
-        const user = m.pushName || m.sender?.split('@')[0] || 'User';
-
-        // Uptime
-        const uptime = process.uptime();
-        const h = Math.floor(uptime / 3600);
-        const mMin = Math.floor((uptime % 3600) / 60);
-        const s = Math.floor(uptime % 60);
-
-        const aliveText = `
-┌───『 🟢 *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚂𝚃𝙰𝚃𝚄𝚂* 』
-│
-├◈ *User:* \`${user}\`
-├◈ *Owner:* \`${botOwner}\`
-├◈ *Prefix:* [ \`${prefix}\` ]
-├◈ *Uptime:* \`${h}h ${mMin}m${s}s\`
-├◈ *RAM:* \`${(os.freemem() / 1024 / 1024 / 1024).toFixed(1)}GB Free\`
-│
-└──『 ⚡ *SYSTEM OPERATIONAL* 』
-`.trim();
-
         try {
-            const imageUrl = global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg';
-            const imageBuffer = (await axios.get(imageUrl, {
-                responseType: 'arraybuffer'
-            })).data;
+            await m.react('⚡');
+            const width = 300;
+            const height = 300;
 
-            await sock.sendMessage(m.chat, {
-                image: imageBuffer,
-                caption: aliveText
-            }, { quoted: m });
+            const imageResponse = await fetch('https://i.ibb.co/wnWJtrP/8a55300e87bc.jpg');
+            const imageBuffer = await imageResponse.arrayBuffer();
+
+            const img = await pix.read(Buffer.from(imageBuffer));
+            const resized = await img.resize(width, height, { fit: 'cover' });
+            const thumb = await resized.toBuffer({ format: 'jpeg', quality: 40 });
+
+            const audioUrl = 'https://eliteprotech-url.zone.id/1787244048021ghdr1r.mp3';
+            const audioResponse = await fetch(audioUrl);
+            const audioBuffer = await audioResponse.arrayBuffer();
+
+            const fakeQuoted = {
+                key: {
+                    remoteJid: m.from,
+                    fromMe: false,
+                    participant: m.sender,
+                    id: 'fakeid123'
+                },
+                message: {
+                    imageMessage: {
+                        mimetype: 'image/jpeg',
+                        jpegThumbnail: thumb,
+                        caption: 'i am alive'
+                    }
+                }
+            };
+
+            await sock.sendMessage(m.from, {
+                audio: Buffer.from(audioBuffer),
+                mimetype: 'audio/mp4',
+                ptt: false
+            }, { quoted: fakeQuoted });
 
         } catch (err) {
-            console.error('Alive style error:', err);
-            await sock.sendMessage(m.chat, { text: aliveText }, { quoted: m });
+            console.error('❌ Alive plugin error:', err);
         }
-    }
+    },
 };

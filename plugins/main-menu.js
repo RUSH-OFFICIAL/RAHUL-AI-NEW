@@ -3,7 +3,7 @@ const { generateWAMessageFromContent, proto, prepareWAMessageMedia } = require('
 
 module.exports = {
     name: 'menu',
-    description: 'Show available bot commands in swipeable horizontal cards with permission checks',
+    description: 'Show available bot commands in Marathi styled swipeable horizontal cards',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
@@ -15,41 +15,36 @@ module.exports = {
             day: 'numeric', 
             month: 'long', 
             year: 'numeric', 
-            timeZone: 'Africa/Accra' 
+            timeZone: 'Asia/Kolkata' 
         });
         const time = now.toLocaleTimeString('en-US', { 
             hour: '2-digit', 
             minute: '2-digit', 
             second: '2-digit', 
             hour12: true, 
-            timeZone: 'Africa/Accra' 
+            timeZone: 'Asia/Kolkata' 
         });
 
         const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
-        // Check if message is in a group and check sender permissions
+        // Group & Admin permission check
         const isGroup = m.chat.endsWith('@g.us');
         let isAdmin = false;
-        let isBotAdmin = false;
 
         if (isGroup) {
             try {
                 const groupMetadata = await sock.groupMetadata(m.chat);
                 const participants = groupMetadata.participants || [];
                 const senderParticipant = participants.find(p => p.id === m.sender);
-                
                 isAdmin = senderParticipant?.admin === 'admin' || senderParticipant?.admin === 'superadmin';
-
-                const botParticipant = participants.find(p => p.id === sock.user.id.split(':')[0] + '@s.whatsapp.net');
-                isBotAdmin = botParticipant?.admin === 'admin' || botParticipant?.admin === 'superadmin';
             } catch (err) {
-                console.error('Group metadata check error:', err);
+                console.error('Group metadata error:', err);
             }
         }
 
-        // Prepare Header Media for Carousel Cards
+        // Header Media Buffer
         let imageHeader;
         try {
             const imgBuffer = (await axios.get(global.menuImage || 'https://via.placeholder.com/600x300.png', {
@@ -62,71 +57,71 @@ module.exports = {
             );
             imageHeader = media.imageMessage;
         } catch (e) {
-            console.error('Header image download failed:', e);
+            console.error('Image header download error:', e);
             imageHeader = null;
         }
 
-        // Define All Category Cards
+        // Marathi Categorized Cards Data
         const allCategories = [
             {
-                title: '⚙️ GENERAL',
-                desc: 'Core bot commands & basic info',
+                title: '⚙️ ɢᴇɴᴇʀᴀʟ (सामान्य)',
+                desc: 'बॉटची मुख्य माहिती आणि सामान्य कमांड्स',
                 cmds: ['alive', 'ping', 'uptime', 'owner', 'guide', 'menu2'],
                 btnCmd: 'alive',
                 adminOnly: false,
                 groupOnly: false
             },
             {
-                title: '📥 DOWNLOADERS',
-                desc: 'Download media from online platforms',
+                title: '📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ (डाउनलोडर्स)',
+                desc: 'व्हिडिओ आणि ऑडिओ डाउनलोड करा',
                 cmds: ['tiktok', 'tt', 'ytmp3', 'ig'],
                 btnCmd: 'tiktok',
                 adminOnly: false,
                 groupOnly: false
             },
             {
-                title: '🛠️ UTILITY TOOLS',
-                desc: 'Converters & useful utilities',
+                title: '🛠️ ᴛᴏᴏʟꜱ (टूल आणि युटिलिटी)',
+                desc: 'स्टिकर, OCR आणि इतर उपयुक्त टूल्स',
                 cmds: ['sticker', 'ocr', 'tts', 'poll', 'shazam', 'textpro', 'chid'],
                 btnCmd: 'sticker',
                 adminOnly: false,
                 groupOnly: false
             },
             {
-                title: '🤖 ARTIFICIAL INTELLIGENCE',
-                desc: 'AI modules & smart search tools',
+                title: '🤖 ᴀɪ ᴍᴏᴅᴜʟᴇꜱ (एआय कमांड्स)',
+                desc: 'आर्टिफिशियल इंटेलिजन्स आणि स्मार्ट सर्च',
                 cmds: ['ai', 'ai-search', 'aiv', 'gen'],
                 btnCmd: 'ai',
                 adminOnly: false,
                 groupOnly: false
             },
             {
-                title: '🎉 FUN & NEW',
-                desc: 'Games and newly added features',
+                title: '🎉 ꜰᴜɴ & ɴᴇᴡ (मनोरंजन)',
+                desc: 'नवीन भन्नाट फीचर्स आणि गेम्स',
                 cmds: ['blue', 'flag', 'hide', 'guessgender', 'agecalculator', 'style'],
                 btnCmd: 'style',
                 adminOnly: false,
                 groupOnly: false
             },
             {
-                title: '🌸 ANIME & STATUS',
-                desc: 'Anime features & status updates',
+                title: '🌸 ᴀɴɪᴍᴇ (ॲनिमे कमांड्स)',
+                desc: 'ॲनिमे कॅरेक्टर्स आणि स्टेटस अपडेट्स',
                 cmds: ['waifu', 'neko', 'kitsune', 'husbando', 'gstatus', 'channelid'],
                 btnCmd: 'waifu',
                 adminOnly: false,
                 groupOnly: false
             },
             {
-                title: '👥 GROUP COMMANDS',
-                desc: 'General group features & tools',
+                title: '👥 ɢʀᴏᴜᴘ (ग्रुप कमांड्स)',
+                desc: 'ग्रुप मेंबर्ससाठी फीचर्स',
                 cmds: ['tagall1', 'tagme', 'couplepp', 'group', 'ginfo', 'antigst'],
                 btnCmd: 'group',
                 adminOnly: false,
                 groupOnly: true
             },
             {
-                title: '👑 ADMIN & MODERATION',
-                desc: 'Restricted group moderation tools',
+                title: '👑 ᴀᴅᴍɪɴ (ॲडमिन ऑप्स)',
+                desc: 'फक्त ग्रुप ॲडमिनसाठी मॉडरेशन टूल्स',
                 cmds: ['tagall', 'kick', 'promote', 'demote'],
                 btnCmd: 'tagall',
                 adminOnly: true,
@@ -134,15 +129,15 @@ module.exports = {
             }
         ];
 
-        // Filter Categories based on Context & Permissions
-        const availableCategories = allCategories.filter(cat => {
+        // Filter active categories
+        const categories = allCategories.filter(cat => {
             if (cat.groupOnly && !isGroup) return false;
             if (cat.adminOnly && !isAdmin) return false;
             return true;
         });
 
-        // Build Horizontal Scrollable Cards
-        const carouselCards = availableCategories.map((cat, index) => {
+        // Generate Horizontal Carousel Cards
+        const carouselCards = categories.map((cat, index) => {
             const headerObj = imageHeader 
                 ? { title: cat.title, hasVideoPlayback: false, imageMessage: imageHeader }
                 : { title: cat.title, hasVideoPlayback: false };
@@ -153,7 +148,7 @@ module.exports = {
                     text: `📌 *${cat.desc}*\n\n` + cat.cmds.map(c => ` ᪣ ${prefix}${c}`).join('\n')
                 }),
                 footer: proto.Message.InteractiveMessage.Footer.create({
-                    text: `Card ${index + 1} of ${availableCategories.length} | 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸`
+                    text: `कार्ड ${index + 1} / ${categories.length} | 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸`
                 }),
                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
                     buttons: [
@@ -169,7 +164,7 @@ module.exports = {
             };
         });
 
-        // Main Message Container
+        // Build Final Interactive Message Payload
         const interactiveMsg = generateWAMessageFromContent(m.chat, {
             viewOnceMessage: {
                 message: {
@@ -179,7 +174,7 @@ module.exports = {
                     },
                     interactiveMessage: proto.Message.InteractiveMessage.create({
                         body: proto.Message.InteractiveMessage.Body.create({
-                            text: `┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ\n│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}\n│ *ᴏᴡɴᴇʀ:* ${botOwner}\n│ *ᴜsᴇʀ:* ${user}\n│ *ᴅᴀᴛᴇ:* ${date}\n│ *ᴛɪᴍᴇ:* ${time} (GMT)\n│ *ᴘʀᴇғɪx:* ${prefix}\n╰──────────────────╯\n\n*👇 Swipe left or right to switch cards (${availableCategories.length} categories available):*`
+                            text: `┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ\n│ *संस्थापक:* ${Founder}\n│ *मालक:* ${botOwner}\n│ *युझर:* ${user}\n│ *तारीख:* ${date}\n│ *वेळ:* ${time} IST\n│ *प्रिफिक्स:* ${prefix}\n╰──────────────────╯\n\n*👉 उजवीकडे/डावीकडे स्वाइप (Swipe) करा सर्व कमांड्स पाहण्यासाठी:*`
                         }),
                         footer: proto.Message.InteractiveMessage.Footer.create({
                             text: '「 ᴩᴏᴡᴇʀᴇᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」'
@@ -197,8 +192,8 @@ module.exports = {
                 messageId: interactiveMsg.key.id 
             });
         } catch (err) {
-            console.error('Carousel Menu Error:', err);
-            await m.reply('❌ Horizontal menu failed to load.');
+            console.error('Marathi Carousel Menu Error:', err);
+            await m.reply('❌ मेनू लोड करताना अडचण आली. कृपया पुन्हा प्रयत्न करा.');
         }
     }
 };

@@ -9,76 +9,70 @@ module.exports = {
         try {
             await m.react('⚡');
 
-            const targetJid = m.from || m.chat || (m.key && m.key.remoteJid);
-            if (!targetJid) return;
-
-            const prefix = global.BOT_PREFIX || '.';
-            const user = m.pushName || 'User';
-
             const menuText = `
 ╭━━━〔 *RAHUL - AI* 〕━━━
-┃ 👤 User   : ${user}
-┃ 🔑 Prefix : [ ${prefix} ]
+┃ 👤 User   : ${m.pushName || 'User'}
+┃ 🔑 Prefix : [ . ]
 ╰━━━━━━━━━━━━━━━━━━
 
 ⚡ *SYSTEM CORE*
-  │ • ${prefix}alive
-  │ • ${prefix}ping
-  │ • ${prefix}uptime
-  │ • ${prefix}owner
-  │ • ${prefix}guide
+  │ • .alive
+  │ • .ping
+  │ • .uptime
+  │ • .owner
+  │ • .guide
 
 📥 *DOWNLOAD HUB*
-  │ • ${prefix}tiktok
-  │ • ${prefix}ytmp3
-  │ • ${prefix}ig
+  │ • .tiktok
+  │ • .ytmp3
+  │ • .ig
 
 🛠️ *UTILITY TOOLS*
-  │ • ${prefix}sticker
-  │ • ${prefix}ocr
-  │ • ${prefix}tts
-  │ • ${prefix}poll
-  │ • ${prefix}shazam
-  │ • ${prefix}chid
+  │ • .sticker
+  │ • .ocr
+  │ • .tts
+  │ • .poll
+  │ • .shazam
+  │ • .chid
 
 🧠 *AI INTELLIGENCE*
-  │ • ${prefix}ai
-  │ • ${prefix}ai-search
-  │ • ${prefix}aiv
-  │ • ${prefix}gen
+  │ • .ai
+  │ • .ai-search
+  │ • .aiv
+  │ • .gen
 
 🎭 *ENTERTAINMENT*
-  │ • ${prefix}blue
-  │ • ${prefix}flag
-  │ • ${prefix}guessgender
-  │ • ${prefix}agecalculator
-  │ • ${prefix}style
+  │ • .blue
+  │ • .flag
+  │ • .guessgender
+  │ • .agecalculator
+  │ • .style
 
 🌸 *ANIME ARCHIVE*
-  │ • ${prefix}weather
-  │ • ${prefix}waifu
-  │ • ${prefix}neko
-  │ • ${prefix}kitsune
-  │ • ${prefix}husbando
+  │ • .weather
+  │ • .waifu
+  │ • .neko
+  │ • .kitsune
+  │ • .husbando
 
 🛡️ *GROUP SUITE*
-  │ • ${prefix}tagall
-  │ • ${prefix}tagme
-  │ • ${prefix}couplepp
-  │ • ${prefix}group
-  │ • ${prefix}ginfo
-  │ • ${prefix}kick
-  │ • ${prefix}promote
-  │ • ${prefix}demote
+  │ • .tagall
+  │ • .tagme
+  │ • .couplepp
+  │ • .group
+  │ • .ginfo
+  │ • .kick
+  │ • .promote
+  │ • .demote
 
 ───────────────────
 > _POWERED BY RAHUL MASTER_
 `.trim();
 
-            await sock.sendMessage(targetJid, { text: menuText }, { quoted: m });
+            await sock.sendMessage(m.from, { text: menuText }, { quoted: m });
 
         } catch (err) {
-            console.error('❌ Menu plugin execution error:', err);
+            console.error('❌ Menu plugin error:', err);
         }
     },
 };

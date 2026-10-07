@@ -6,7 +6,9 @@ module.exports = {
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('💻');
+        // युजरला कमांड दिल्यावर सुरुवातीला 'completed' रिप्लाय पाठवण्यासाठी
+        await m.reply('⚡ Completed! Loading Slide Menu...');
+        await m.react('📑');
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -26,60 +28,49 @@ module.exports = {
         });
 
         const botOwner = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-        const user = m.pushName || m.sender?.split('@')[0] || 'Rahul_User';
+        const user = m.pushName || m.sender?.split('@')[0] || 'User';
 
         const menuText = `
-╭─────────────────────────────╮
-│   ⚡ *𝐑𝐀𝐇𝐔𝐋  // AI* ⚡   │
-╰─────────────────────────────╯
+╭─────────────────────────╮
+│   ⚡ *RAHUL-AI SLIDE* ⚡   │
+╰─────────────────────────╯
 
- ❖ User   : ${user}
- ❖ Owner  : ${botOwner}
- ❖ Time   : ${time} | ${date}
- ❖ Prefix : [ ${prefix} ]
+ 👤 User   : ${user}
+ 👑 Owner  : ${botOwner}
+ ⏰ Time   : ${time} | ${date}
+ ⚙️ Prefix : ${prefix}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- 🎯 [ PART 01 ] RAHUL SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  • ${prefix}alive   ⤿ Node status
-  • ${prefix}ping    ⤿ Server latency
-  • ${prefix}uptime  ⤿ Active time
-  • ${prefix}owner   ⤿ Master profile
+┌── [ 1 ] ── ‹ SYSTEM › ──┐
+├ • ${prefix}alive
+├ • ${prefix}ping
+├ • ${prefix}uptime
+└ • ${prefix}owner
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- 🎯 [ PART 02 ] RAHUL MEDIA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  • ${prefix}tiktok  ⤿ TikTok download
-  • ${prefix}tt      ⤿ Quick grabber
-  • ${prefix}ytmp3   ⤿ YouTube audio
-  • ${prefix}ig      ⤿ Instagram media
+┌── [ 2 ] ── ‹ MEDIA › ───┐
+├ • ${prefix}tiktok
+├ • ${prefix}tt
+├ • ${prefix}ytmp3
+└ • ${prefix}ig
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- 🎯 [ PART 03 ] RAHUL NEURAL AI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  • ${prefix}ai      ⤿ Neural chat
-  • ${prefix}ai-search ⤿ Web intelligence
-  • ${prefix}aiv     ⤿ Vision parser
-  • ${prefix}gen     ⤿ Asset generator
+┌── [ 3 ] ── ‹ NEURAL AI › ─┐
+├ • ${prefix}ai
+├ • ${prefix}ai-search
+├ • ${prefix}aiv
+└ • ${prefix}gen
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- 🎯 [ PART 04 ] RAHUL UTILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  • ${prefix}sticker ⤿ Webp converter
-  • ${prefix}style   ⤿ Fancy typography
-  • ${prefix}ocr     ⤿ Text extractor
-  • ${prefix}tts     ⤿ Speech synth
+┌── [ 4 ] ── ‹ UTILS › ───┐
+├ • ${prefix}sticker
+├ • ${prefix}style
+├ • ${prefix}ocr
+└ • ${prefix}tts
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- 🎯 [ PART 05 ] RAHUL ADMIN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  • ${prefix}tagall  ⤿ Broadcast mention
-  • ${prefix}kick    ⤿ Purge node user
-  • ${prefix}promote ⤿ Grant admin rank
-  • ${prefix}demote  ⤿ Revoke clearance
+┌── [ 5 ] ── ‹ ADMIN › ───┐
+├ • ${prefix}tagall
+├ • ${prefix}kick
+├ • ${prefix}promote
+└ • ${prefix}demote
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- > *[RAHUL-AI SECURE // 2026]*
+> *[SLIDE STATUS: ONLINE]*
 `.trim();
 
         // तुझी फिक्स इमेज युआरएल

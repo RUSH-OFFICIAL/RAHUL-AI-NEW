@@ -1,16 +1,16 @@
 {
-  "name": "Xlicon",
+  "name": "RAHUL-AI",
   "version": "1.0.0",
-  "description": "Xlicon WhatsApp Bot",
+  "description": "rahul-ai WhatsApp Bot",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
     "start": "node index.js",
-    "stop": "pm2 stop Xlicon",
-    "restart": "pm2 restart Xlicon",
+    "stop": "pm2 stop rahul-ai",
+    "restart": "pm2 restart rahul-ai",
     "bot": "node index.js"
   },
-  "author": "Xlicon",
+  "author": "rahul-ai",
   "license": "MIT",
   "private": true,
   "keywords": [

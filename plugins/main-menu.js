@@ -1,137 +1,111 @@
-const axios = require('axios');
-
 module.exports = {
     name: 'menu',
-    description: 'Show stylized ultra-fancy bot commands menu',
+    description: 'Minimal card style fast menu',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('👑').catch(() => {});
+        try {
+            await sock.sendMessage(m.chat, { react: { text: '✨', key: m.key } }).catch(() => {});
 
-        const prefix = global.BOT_PREFIX || '.';
-        const now = new Date();
+            const prefix = global.BOT_PREFIX || '.';
+            const now = new Date();
 
-        const date = now.toLocaleDateString('en-IN', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-            timeZone: 'Asia/Kolkata'
-        });
+            const date = now.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                timeZone: 'Asia/Kolkata'
+            });
 
-        const time = now.toLocaleTimeString('en-IN', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true,
-            timeZone: 'Asia/Kolkata'
-        });
+            const time = now.toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: 'Asia/Kolkata'
+            });
 
-        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-        const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+            const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+            const user = m.pushName || (m.sender ? m.sender.split('@')[0] : 'User');
+            const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
-        // Fancy Neon Frame Design
-        const fancyMenu = `
-╔═══════════════════════════╗
-   ⚡ 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝙼𝚄𝙻𝚃𝙸-𝙳𝙴𝚅𝙸𝙲𝙴 ⚡
-╚═══════════════════════════╝
+            const menuText = `
+◈━━━━━━━━━━━━━━━━━◈
+   ⚡ *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚅𝙸𝙿 𝙼𝙴𝙽𝚄* ⚡
+◈━━━━━━━━━━━━━━━━━◈
 
-┌───〔 *SYSTEM INFO* 〕───
-│ 👤 *User:* ${user}
-│ 👑 *Owner:* ${botOwner}
-│ 🏛️ *Founder:* ${founder}
-│ 📅 *Date:* ${date}
-│ ⏰ *Time:* ${time}
-│ 🔑 *Prefix:* [ ${prefix} ]
-└─────────────────────────
+⚙️ *INFO CARD*
+🔸 *User:* ${user}
+🔸 *Owner:* ${botOwner}
+🔸 *Founder:* ${founder}
+🔸 *Date:* ${date}
+🔸 *Time:* ${time}
+🔸 *Prefix:* [ ${prefix} ]
 
-✦──────────〔 *MENU COMMANDS* 〕──────────✦
+━━━━━ COMMAND LIST ━━━━━
 
-┌─── ◈ *GENERAL*
-│ ᪣ ${prefix}alive
-│ ᪣ ${prefix}ping
-│ ᪣ ${prefix}uptime
-│ ᪣ ${prefix}owner
-│ ᪣ ${prefix}guide
-│ ᪣ ${prefix}menu2
-└───
+⚙️ *GENERAL*
+ » ${prefix}alive
+ » ${prefix}ping
+ » ${prefix}uptime
+ » ${prefix}owner
+ » ${prefix}guide
 
-┌─── ◈ *DOWNLOADERS*
-│ ᪣ ${prefix}tiktok / ${prefix}tt
-│ ᪣ ${prefix}ytmp3
-│ ᪣ ${prefix}ig
-└───
+📥 *DOWNLOADS*
+ » ${prefix}tiktok
+ » ${prefix}ytmp3
+ » ${prefix}ig
 
-┌─── ◈ *TOOLS*
-│ ᪣ ${prefix}sticker
-│ ᪣ ${prefix}ocr
-│ ᪣ ${prefix}tts
-│ ᪣ ${prefix}poll
-│ ᪣ ${prefix}shazam
-│ ᪣ ${prefix}textpro
-│ ᪣ ${prefix}chid
-└───
+🛠️ *TOOLS*
+ » ${prefix}sticker
+ » ${prefix}ocr
+ » ${prefix}tts
+ » ${prefix}poll
+ » ${prefix}shazam
+ » ${prefix}chid
 
-┌─── ◈ *ARTIFICIAL INTELLIGENCE*
-│ ᪣ ${prefix}ai
-│ ᪣ ${prefix}ai-search
-│ ᪣ ${prefix}aiv
-│ ᪣ ${prefix}gen
-└───
+🤖 *AI POWER*
+ » ${prefix}ai
+ » ${prefix}ai-search
+ » ${prefix}aiv
+ » ${prefix}gen
 
-┌─── ◈ *FUN & ENTERTAINMENT*
-│ ᪣ ${prefix}blue
-│ ᪣ ${prefix}flag
-│ ᪣ ${prefix}hide
-│ ᪣ ${prefix}guessgender
-│ ᪣ ${prefix}agecalculator
-│ ᪣ ${prefix}style
-└───
+🎭 *FUN & UTILITY*
+ » ${prefix}blue
+ » ${prefix}flag
+ » ${prefix}guessgender
+ » ${prefix}agecalculator
+ » ${prefix}style
 
-┌─── ◈ *SEARCH & ANIME*
-│ ᪣ ${prefix}weather
-│ ᪣ ${prefix}waifu
-│ ᪣ ${prefix}neko
-│ ᪣ ${prefix}kitsune
-│ ᪣ ${prefix}husbando
-└───
+⛩️ *ANIME & SEARCH*
+ » ${prefix}weather
+ » ${prefix}waifu
+ » ${prefix}neko
+ » ${prefix}kitsune
+ » ${prefix}husbando
 
-┌─── ◈ *GROUP & ADMIN*
-│ ᪣ ${prefix}tagall
-│ ᪣ ${prefix}tagme
-│ ᪣ ${prefix}couplepp
-│ ᪣ ${prefix}group
-│ ᪣ ${prefix}ginfo
-│ ᪣ ${prefix}kick
-│ ᪣ ${prefix}promote
-│ ᪣ ${prefix}demote
-└───
+👥 *GROUP MODS*
+ » ${prefix}tagall
+ » ${prefix}tagme
+ » ${prefix}couplepp
+ » ${prefix}group
+ » ${prefix}ginfo
+ » ${prefix}kick
+ » ${prefix}promote
+ » ${prefix}demote
 
-✦────────────────────────────────────────✦
-> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝙻 ᴍᴀꜱᴛᴇʀ 」
+◈━━━━━━━━━━━━━━━━━◈
+> 🔥 *POWERED BY RAHUL MASTER*
 `.trim();
 
-        // Safe Image URL Setup
-        const imgUrl = global.menuImage || 'https://i.imgur.com/8N4X9Zm.jpeg';
-
-        try {
-            // Method 1: Try sending Image with direct URL (Fastest on Koyeb)
-            await sock.sendMessage(m.chat, {
-                image: { url: imgUrl },
-                caption: fancyMenu
+            await sock.sendMessage(m.chat, { 
+                text: menuText 
             }, { quoted: m });
 
-        } catch (imgErr) {
-            console.log('Image load failed, sending text fallback menu...');
-            
-            // Method 2: Safe Fallback - Send pure text menu if Image fails
-            try {
-                await sock.sendMessage(m.chat, {
-                    text: fancyMenu
-                }, { quoted: m });
-            } catch (fallbackErr) {
-                console.error('Menu Execution Error:', fallbackErr);
-            }
+        } catch (err) {
+            console.error('Menu Command Execution Error:', err);
+            await sock.sendMessage(m.chat, { 
+                text: '❌ Menu load karnyaat adchan aali.' 
+            }, { quoted: m }).catch(() => {});
         }
     }
 };

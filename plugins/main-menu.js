@@ -2,12 +2,12 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Two-Column Compact Side Menu Style WhatsApp Bot Menu',
+    description: 'Paginated / Sliding Style WhatsApp Bot Menu',
     aliases: ['help', 'cmdlist', 'commands'],
 
-    async execute(sock, m) {
-        await m.react('⚡');
-        
+    async execute(sock, m, args) {
+        await m.react('📖');
+
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
 
@@ -28,79 +28,65 @@ module.exports = {
 
         const botOwner = global.ownerName || 'RAHUL-MASTER';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const founder = 'RAHUL-MASTER';
+        const page = parseInt(args[0]) || 1; // डिफॉल्ट १ नंबरचे पेज उघडेल
 
-        // कमांड डेटा
-        const menuSections = [
+        const pages = [
+            // PAGE 1: SYSTEM & GENERAL
             {
-                title: 'GENERAL',
-                icon: '📌',
-                cmds: ['alive', 'ping', 'uptime', 'owner', 'guide', 'menu2']
+                pageNumber: 1,
+                title: 'SYSTEM & GENERAL',
+                sections: [
+                    { title: 'GENERAL', cmds: ['alive', 'ping', 'uptime', 'owner', 'guide'] },
+                    { title: 'AI COMMANDS', cmds: ['ai', 'ai-search', 'aiv', 'gen'] }
+                ]
             },
+            // PAGE 2: DOWNLOADERS & TOOLS
             {
-                title: 'DOWNLOADERS',
-                icon: '📥',
-                cmds: ['tiktok', 'tt', 'ytmp3', 'ig']
+                pageNumber: 2,
+                title: 'MEDIA & UTILITIES',
+                sections: [
+                    { title: 'DOWNLOADERS', cmds: ['tiktok', 'tt', 'ytmp3', 'ig'] },
+                    { title: 'TOOLS', cmds: ['sticker', 'ocr', 'tts', 'poll', 'shazam'] }
+                ]
             },
+            // PAGE 3: FUN, ANIME & GROUP
             {
-                title: 'TOOLS & UTILITIES',
-                icon: '🛠️',
-                cmds: ['sticker', 'ocr', 'tts', 'poll', 'shazam', 'textpro', 'chid']
-            },
-            {
-                title: 'AI COMMANDS',
-                icon: '🤖',
-                cmds: ['ai', 'ai-search', 'aiv', 'gen']
-            },
-            {
-                title: 'FUN & GAMES',
-                icon: '🎮',
-                cmds: ['blue', 'flag', 'hide', 'guessgender', 'agecalculator', 'style']
-            },
-            {
-                title: 'SEARCH & ANIME',
-                icon: '🔍',
-                cmds: ['weather', 'waifu', 'neko', 'kitsune', 'husbando']
-            },
-            {
-                title: 'GROUP & ADMIN',
-                icon: '👥',
-                cmds: ['tagall', 'tagall1', 'tagme', 'couplepp', 'group', 'ginfo', 'antigst', 'kick', 'promote', 'demote', 'gstatus', 'channelid']
+                pageNumber: 3,
+                title: 'MANAGEMENT & FUN',
+                sections: [
+                    { title: 'FUN & GAMES', cmds: ['blue', 'flag', 'hide', 'style'] },
+                    { title: 'GROUP & ADMIN', cmds: ['tagall', 'group', 'kick', 'promote', 'demote'] }
+                ]
             }
         ];
 
-        // Total Count Calculation
-        const totalCmds = menuSections.reduce((acc, sec) => acc + sec.cmds.length, 0);
+        const totalPages = pages.length;
+        const currentPageData = pages[page - 1] || pages[0];
 
-        // Helper function for 2-Column Formatting
-        const formatTwoColumns = (cmdArray) => {
-            let result = '';
-            for (let i = 0; i < cmdArray.length; i += 2) {
-                const cmd1 = `• ${prefix}${cmdArray[i]}`;
-                const cmd2 = cmdArray[i + 1] ? `• ${prefix}${cmdArray[i + 1]}` : '';
-                result += `┃ ${cmd1.padEnd(16)} ${cmd2}\n`;
-            }
-            return result;
-        };
-
-        // Side Two-Column Formatting
         let menuText = `
-▌ *RAHUL-AI SYSTEM DASHBOARD*
-┃
+╭━━━〔 *RAHUL-AI MENU* 〕━━━┈
 ┃ 👤 *User:* ${user}
 ┃ 👑 *Owner:* ${botOwner}
-┃ 🏆 *Founder:* ${founder}
 ┃ 📅 *Date:* ${date}
 ┃ ⏰ *Time:* ${time}
-┃ ⚙️ *Prefix:* [ ${prefix} ]
-┃ 📊 *Total Commands:* ${totalCmds}
-━\n\n`;
+┃ 📑 *Page:* [ ${currentPageData.pageNumber} / ${totalPages} ]
+╰━━━━━━━━━━━━━━━━━━━━━━┈\n\n`;
 
-        menuSections.forEach(sec => {
-            menuText += `▌ ${sec.icon} *${sec.title}*\n`;
-            menuText += formatTwoColumns(sec.cmds);
-            menuText += `━\n\n`;
+        currentPageData.sections.forEach(sec => {
+            menuText += `┌─〔 ◈ *${sec.title}* 〕\n`;
+            sec.cmds.forEach(cmd => {
+                menuText += `├ ◈ ${prefix}${cmd}\n`;
+            });
+            menuText += `└──────────────┈\n\n`;
         });
+
+        // Left / Right Navigation Indicator
+        menuText += `◀️ *PAGE ${currentPageData.pageNumber} OF ${totalPages}* ▶️\n`;
+        if (currentPageData.pageNumber < totalPages) {
+            menuText += `💡 *Type \`${prefix}menu${currentPageData.pageNumber + 1}\` for Next Page (➡️)*\n\n`;
+        } else {
+            menuText += `💡 *Type \`${prefix}menu 1\` to return to First Page (⬅️)*\n\n`;
+        }
 
         menuText += `> 「 POWERED BY RAHUL MASTER 」`;
 

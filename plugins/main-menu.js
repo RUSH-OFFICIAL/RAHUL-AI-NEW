@@ -1,15 +1,20 @@
 module.exports = {
     name: 'menu',
-    description: 'Safe Minimalist Wave Text Menu',
+    command: 'menu',
     aliases: ['help', 'cmdlist', 'commands', 'menu2'],
+    description: 'Safe Minimalist Wave Text Menu',
 
     async execute(sock, m) {
         try {
-            const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
-            if (!chatJid) return;
+            // Safe JID extraction for all Baileys versions
+            const chatJid = m.chat || (m.key && m.key.remoteJid) || m.from;
+            if (!chatJid) {
+                console.log("Menu Error: chatJid not found for message:", m);
+                return;
+            }
 
             const prefix = global.BOT_PREFIX || '.';
-            const user = m?.pushName || 'User';
+            const user = m.pushName || 'User';
 
             const menuText = `
 🌊 ~~~~~~~~~~~~~~~~~~~~~~~ 🌊
@@ -74,9 +79,10 @@ module.exports = {
 `.trim();
 
             await sock.sendMessage(chatJid, { text: menuText }, { quoted: m });
+            console.log("Menu sent successfully to:", chatJid);
 
         } catch (err) {
-            console.error('Menu Error:', err);
+            console.error('Menu Execution Error:', err);
         }
     }
 };

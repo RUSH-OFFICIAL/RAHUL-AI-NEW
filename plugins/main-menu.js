@@ -1,0 +1,132 @@
+const axios = require('axios');
+
+module.exports = {
+    name: 'menu',
+    description: 'Show available bot commands',
+    aliases: ['help', 'cmdlist', 'commands'],
+
+    async execute(sock, m) {
+        await m.react('✔️');
+        
+        const prefix = global.BOT_PREFIX || '.';
+
+        const now = new Date();
+
+        const date = now.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            timeZone: 'Africa/Accra'
+        });
+
+        const time = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'Africa/Accra'
+        });
+
+        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+        const user = m.pushName || m.sender?.split('@')[0] || 'User';
+        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+
+        const menuText = `
+┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ
+│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
+│ *ᴏᴡɴᴇʀ:* ${botOwner}
+│ *ᴜsᴇʀ:* ${user}
+│ *ᴅᴀᴛᴇ:* ${date}
+│ *ᴛɪᴍᴇ:* ${time} (GMT)
+│ *ᴘʀᴇғɪx:* ${prefix}
+╰──────────────────╯
+
+┌─ム ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
+│
+├─ム *ɢᴇɴᴇʀᴀʟ*
+│ ᪣ ${prefix}ᴀʟɪᴠᴇ
+│ ᪣ ${prefix}ᴘɪɴɢ
+│ ᪣ ${prefix}ᴜᴘᴛɪᴍᴇ
+│ ᪣ ${prefix}ᴏᴡɴᴇʀ
+│ ᪣ ${prefix}ɢᴜɪᴅᴇ
+│ ᪣ ${prefix}ᴍᴇɴᴜ2
+│
+├─ム *ᴅᴏᴡɴʟᴏᴀᴅᴇʀs*
+│ ᪣ ${prefix}ᴛɪᴋᴛᴏᴋ / ${prefix}ᴛᴛ
+│ ᪣ ${prefix}ʏᴛᴍᴘ3
+│ ᪣ ${prefix}ɪɢ
+│
+├─ム *ᴛᴏᴏʟs*
+│ ᪣ ${prefix}sᴛɪᴄᴋᴇʀ
+│ ᪣ ${prefix}ᴏᴄʀ
+│ ᪣ ${prefix}ᴛᴛs
+│ ᪣ ${prefix}ᴘᴏʟʟ
+│ ᪣ ${prefix}sʜᴀᴢᴀᴍ
+│ ᪣ ${prefix}ᴛᴇxᴛᴘʀᴏ
+│ ᪣ ${prefix}ᴄʜɪᴅ
+│
+├─ム *ᴀɪ*
+│ ᪣ ${prefix}ᴀɪ
+│ ᪣ ${prefix}ᴀɪ-sᴇᴀʀᴄʜ
+│ ᪣ ${prefix}ᴀɪᴠ
+│ ᪣ ${prefix}ɢᴇɴ
+│
+├─ム *ғᴜɴ*
+│ ᪣ ${prefix}ʙʟᴜᴇ
+│ ᪣ ${prefix}ғʟᴀɢ
+│
+├─ム *ɴᴇᴡ*
+│ ᪣ ${prefix}ʜɪᴅᴇ
+│ ᪣ ${prefix}ɢᴜᴇssɢᴇɴᴅᴇʀ
+│ ᪣ ${prefix}ᴀɢᴇᴄᴀʟᴄᴜʟᴀᴛᴏʀ
+│ ᪣ ${prefix}sᴛʏʟᴇ
+│
+├─ム *ꜱᴇᴀʀᴄʜ*
+│ ᪣ ${prefix}ᴡᴇᴀᴛʜᴇʀ
+│
+├─ム *ᴀɴɪᴍᴇ*
+│ ᪣ ${prefix}ᴡᴀɪғᴜ
+│ ᪣ ${prefix}ɴᴇᴋᴏ
+│ ᪣ ${prefix}ᴋɪᴛꜱᴜɴᴇ
+│ ᪣ ${prefix}ʜᴜꜱʙᴀɴᴅᴏ
+│
+├─ム *ɢʀᴏᴜᴘ*
+│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ
+│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ1
+│ ᪣ ${prefix}ᴛᴀɢᴍᴇ
+│ ᪣ ${prefix}ᴄᴏᴜᴘʟᴇᴘᴘ
+│ ᪣ ${prefix}ɢʀᴏᴜᴘ
+│ ᪣ ${prefix}ɢɪɴғᴏ
+│ ᪣ ${prefix}ᴀɴᴛɪɢsᴛ
+│
+├─ム *sᴛᴀᴛᴜs*
+│ ᪣ ${prefix}ɢsᴛᴀᴛᴜs
+│
+├─ム *ᴄʜᴀɴɴᴇʟ*
+│ ᪣ ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
+│
+├─ム *ᴀᴅᴍɪɴ*
+│ ᪣ ${prefix}ᴋɪᴄᴋ
+│ ᪣ ${prefix}ᴘʀᴏᴍᴏᴛᴇ
+│ ᪣ ${prefix}ᴅᴇᴍᴏᴛᴇ
+│
+╰─────────◆────────╯
+
+> 「 ᴩᴏᴡᴇʀᴇᴀᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
+`.trim();
+
+        try {
+            const imageBuffer = (await axios.get(global.menuImage, {
+                responseType: 'arraybuffer'
+            })).data;
+
+            await m.reply(imageBuffer, {
+                caption: menuText
+            });
+
+        } catch (err) {
+            console.error('Menu error:', err);
+            await m.reply('❌ Failed to load menu. Please try again later.');
+        }
+    }
+};

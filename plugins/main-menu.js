@@ -1,116 +1,260 @@
-const fs = require('fs');
-const path = require('path');
 const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Auto-detects commands and displays safe categorized menu',
+    description: 'Exact Rahul-AI Box Bordered Menu Layout',
     aliases: ['help', 'cmdlist', 'commands'],
 
-    async execute(sock, m, args) {
-        await m.react('✨');
+    async execute(sock, m) {
+        await m.react('✔️');
 
         const prefix = global.BOT_PREFIX || '.';
-        const now = new Date();
 
-        const date = now.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-            timeZone: 'Asia/Kolkata'
-        });
+        const menuText = `
+┌─ム DOWNLOAD COMMAND LIST
+│
+│ ⚪ ${prefix}AN1
+│ ⚪ ${prefix}DL-NPM
+│ ⚪ ${prefix}PLAY
+│ ⚪ ${prefix}VIDEO
+│ ⚪ ${prefix}DRAMA
+│ ⚪ ${prefix}APK
+│ ⚪ ${prefix}FB
+│ ⚪ ${prefix}GITCLONE
+│ ⚪ ${prefix}GDRIVE
+│ ⚪ ${prefix}MEDIAFIRE
+│ ⚪ ${prefix}TIKTOK
+│ ⚪ ${prefix}YTMP3
+│ ⚪ ${prefix}INSTA
+│ ⚪ ${prefix}INSTAMP3
+│ ⚪ ${prefix}TWITTER
+│ ⚪ ${prefix}THREADS
+│ ⚪ ${prefix}PINTEREST
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 17
+╰───────────────────╯
 
-        const time = now.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true,
-            timeZone: 'Asia/Kolkata'
-        });
+┌─ム OWNER COMMAND LIST
+│
+│ ⚪ ${prefix}AUTOBIO
+│ ⚪ ${prefix}BGMIREFRESH
+│ ⚪ ${prefix}JID
+│ ⚪ ${prefix}KICKADMINS
+│ ⚪ ${prefix}JOIN
+│ ⚪ ${prefix}LEFT
+│ ⚪ ${prefix}NEWGC
+│ ⚪ ${prefix}SMD
+│ ⚪ ${prefix}CHREACT
+│ ⚪ ${prefix}NEWSLETTER
+│ ⚪ ${prefix}STATUS
+│ ⚪ ${prefix}VV
+│ ⚪ ${prefix}BOOM
+│ ⚪ ${prefix}BAN
+│ ⚪ ${prefix}UNBAN
+│ ⚪ ${prefix}BLOCK
+│ ⚪ ${prefix}UNBLOCK
+│ ⚪ ${prefix}BLOCKLIST
+│ ⚪ ${prefix}SUDO
+│ ⚪ ${prefix}DELSUDO
+│ ⚪ ${prefix}LISTSUDO
+│ ⚪ ${prefix}LISTBAN
+│ ⚪ ${prefix}SIM
+│ ⚪ ${prefix}CNIC
+│ ⚪ ${prefix}GETPP
+│ ⚪ ${prefix}GETGPP
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 26
+╰───────────────────╯
 
-        const botOwner = global.ownerName || 'RAHUL-MASTER';
-        const user = m.pushName || m.sender?.split('@')[0] || 'User';
+┌─ム GROUP COMMAND LIST
+│
+│ ⚪ ${prefix}CHSTATUS
+│ ⚪ ${prefix}DEL
+│ ⚪ ${prefix}REQUESTLIST
+│ ⚪ ${prefix}ACCEPTALL
+│ ⚪ ${prefix}REJECTALL
+│ ⚪ ${prefix}ACCEPT
+│ ⚪ ${prefix}REJECT
+│ ⚪ ${prefix}ADD
+│ ⚪ ${prefix}REMOVE
+│ ⚪ ${prefix}KICKME
+│ ⚪ ${prefix}KICKALL
+│ ⚪ ${prefix}OUT
+│ ⚪ ${prefix}WARN
+│ ⚪ ${prefix}WARNINGS
+│ ⚪ ${prefix}RESETWARN
+│ ⚪ ${prefix}PROMOTE
+│ ⚪ ${prefix}DEMOTE
+│ ⚪ ${prefix}MUTE
+│ ⚪ ${prefix}UNMUTE
+│ ⚪ ${prefix}LOCK
+│ ⚪ ${prefix}UNLOCK
+│ ⚪ ${prefix}GNAME
+│ ⚪ ${prefix}GDESC
+│ ⚪ ${prefix}SETPPGROUP
+│ ⚪ ${prefix}QLINK
+│ ⚪ ${prefix}TAGALL
+│ ⚪ ${prefix}HIDETAG
+│ ⚪ ${prefix}TAG
+│ ⚪ ${prefix}TOTAG
+│ ⚪ ${prefix}RULES
+│ ⚪ ${prefix}WHO
+│ ⚪ ${prefix}OFF
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 32
+╰───────────────────╯
 
-        // फोल्डरमधून कमांड्स ऑटो-लोड करा (तुमच्या प्रोजेक्टनुसार commandsPath बदला)
-        const commandsPath = path.join(__dirname, '../commands'); 
-        let categorizedCommands = {};
+┌─ム SEARCH COMMAND LIST
+│
+│ ⚪ ${prefix}PINS2
+│ ⚪ ${prefix}FACEBOOK3
+│ ⚪ ${prefix}DEFINE
+│ ⚪ ${prefix}GITSTALK
+│ ⚪ ${prefix}MOVIESEARCH
+│ ⚪ ${prefix}SREPO
+│ ⚪ ${prefix}SPOTIFYSEARCH
+│ ⚪ ${prefix}TIKS
+│ ⚪ ${prefix}YTS
+│ ⚪ ${prefix}GOOGLE
+│ ⚪ ${prefix}COUNTRY
+│ ⚪ ${prefix}CRYPTO
+│ ⚪ ${prefix}URBAN
+│ ⚪ ${prefix}GITHUB
+│ ⚪ ${prefix}LYRICS
+│ ⚪ ${prefix}WEATHER
+│ ⚪ ${prefix}WIKI
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 17
+╰───────────────────╯
 
-        try {
-            if (fs.existsSync(commandsPath)) {
-                const files = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+┌─ム CONVERT COMMAND LIST
+│
+│ ⚪ ${prefix}TTS
+│ ⚪ ${prefix}TTS2
+│ ⚪ ${prefix}CURRENCY
+│ ⚪ ${prefix}STICKER2IMG
+│ ⚪ ${prefix}TOMP3
+│ ⚪ ${prefix}TOPTT
+│ ⚪ ${prefix}GIF
+│ ⚪ ${prefix}ATTP
+│ ⚪ ${prefix}TTP
+│ ⚪ ${prefix}UPLOADFILE
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 10
+╰───────────────────╯
 
-                files.forEach(file => {
-                    const cmd = require(path.join(commandsPath, file));
-                    const category = (cmd.category || 'general').toLowerCase();
+┌─ム MAIN COMMAND LIST
+│
+│ ⚪ ${prefix}ALIVE
+│ ⚪ ${prefix}ALIVE2
+│ ⚪ ${prefix}TOOLSMENU
+│ ⚪ ${prefix}MAINMENU
+│ ⚪ ${prefix}BUGMENU
+│ ⚪ ${prefix}DOWNLOADMENU
+│ ⚪ ${prefix}RANDOMMENU
+│ ⚪ ${prefix}FUNMENU
+│ ⚪ ${prefix}OWNERMENU
+│ ⚪ ${prefix}GROUPMENU
+│ ⚪ ${prefix}SEARCHMENU
+│ ⚪ ${prefix}CONVERTERMENU
+│ ⚪ ${prefix}ISLAMICMENU
+│ ⚪ ${prefix}AIMENU
+│ ⚪ ${prefix}SETTINGSMENU
+│ ⚪ ${prefix}GPASS
+│ ⚪ ${prefix}MENU
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 17
+╰───────────────────╯
 
-                    if (!categorizedCommands[category]) {
-                        categorizedCommands[category] = [];
-                    }
-                    if (cmd.name) {
-                        categorizedCommands[category].push(cmd.name);
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Error reading commands directory:', error);
-        }
+┌─ム AI COMMAND LIST
+│
+│ ⚪ ${prefix}COPILOT
+│ ⚪ ${prefix}TALKAI
+│ ⚪ ${prefix}CHATGPT
+│ ⚪ ${prefix}MISTRAL
+│ ⚪ ${prefix}LLAMA
+│ ⚪ ${prefix}MISTRAL2
+│ ⚪ ${prefix}FLUX
+│ ⚪ ${prefix}GEMINI
+│ ⚪ ${prefix}DEEPSEEK
+│ ⚪ ${prefix}BLACKBOX
+│ ⚪ ${prefix}DALLE
+│ ⚪ ${prefix}ANIMEEAI
+│ ⚪ ${prefix}GRAMMAR
+│ ⚪ ${prefix}SUMMARIZE
+│ ⚪ ${prefix}REPHRASE
+│ ⚪ ${prefix}AITRANSLATE
+│ ⚪ ${prefix}ROAST
+│ ⚪ ${prefix}MATHAI
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 18
+╰───────────────────╯
 
-        // जर फोल्डर रीडींग फेल झाले तर वापरण्यासाठी डिफॉल्ट फॉलबॅक
-        if (Object.keys(categorizedCommands).length === 0) {
-            categorizedCommands = {
-                general: ['alive', 'ping', 'uptime', 'owner', 'guide', 'menu'],
-                downloaders: ['tiktok', 'ytmp3', 'ig'],
-                tools: ['sticker', 'ocr', 'tts', 'poll', 'shazam'],
-                ai: ['ai', 'ai-search', 'aiv', 'gen'],
-                group: ['tagall', 'group', 'ginfo', 'kick', 'promote']
-            };
-        }
+┌─ム FUN COMMAND LIST
+│
+│ ⚪ ${prefix}ALERT
+│ ⚪ ${prefix}CAUTION
+│ ⚪ ${prefix}DRAKE
+│ ⚪ ${prefix}POOH
+│ ⚪ ${prefix}HAPPYLOOP
+│ ⚪ ${prefix}HEART
+│ ⚪ ${prefix}ANGRYLOOP
+│ ⚪ ${prefix}SAD
+│ ⚪ ${prefix}SHY
+│ ⚪ ${prefix}MOON
+│ ⚪ ${prefix}CONFUSEDLOOP
+│ ⚪ ${prefix}HOT
+│ ⚪ ${prefix}COMPATIBILITY
+│ ⚪ ${prefix}AURA
+│ ⚪ ${prefix}ROAST
+│ ⚪ ${prefix}COMPLIMENT
+│ ⚪ ${prefix}LOVETEST
+│ ⚪ ${prefix}SHIP
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 18
+╰───────────────────╯
 
-        const selectedCategory = args[0] ? args[0].toLowerCase() : null;
-        let menuText = '';
+┌─ム PRIVACY COMMAND LIST
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 0
+╰───────────────────╯
 
-        if (!selectedCategory || !categorizedCommands[selectedCategory]) {
-            // मेन हॉरिझॉन्टल हब मेनू
-            const categoriesList = Object.keys(categorizedCommands)
-                .map(cat => `🔹 *${cat.toUpperCase()}* ➔ \`${prefix}menu ${cat}\``)
-                .join('\n');
+┌─ム SETTINGS COMMAND LIST
+│
+│ ⚪ ${prefix}AUTOBIO
+│ ⚪ ${prefix}AUTORECORD
+│ ⚪ ${prefix}ANTISTATUS
+│ ⚪ ${prefix}WELCOME
+│ ⚪ ${prefix}SETWELCOME
+│ ⚪ ${prefix}GOODBYE
+│ ⚪ ${prefix}SETGOODBYE
+│ ⚪ ${prefix}ANTIPROMOTE
+│ ⚪ ${prefix}ANTIDEMOTE
+│ ⚪ ${prefix}ADMINEVENTS
+│ ⚪ ${prefix}ANTIFOREIGN
+│ ⚪ ${prefix}ANTIFOREIGNNUMBER
+│ ⚪ ${prefix}ALWAYSONLINE
+│ ⚪ ${prefix}ANTIBAD
+│ ⚪ ${prefix}ANTIBADACTION
+│ ⚪ ${prefix}AUTOREPLY
+│ ⚪ ${prefix}MENTIONREPLY
+│ ⚪ ${prefix}AUTOSTICKER
+│
+├───────────────────
+│ TOTAL COMMANDS LIST : 18
+╰───────────────────╯
 
-            menuText = `
-🤖 *RAHUL-AI MULTIDEVICE*
-
-👤 *User:* ${user}
-👑 *Owner:* ${botOwner}
-📅 *Date:* ${date}
-⏰ *Time:* ${time}
-⚙️ *Prefix:* [ ${prefix} ]
-
-━━━━━━ *COMMAND CATEGORIES* ━━━━━━
-
-${categoriesList}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-💡 *Tip:* specific category पाहण्यासाठी उदा. \`${prefix}menu ai\` टाईप करा.
-
-> Powered by Rahul Master
+> 「 POWERED BY RAHUL-MASTER 」
 `.trim();
-        } else {
-            // निवडलेल्या कॅटेगरीचा मेनू
-            const catCmds = categorizedCommands[selectedCategory];
-
-            menuText = `
-🤖 *RAHUL-AI CATEGORY: ${selectedCategory.toUpperCase()}*
-
-⚙️ *Prefix:* [ ${prefix} ]
-
-━━━━━━ *AVAILABLE COMMANDS* ━━━━━━
-
-${catCmds.map(cmd => `• ${prefix}${cmd}`).join('\n')}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-👈 मुख्य मेनूसाठी \`${prefix}menu\` टाईप करा.
-
-> Powered by Rahul Master
-`.trim();
-        }
 
         try {
             if (global.menuImage) {
@@ -123,7 +267,7 @@ ${catCmds.map(cmd => `• ${prefix}${cmd}`).join('\n')}
                 await m.reply(menuText);
             }
         } catch (err) {
-            console.error('Menu error:', err);
+            console.error('Menu Error:', err);
             await m.reply(menuText);
         }
     }

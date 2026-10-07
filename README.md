@@ -82,8 +82,6 @@ NOW Deploy👇
 <a href="https://github.com/WhiskeySockets/Baileys"><img src="https://github.com/WhiskeySockets.png" width="150" height="150" alt="adiwajshing"/></a>
 <div>
 
-## `OWNER` 
-<a href="https://github.com/R-A-H-U-L-M-A-S-T-E-R"><img src="https://github.com/ahmmikun.png" width="250" height="250" alt="RAHUL-AI"/></a>
   
 **RAHUL-AI** - By `R-A-H-U-L-M-A-S-T-E-R`
 <br>

@@ -1,12 +1,13 @@
 const axios = require('axios');
+const { generateWAMessageFromContent, proto } = require('@whiskeysockets/baileys');
 
 module.exports = {
     name: 'menu',
-    description: 'Show available bot commands',
+    description: 'Show available bot commands with buttons',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('💀');
+        await m.react('🔥');
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -49,56 +50,19 @@ module.exports = {
 ┌───❖ *【 01. GENERAL 】* ❖───┐
 │ ✦ ${prefix}alive    │ ✦ ${prefix}ping
 │ ✦ ${prefix}uptime   │ ✦ ${prefix}owner
-│ ✦ ${prefix}guide    │ ✦ ${prefix}menu2
 └──────────────────────────┘
 
 ┌───❖ *【 02. DOWNLOADERS 】* ❖──┐
 │ ⚡ ${prefix}tiktok / ${prefix}tt
-│ ⚡ ${prefix}ytmp3
-│ ⚡ ${prefix}ig
+│ ⚡ ${prefix}ytmp3   │ ⚡ ${prefix}ig
 └──────────────────────────┘
 
-┌───❖ *【 03. TOOLS 】* ❖───┐
-│ ◈ ${prefix}sticker  │ ◈ ${prefix}ocr
-│ ◈ ${prefix}tts      │ ◈ ${prefix}poll
-│ ◈ ${prefix}shazam   │ ◈ ${prefix}textpro
-│ ◈ ${prefix}chid
-└──────────────────────────┘
-
-┌───❖ *【 04. ARTIFICIAL INTEL 】* ❖┐
+┌───❖ *【 03. AI & TOOLS 】* ❖───┐
 │ 🧠 ${prefix}ai       │ 🧠 ${prefix}ai-search
-│ 🧠 ${prefix}aiv      │ 🧠 ${prefix}gen
+│ ◈ ${prefix}sticker  │ ◈ ${prefix}tts
 └──────────────────────────┘
 
-┌───❖ *【 05. FUN & NEW 】* ❖───┐
-│ 🎯 ${prefix}blue          │ 🎯 ${prefix}flag
-│ 🎯 ${prefix}hide          │ 🎯 ${prefix}guessgender
-│ 🎯 ${prefix}agecalculator │ 🎯 ${prefix}style
-└──────────────────────────┘
-
-┌───❖ *【 06. SEARCH & ANIME 】* ❖┐
-│ 🔍 ${prefix}weather
-│ 🎌 ${prefix}waifu | ${prefix}neko
-│ 🎌 ${prefix}kitsune | ${prefix}husbando
-└──────────────────────────┘
-
-┌───❖ *【 07. GROUP & ADMIN 】* ❖┐
-│ 🛡️ ${prefix}tagall | ${prefix}tagme
-│ 🛡️ ${prefix}couplepp
-│ 🛡️ ${prefix}group | ${prefix}ginfo
-│ 🛡️ ${prefix}antigst
-│ ⚔️ ${prefix}kick | ${prefix}promote
-│ ⚔️ ${prefix}demote
-└──────────────────────────┘
-
-┌───❖ *【 08. STATUS & CHANNEL 】* ❖┐
-│ 📢 ${prefix}gstatus
-│ 📢 ${prefix}channelid
-└──────────────────────────┘
-
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
- 🚀 *CODER: RAHUL MASTER* 🚀
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+> Niche diye gaye buttons par click karke aap direct commands run kar sakte hain!
 `.trim();
 
         try {
@@ -107,14 +71,57 @@ module.exports = {
                 responseType: 'arraybuffer'
             })).data;
 
-            await sock.sendMessage(m.chat, {
-                image: imageBuffer,
-                caption: menuText
+            // Interactive Buttons Structure for Baileys
+            const interactiveMsg = generateWAMessageFromContent(m.chat, {
+                viewOnceMessage: {
+                    message: {
+                        interactiveMessage: proto.Message.InteractiveMessage.create({
+                            body: proto.Message.InteractiveMessage.Body.create({
+                                text: menuText
+                            }),
+                            footer: proto.Message.InteractiveMessage.Footer.create({
+                                text: "⚡ Powered by Rahul Master"
+                            }),
+                            header: proto.Message.InteractiveMessage.Header.create({
+                                hasMediaAttachment: true,
+                                imageMessage: await sock.prepareMessageMedia ? await sock.prepareMessageMedia(imageBuffer, { upload: sock.waUploadToServer }) : undefined
+                            }),
+                            nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+                                buttons: [
+                                    {
+                                        name: "quick_reply",
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: "⚡ Ping",
+                                            id: `${prefix}ping`
+                                        })
+                                    },
+                                    {
+                                        name: "quick_reply",
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: "🤖 AI Chat",
+                                            id: `${prefix}ai`
+                                        })
+                                    },
+                                    {
+                                        name: "quick_reply",
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: "👑 Owner",
+                                            id: `${prefix}owner`
+                                        })
+                                    }
+                                ]
+                            })
+                        })
+                    }
+                }
             }, { quoted: m });
 
+            await sock.relayMessage(m.chat, interactiveMsg.message, { messageId: interactiveMsg.key.id });
+
         } catch (err) {
-            console.error('Menu error:', err);
-            await m.reply(menuText);
+            console.error('Button Menu Error:', err);
+            // Agar buttons support na kare toh normal image + text bhej dega
+            await sock.sendMessage(m.chat, { image: { url: global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg' }, caption: menuText }, { quoted: m });
         }
     }
 };

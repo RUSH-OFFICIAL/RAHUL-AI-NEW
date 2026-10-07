@@ -9,7 +9,6 @@ module.exports = {
         await m.react('✔️');
         
         const prefix = global.BOT_PREFIX || '.';
-
         const now = new Date();
 
         const date = now.toLocaleDateString('en-GB', {
@@ -102,7 +101,7 @@ module.exports = {
 ├─ム *sᴛᴀᴛᴜs*
 │ ᪣ ${prefix}ɢsᴛᴀᴛᴜs
 │
-├─ム *ᴄʜᴀɴɴᴇʟ*
+├─ム *ᴄʜᴀɴɴᴇ🇱*
 │ ᪣ ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
 │
 ├─ム *ᴀᴅᴍɪɴ*
@@ -116,17 +115,19 @@ module.exports = {
 `.trim();
 
         try {
-            const imageBuffer = (await axios.get(global.menuImage, {
+            const imageUrl = global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg';
+            const imageBuffer = (await axios.get(imageUrl, {
                 responseType: 'arraybuffer'
             })).data;
 
-            await m.reply(imageBuffer, {
+            await sock.sendMessage(m.chat, {
+                image: imageBuffer,
                 caption: menuText
-            });
+            }, { quoted: m });
 
-        } catch (err) {
+        }cass(err) { // Yeh catch block error handle karega
             console.error('Menu error:', err);
-            await m.reply('❌ Failed to load menu. Please try again later.');
+            await m.reply(menuText); // Agar image fetch fail ho toh sirf text bhej dega
         }
     }
 };

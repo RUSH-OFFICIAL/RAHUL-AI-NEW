@@ -1,33 +1,34 @@
 const axios = require('axios');
+const os = require('os');
 
 module.exports = {
     name: 'alive',
-    description: 'Check if the bot is online',
+    description: 'Check bot status in compact neon style',
     aliases: ['botstatus', 'status'],
 
     async execute(sock, m) {
         await m.react('🟢');
 
         const prefix = global.BOT_PREFIX || '.';
+        const botOwner = global.ownerName || 'Rahul Hiran';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
 
-        // Uptime Calculation
-        const uptimeSeconds = process.uptime();
-        const days = Math.floor(uptimeSeconds / (3600 * 24));
-        const hours = Math.floor((uptimeSeconds % (3600 * 24)) / 3600);
-        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
-        const seconds = Math.floor(uptimeSeconds % 60);
+        // Uptime
+        const uptime = process.uptime();
+        const h = Math.floor(uptime / 3600);
+        const mMin = Math.floor((uptime % 3600) / 60);
+        const s = Math.floor(uptime % 60);
 
         const aliveText = `
-👋 Hi *${user}*!
-
-🟢 *RAHUL-AI IS ALIVE*
-
-• *Status:* Online & Active
-• *Prefix:* [ *${prefix}* ]
-• *Uptime:* ${days}d ${hours}h ${minutes}m ${seconds}s
-
-> Powered by RAHUL-AI
+┌───『 🟢 *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚂𝚃𝙰𝚃𝚄𝚂* 』
+│
+├◈ *User:* \`${user}\`
+├◈ *Owner:* \`${botOwner}\`
+├◈ *Prefix:* [ \`${prefix}\` ]
+├◈ *Uptime:* \`${h}h ${mMin}m${s}s\`
+├◈ *RAM:* \`${(os.freemem() / 1024 / 1024 / 1024).toFixed(1)}GB Free\`
+│
+└──『 ⚡ *SYSTEM OPERATIONAL* 』
 `.trim();
 
         try {
@@ -42,7 +43,7 @@ module.exports = {
             }, { quoted: m });
 
         } catch (err) {
-            console.error('Alive error:', err);
+            console.error('Alive style error:', err);
             await sock.sendMessage(m.chat, { text: aliveText }, { quoted: m });
         }
     }

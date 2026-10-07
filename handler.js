@@ -1,7 +1,7 @@
 /**
  * Serialize Message
  * Created By rahul-master
- * Follow https://github.com/rahulhiran44
+ * Follow 'https://github.com/rahulhiran44'
 
 const { downloadMediaMessage } = require('@whiskeysockets/baileys')
 

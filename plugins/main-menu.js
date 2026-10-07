@@ -29,6 +29,9 @@ module.exports = {
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
+        // 🌟 YAHAN APNI IMAGE URL DAAL LO (Apni link yahan paste karein)
+        const myMenuImageUrl = 'YAHAN_APNI_IMAGE_KI_LINK_DAALO'; 
+
         const menuText = `
 ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
  █▀█ █▀█ █ █ █ █ ▄▀█ █▀█
@@ -128,7 +131,7 @@ module.exports = {
 `.trim();
 
         try {
-            const imageUrl = global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg';
+            const imageUrl = myMenuImageUrl !== 'YAHAN_APNI_IMAGE_KI_LINK_DAALO' ? myMenuImageUrl : (global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg');
             const imageBuffer = (await axios.get(imageUrl, {
                 responseType: 'arraybuffer'
             })).data;

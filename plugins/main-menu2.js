@@ -5,9 +5,8 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            if (m && m.key) {
-                await sock.sendMessage(m.chat, { react: { text: '🌀', key: m.key } }).catch(() => {});
-            }
+            const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
+            if (!chatJid) return;
 
             const prefix = global.BOT_PREFIX || '.';
             const now = new Date();
@@ -27,7 +26,7 @@ module.exports = {
             });
 
             const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-            const user = m.pushName || (m.sender ? m.sender.split('@')[0] : 'User');
+            const user = m?.pushName || 'User';
             const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
             const menu2Text = `
@@ -96,17 +95,10 @@ module.exports = {
  > ⚡ *POWERED BY RAHUL MASTER*
 `.trim();
 
-            const sendOptions = (m && m.key && m.key.remoteJid) ? { quoted: m } : {};
-
-            await sock.sendMessage(m.chat, { 
-                text: menu2Text 
-            }, sendOptions);
+            await sock.sendMessage(chatJid, { text: menu2Text });
 
         } catch (err) {
             console.error('Menu2 Execution Error:', err);
-            await sock.sendMessage(m.chat, { 
-                text: '⚡ Menu2 load zale ahe, krupaya parat type kara.' 
-            }).catch(() => {});
         }
     }
 };

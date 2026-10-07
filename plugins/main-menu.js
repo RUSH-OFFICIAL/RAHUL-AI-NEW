@@ -7,7 +7,15 @@ module.exports = {
 
     async execute(sock, m) {
         try {
+            // React to show command is caught
             await m.react('⚡');
+
+            // Safe JID fallback for all structures
+            const targetJid = m.from || m.chat || (m.key && m.key.remoteJid);
+            if (!targetJid) {
+                console.log("❌ Menu Error: Target JID is missing in message object:", m);
+                return;
+            }
 
             const prefix = global.BOT_PREFIX || '.';
             const user = m.pushName || 'User';
@@ -74,10 +82,12 @@ module.exports = {
 > _POWERED BY RAHUL MASTER_
 `.trim();
 
-            await sock.sendMessage(m.from, { text: menuText }, { quoted: m });
+            console.log("📤 Attempting to send menu to JID:", targetJid);
+            await sock.sendMessage(targetJid, { text: menuText }, { quoted: m });
+            console.log("✅ Menu sent successfully!");
 
         } catch (err) {
-            console.error('❌ Menu plugin error:', err);
+            console.error('❌ Menu plugin execution error:', err);
         }
     },
 };

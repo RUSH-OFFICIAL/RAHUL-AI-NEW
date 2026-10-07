@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports = {
-    name: 'menu',
+    name: 'menu2',
     description: 'Show interactive drop-down list menu',
     aliases: ['help', 'cmdlist', 'commands'],
 

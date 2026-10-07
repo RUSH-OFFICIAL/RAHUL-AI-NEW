@@ -1,53 +1,49 @@
-const pix = require('pixcore');
+const axios = require('axios');
 
 module.exports = {
     name: 'alive',
-    description: 'Check if the bot is alive',
-    aliases: [],
-    tags: ['main'],
-    command: /^(alive)$/i,
+    description: 'Check if the bot is online',
+    aliases: ['botstatus', 'status'],
 
     async execute(sock, m) {
+        await m.react('🟢');
+
+        const prefix = global.BOT_PREFIX || '.';
+        const user = m.pushName || m.sender?.split('@')[0] || 'User';
+
+        // Uptime Calculation
+        const uptimeSeconds = process.uptime();
+        const days = Math.floor(uptimeSeconds / (3600 * 24));
+        const hours = Math.floor((uptimeSeconds % (3600 * 24)) / 3600);
+        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+        const seconds = Math.floor(uptimeSeconds % 60);
+
+        const aliveText = `
+👋 Hi *${user}*!
+
+🟢 *RAHUL-AI IS ALIVE*
+
+• *Status:* Online & Active
+• *Prefix:* [ *${prefix}* ]
+• *Uptime:* ${days}d ${hours}h ${minutes}m ${seconds}s
+
+> Powered by RAHUL-AI
+`.trim();
+
         try {
-            await m.react('⚡');
-            const width = 300;
-            const height = 300;
+            const imageUrl = global.menuImage || 'https://i.imgur.com/3Z82BCm.jpg';
+            const imageBuffer = (await axios.get(imageUrl, {
+                responseType: 'arraybuffer'
+            })).data;
 
-            const imageResponse = await fetch('https://i.ibb.co/wnWJtrP/8a55300e87bc.jpg');
-            const imageBuffer = await imageResponse.arrayBuffer();
-
-            const img = await pix.read(Buffer.from(imageBuffer));
-            const resized = await img.resize(width, height, { fit: 'cover' });
-            const thumb = await resized.toBuffer({ format: 'jpeg', quality: 40 });
-
-            const audioUrl = 'https://eliteprotech-url.zone.id/1787244048021ghdr1r.mp3';
-            const audioResponse = await fetch(audioUrl);
-            const audioBuffer = await audioResponse.arrayBuffer();
-
-            const fakeQuoted = {
-                key: {
-                    remoteJid: m.from,
-                    fromMe: false,
-                    participant: m.sender,
-                    id: 'fakeid123'
-                },
-                message: {
-                    imageMessage: {
-                        mimetype: 'image/jpeg',
-                        jpegThumbnail: thumb,
-                        caption: 'i am alive'
-                    }
-                }
-            };
-
-            await sock.sendMessage(m.from, {
-                audio: Buffer.from(audioBuffer),
-                mimetype: 'audio/mp4',
-                ptt: false
-            }, { quoted: fakeQuoted });
+            await sock.sendMessage(m.chat, {
+                image: imageBuffer,
+                caption: aliveText
+            }, { quoted: m });
 
         } catch (err) {
-            console.error('❌ Alive plugin error:', err);
+            console.error('Alive error:', err);
+            await sock.sendMessage(m.chat, { text: aliveText }, { quoted: m });
         }
-    },
+    }
 };

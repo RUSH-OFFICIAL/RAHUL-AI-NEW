@@ -6,7 +6,7 @@ module.exports = {
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('👑');
+        await m.react('👑').catch(() => {});
 
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -30,7 +30,7 @@ module.exports = {
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
-        // High-Tech Neon Frame Design
+        // Fancy Neon Frame Design
         const fancyMenu = `
 ╔═══════════════════════════╗
    ⚡ 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝙼𝚄𝙻𝚃𝙸-𝙳𝙴𝚅𝙸𝙲𝙴 ⚡
@@ -108,33 +108,30 @@ module.exports = {
 └───
 
 ✦────────────────────────────────────────✦
-> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
+> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝙻 ᴍᴀꜱᴛᴇʀ 」
 `.trim();
 
-        // Direct image URL fallback support
-        const defaultImageUrl = 'https://i.imgur.com/8N4X9Zm.jpeg';
-        const imageSource = global.menuImage || defaultImageUrl;
+        // Safe Image URL Setup
+        const imgUrl = global.menuImage || 'https://i.imgur.com/8N4X9Zm.jpeg';
 
         try {
-            let imageMessagePayload;
-
-            // Check if menuImage is URL or Direct Buffer
-            if (typeof imageSource === 'string' && imageSource.startsWith('http')) {
-                const response = await axios.get(imageSource, { responseType: 'arraybuffer' });
-                imageMessagePayload = Buffer.from(response.data);
-            } else {
-                imageMessagePayload = imageSource;
-            }
-
+            // Method 1: Try sending Image with direct URL (Fastest on Koyeb)
             await sock.sendMessage(m.chat, {
-                image: imageMessagePayload,
+                image: { url: imgUrl },
                 caption: fancyMenu
             }, { quoted: m });
 
-        } catch (err) {
-            console.error('Fancy Menu Error:', err);
-            // Fallback to text message if image fails to load
-            await sock.sendMessage(m.chat, { text: fancyMenu }, { quoted: m });
+        } catch (imgErr) {
+            console.log('Image load failed, sending text fallback menu...');
+            
+            // Method 2: Safe Fallback - Send pure text menu if Image fails
+            try {
+                await sock.sendMessage(m.chat, {
+                    text: fancyMenu
+                }, { quoted: m });
+            } catch (fallbackErr) {
+                console.error('Menu Execution Error:', fallbackErr);
+            }
         }
     }
 };

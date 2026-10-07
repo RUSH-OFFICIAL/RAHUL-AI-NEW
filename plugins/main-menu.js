@@ -15,7 +15,7 @@ module.exports = {
             const prefix = global.BOT_PREFIX || '.';
             const user = m.pushName || 'User';
 
-            // Interactive List / Slide Menu Message Payload
+            // Fixed and structured sections for Baileys Interactive List
             const sections = [
                 {
                     title: "⚡ SYSTEM CORE & DOWNLOADS",
@@ -45,6 +45,7 @@ module.exports = {
                 sections
             };
 
+            // Safely dispatching interactive list payload to prevent undefined property crashes
             await sock.sendMessage(targetJid, listMessage, { quoted: m });
 
         } catch (err) {

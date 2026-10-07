@@ -6,7 +6,7 @@ module.exports = {
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('🔥');
+        await m.react('💖');
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -30,81 +30,67 @@ module.exports = {
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
         const menuText = `
-╭━━━❮ *🌐 ${botOwner.toUpperCase()} 🌐* ❯━━━╮
-┃ 👤 *User:* ${user}
-┃ 👑 *Founder:* ${Founder}
-┃ ⚡ *Prefix:* [ ${prefix} ]
-┃ 📅 *Date:* ${date}
-┃ ⏰ *Time:* ${time}
+╔═════≼ 🌟 *${botOwner.toUpperCase()}* 🌟≽═════╗
+║ 👤 *User Info:* \`${user}\`
+║ 👑 *Founder:* \`${Founder}\`
+║ ⚡ *Prefix:* [ \`${prefix}\` ]
+║ 📅 *Date:* ${date}
+║ ⏰ *Time:* ${time}
+╚═════════════════════════╝
+
+╭━━━✦ *✨ ɢᴇɴᴇʀᴀʟ ᴄᴏᴍᴍᴀɴᴅs* ✦━━━╮
+┃ 𖣔 ${prefix}alive  ┃ 𖣔 ${prefix}ping
+┃ 𖣔 ${prefix}uptime ┃ 𖣔 ${prefix}owner
+┃ 𖣔 ${prefix}guide  ┃ 𖣔 ${prefix}menu2
 ╰━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *🚀 GENERAL COMMANDS*
-> ┃ ◈ ${prefix}alive
-> ┃ ◈ ${prefix}ping
-> ┃ ◈ ${prefix}uptime
-> ┃ ◈ ${prefix}owner
-> ┃ ◈ ${prefix}guide
-> ┃ ◈ ${prefix}menu2
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ* ✦━━━╮
+┃ 𖣔 ${prefix}tiktok / ${prefix}tt
+┃ 𖣔 ${prefix}ytmp3
+┃ 𖣔 ${prefix}ig
+╰━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *📥 DOWNLOADERS*
-> ┃ ◈ ${prefix}tiktok / ${prefix}tt
-> ┃ ◈ ${prefix}ytmp3
-> ┃ ◈ ${prefix}ig
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ᴛᴏᴏʟꜱ* ✦━━━╮
+┃ 𖣔 ${prefix}sticker ┃ 𖣔 ${prefix}ocr
+┃ 𖣔 ${prefix}tts     ┃ 𖣔 ${prefix}poll
+┃ 𖣔 ${prefix}shazam  ┃ 𖣔 ${prefix}textpro
+┃ 𖣔 ${prefix}chid
+╰━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *🛠️ TOOLS*
-> ┃ ◈ ${prefix}sticker | ${prefix}s
-> ┃ ◈ ${prefix}ocr
-> ┃ ◈ ${prefix}tts
-> ┃ ◈ ${prefix}poll
-> ┃ ◈ ${prefix}shazam
-> ┃ ◈ ${prefix}textpro
-> ┃ ◈ ${prefix}chid
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ᴀʀᴛɪꜰɪᴄɪᴀʟ ɪɴᴛᴇʟʟɪɢᴇɴᴄᴇ* ✦━━━╮
+┃ 𖣔 ${prefix}ai       ┃ 𖣔 ${prefix}ai-search
+┃ 𖣔 ${prefix}aiv     ┃ 𖣔 ${prefix}gen
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *🤖 ARTIFICIAL INTELLIGENCE*
-> ┃ ◈ ${prefix}ai
-> ┃ ◈ ${prefix}ai-search
-> ┃ ◈ ${prefix}aiv
-> ┃ ◈ ${prefix}gen
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ꜰᴜɴ & ɴᴇᴡ* ✦━━━╮
+┃ 𖣔 ${prefix}blue          ┃ 𖣔 ${prefix}flag
+┃ 𖣔 ${prefix}hide          ┃ 𖣔 ${prefix}guessgender
+┃ 𖣔 ${prefix}agecalculator ┃ 𖣔 ${prefix}style
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *🎉 FUN & GAMES*
-> ┃ ◈ ${prefix}blue
-> ┃ ◈ ${prefix}flag
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ꜱᴇᴀʀᴄʜ & ᴀɴɪᴍᴇ* ✦━━━╮
+┃ 𖣔 ${prefix}weather
+┃ 𖣔 ${prefix}waifu \vert{}${prefix}neko
+┃ 𖣔 ${prefix}kitsune \vert{}${prefix}husbando
+╰━━━━━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *✨ NEW COMMANDS*
-> ┃ ◈ ${prefix}hide
-> ┃ ◈ ${prefix}guessgender
-> ┃ ◈ ${prefix}agecalculator
-> ┃ ◈ ${prefix}style
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ɢʀᴏᴜᴘ & ᴀᴅᴍɪɴ* ✦━━━╮
+┃ 𖣔 ${prefix}tagall \vert{}${prefix}tagme
+┃ 𖣔 ${prefix}couplepp
+┃ 𖣔 ${prefix}group \vert{}${prefix}ginfo
+┃ 𖣔 ${prefix}antigst
+┃ 𖣔 ${prefix}kick \vert{}${prefix}promote
+┃ 𖣔 ${prefix}demote
+╰━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *🔍 SEARCH & ANIME*
-> ┃ ◈ ${prefix}weather
-> ┃ ◈ ${prefix}waifu | ${prefix}neko
-> ┃ ◈ ${prefix}kitsune | ${prefix}husbando
-> ┗━━━━━━━━━━━━━━━━━━━
+╭━━━✦ *✨ ꜱᴛᴀᴛᴜꜱ & ᴄʜᴀɴɴᴇʟ* ✦━━━╮
+┃ 𖣔 ${prefix}gstatus
+┃ 𖣔 ${prefix}channelid
+╰━━━━━━━━━━━━━━━━━━━━━━━╯
 
-> ┏──❑ *👥 GROUP & ADMIN*
-> ┃ ◈ ${prefix}tagall | ${prefix}tagme
-> ┃ ◈ ${prefix}couplepp
-> ┃ ◈ ${prefix}group | ${prefix}ginfo
-> ┃ ◈ ${prefix}antigst
-> ┃ ◈ ${prefix}kick | ${prefix}promote
-> ┃ ◈ ${prefix}demote
-> ┗━━━━━━━━━━━━━━━━━━━
-
-> ┏──❑ *📢 STATUS & CHANNEL*
-> ┃ ◈ ${prefix}gstatus
-> ┃ ◈ ${prefix}channelid
-> ┗━━━━━━━━━━━━━━━━━━━
-
-╔═════════════════════╗
-║ ⚡ *POWERED BY RAHUL* ⚡
-╚═════════════════════╝
+┌─────────────────────────┐
+│  ✨ *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ* ✨  │
+└─────────────────────────┘
 `.trim();
 
         try {

@@ -1,10 +1,15 @@
 module.exports = {
     name: 'menu2',
-    description: 'Cyber grid style alternative bot menu',
+    description: 'Cyber grid style image menu with zero crash fail-safe',
     aliases: ['help2', 'commands2'],
 
     async execute(sock, m) {
+        // Direct Image URL set inside code (100% Guaranteed Success)
+        // Tumchi standard sampler zone image link:
+        const MENU2_IMAGE_URL = 'https://sam-cdn.zone.id/files/ZBp0sbXtJB.jpg';
+
         try {
+            // Safe JID fallback
             const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
             if (!chatJid) return;
 
@@ -95,10 +100,20 @@ module.exports = {
  > ⚡ *POWERED BY RAHUL MASTER*
 `.trim();
 
-            await sock.sendMessage(chatJid, { text: menu2Text });
+            try {
+                // Method 1: Send Image + Text (Native Baileys Buffer Fetch)
+                await sock.sendMessage(chatJid, {
+                    image: { url: MENU2_IMAGE_URL },
+                    caption: menu2Text
+                });
+            } catch (imgErr) {
+                console.error('Koyeb CDN Image Fetch Fail for Menu2:', imgErr);
+                // Method 2: Fail-Safe - Jari CDN down jhala tari code Pure Text pathvel
+                await sock.sendMessage(chatJid, { text: menu2Text });
+            }
 
         } catch (err) {
-            console.error('Menu2 Execution Error:', err);
+            console.error('Menu2 Command Crash (Index):', err);
         }
     }
 };

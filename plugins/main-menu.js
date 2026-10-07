@@ -1,9 +1,12 @@
 module.exports = {
     name: 'menu',
-    description: 'Ultra stable clean whatsapp bot menu',
+    description: 'Ultra stable image menu with zero crash fail-safe',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
+        // Direct image link set in code (tumhi dileli link)
+        const MENU_IMAGE_URL = 'https://sam-cdn.zone.id/files/ZBp0sbXtJB.jpg';
+
         try {
             // Safe JID fallback
             const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
@@ -101,13 +104,23 @@ module.exports = {
 │ ᪣ ${prefix}demote
 └───
 
-> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛ ᴇʀ 」
+> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
 `.trim();
 
-            await sock.sendMessage(chatJid, { text: menuText });
+            try {
+                // Method 1: Send Image + Text (Native Baileys Buffer Fetch)
+                await sock.sendMessage(chatJid, {
+                    image: { url: MENU_IMAGE_URL },
+                    caption: menuText
+                });
+            } catch (imgErr) {
+                console.error('Koyeb CDN Image Fetch Fail:', imgErr);
+                // Method 2: Fail-Safe - Jari CDN down jhala tari code Pure Text pathvel
+                await sock.sendMessage(chatJid, { text: menuText });
+            }
 
         } catch (err) {
-            console.error('Menu Command Execution Error:', err);
+            console.error('Menu Command Crash (Index):', err);
         }
     }
 };

@@ -1,17 +1,13 @@
 module.exports = {
     name: 'menu',
-    command: 'menu',
-    aliases: ['help', 'cmdlist', 'commands', 'menu2'],
     description: 'Safe Minimalist Wave Text Menu',
+    aliases: ['help', 'cmdlist', 'commands', 'menu2'],
+    tags: ['main'],
+    command: /^(menu|help|cmdlist|commands|menu2)$/i,
 
     async execute(sock, m) {
         try {
-            // Safe JID extraction for all Baileys versions
-            const chatJid = m.chat || (m.key && m.key.remoteJid) || m.from;
-            if (!chatJid) {
-                console.log("Menu Error: chatJid not found for message:", m);
-                return;
-            }
+            await m.react('⚡');
 
             const prefix = global.BOT_PREFIX || '.';
             const user = m.pushName || 'User';
@@ -20,60 +16,68 @@ module.exports = {
 🌊 ~~~~~~~~~~~~~~~~~~~~~~~ 🌊
        ⚡ RAHUL - AI ⚡
 🌊 ~~~~~~~~~~~~~~~~~~~~~~~ 🌊
-👤 User   : Rahul
-🔑 Prefix : [ . ]
+👤 User   : ${user}
+🔑 Prefix : [ ${prefix} ]
 ───────────────────────────
 
 ✦ *SYSTEM CORE*
-  🔸 .alive
-  🔸 .ping
-  🔸 .uptime
-  🔸 .owner
-  🔸 .guide
+  🔸 ${prefix}alive
+  🔸 ${prefix}ping
+  🔸 ${prefix}uptime
+  🔸 ${prefix}owner
+  🔸 ${prefix}guide
 
 ✦ *DOWNLOAD HUB*
-  🔸 .tiktok
-  🔸 .ytmp3
-  🔸 .ig
+  🔸 ${prefix}tiktok
+  🔸 ${prefix}ytmp3
+  🔸 ${prefix}ig
 
 ✦ *UTILITY TOOLS*
-  🔸 .sticker
-  🔸 .ocr
-  🔸 .tts
-  🔸 .poll
-  🔸 .shazam
-  🔸 .chid
+  🔸 ${prefix}sticker
+  🔸 ${prefix}ocr
+  🔸 ${prefix}tts
+  🔸 ${prefix}poll
+  🔸 ${prefix}shazam
+  🔸 ${prefix}chid
 
 ✦ *AI INTELLIGENCE*
-  🔸 .ai
-  🔸 .ai-search
-  🔸 .aiv
-  🔸 .gen
+  🔸 ${prefix}ai
+  🔸 ${prefix}ai-search
+  🔸 ${prefix}aiv
+  🔸 ${prefix}gen
 
 ✦ *ENTERTAINMENT*
-  🔸 .blue
-  🔸 .flag
-  🔸 .guessgender
-  🔸 .agecalculator
-  🔸 .style
+  🔸 ${prefix}blue
+  🔸 ${prefix}flag
+  🔸 ${prefix}guessgender
+  🔸 ${prefix}agecalculator
+  🔸 ${prefix}style
 
 ✦ *ANIME ARCHIVE*
-  🔸 .weather
-  🔸 .waifu
-  🔸 .neko
-  🔸 .kitsune
-  🔸 .husbando
+  🔸 ${prefix}weather
+  🔸 ${prefix}waifu
+  🔸 ${prefix}neko
+  🔸 ${prefix}kitsune
+  🔸 ${prefix}husbando
 
 ✦ *GROUP SUITE*
-  🔸 .tagall
-  🔸 .tagme
-  🔸 .couplepp
-  🔸 .group
-  🔸 .ginfo
-  🔸 .kick
-  🔸 .promote
-  🔸 .demote
+  🔸 ${prefix}tagall
+  🔸 ${prefix}tagme
+  🔸 ${prefix}couplepp
+  🔸 ${prefix}group
+  🔸 ${prefix}ginfo
+  🔸 ${prefix}kick
+  🔸 ${prefix}promote
+  🔸 ${prefix}demote
 
 ───────────────────────────
 > _POWERED BY RAHUL MASTER_
 `.trim();
+
+            await sock.sendMessage(m.from, { text: menuText }, { quoted: m });
+
+        } catch (err) {
+            console.error('❌ Menu plugin error:', err);
+        }
+    },
+};

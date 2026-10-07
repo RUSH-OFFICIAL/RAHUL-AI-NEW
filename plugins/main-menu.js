@@ -6,118 +6,79 @@ module.exports = {
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('⚡');
+        await m.react('🔥');
         
         const prefix = global.BOT_PREFIX || '.';
-
         const now = new Date();
 
         const date = now.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
+            day: '2-digit',
+            month: 'short',
             year: 'numeric',
-            timeZone: 'Africa/Accra'
+            timeZone: 'Asia/Kolkata'
         });
 
         const time = now.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
             hour12: true,
-            timeZone: 'Africa/Accra'
+            timeZone: 'Asia/Kolkata'
         });
 
         const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
         const menuText = `
-root@rahul-ai:~# ./system-info.sh
-┌───────────────────────────
-│ 👾 System: RAHUL-AI 
-│ 👑 Founder: ${Founder}
-│ 💻 Owner: ${botOwner}
-│ 👤 User: ${user}
-│ 📅 Date: ${date}
-│ ⏱️ Time: ${time}
-│ ⚡ Prefix: [ ${prefix} ]
-└───────────────────────────
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+│   🚀 *Ｒ𝙰𝙷𝚄𝙻 - 𝙰𝙸  ᴍᴅ* 🚀    │
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+  ❖ *User Info*
+  ├ 👤 Name   : ${user}
+  ├ 👑 Master : ${botOwner}
+  ├ ⏰ Time   : ${time}
+  ├ 📅 Date   : ${date}
+  └ ⚡ Prefix : [ ${prefix} ]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-> root@rahul-ai:~/commands# cat modules.list
+  📂 *[ 01 ] GENERAL COMMANDS*
+  │ ◈ ${prefix}alive
+  │ ◈ ${prefix}ping
+  │ ◈ ${prefix}uptime
+  └ ◈ ${prefix}owner
 
-root@general ~$
- [>] ${prefix}ᴀʟɪᴠᴇ
- [>] ${prefix}ᴘɪɴɢ
- [>] ${prefix}ᴜᴘᴛɪᴍᴇ
- [>] ${prefix}ᴏᴡɴᴇʀ
- [>] ${prefix}ɢᴜɪᴅᴇ
- [>] ${prefix}ᴍᴇɴᴜ2
+  📥 *[ 02 ] MEDIA DOWNLOADS*
+  │ ◈ ${prefix}tiktok / ${prefix}tt
+  │ ◈ ${prefix}ytmp3
+  └ ◈ ${prefix}ig
 
-root@downloaders ~$
- [>] ${prefix}ᴛɪᴋᴛᴏᴋ / ${prefix}ᴛᴛ
- [>] ${prefix}ʏᴛᴍᴘ3
- [>] ${prefix}ɪɢ
+  🤖 *[ 03 ] RAHUL-AI INTELLIGENCE*
+  │ ◈ ${prefix}ai
+  │ ◈ ${prefix}ai-search
+  │ ◈ ${prefix}aiv
+  └ ◈ ${prefix}gen
 
-root@tools ~$
- [>] ${prefix}sᴛɪᴄᴋᴇʀ
- [>] ${prefix}ᴏᴄʀ
- [>] ${prefix}ᴛᴛs
- [>] ${prefix}ᴘᴏʟʟ
- [>] ${prefix}sʜᴀᴢᴀᴍ
- [>] ${prefix}ᴛᴇxᴛᴘʀᴏ
- [>] ${prefix}ᴄʜɪᴅ
+  🛠️ *[ 04 ] TOOLS & UTILITIES*
+  │ ◈ ${prefix}sticker
+  │ ◈ ${prefix}style
+  │ ◈ ${prefix}ocr
+  └ ◈ ${prefix}tts
 
-root@ai ~$
- [>] ${prefix}ᴀɪ
- [>] ${prefix}ᴀɪ-sᴇᴀʀᴄʜ
- [>] ${prefix}ᴀɪᴠ
- [>] ${prefix}ɢᴇɴ
+  🛡️ *[ 05 ] SQUAD & GROUP ADMIN*
+  │ ◈ ${prefix}tagall
+  │ ◈ ${prefix}kick
+  │ ◈ ${prefix}promote
+  └ ◈ ${prefix}demote
 
-root@fun ~$
- [>] ${prefix}ʙʟᴜᴇ
- [>] ${prefix}ғʟᴀɢ
-
-root@new ~$
- [>] ${prefix}ʜɪᴅᴇ
- [>] ${prefix}ɢᴜᴇssɢᴇɴᴅᴇʀ
- [>] ${prefix}ᴀɢᴇᴄᴀʟᴄᴜʟᴀᴛᴏʀ
- [>] ${prefix}sᴛʏʟᴇ
-
-root@search ~$
- [>] ${prefix}ᴡᴇᴀᴛʜᴇʀ
-
-root@anime ~$
- [>] ${prefix}ᴡᴀɪғᴜ
- [>] ${prefix}ɴᴇᴋᴏ
- [>] ${prefix}ᴋɪᴛꜱᴜɴᴇ
- [>] ${prefix}ʜᴜꜱʙᴀɴᴅᴏ
-
-root@group ~$
- [>] ${prefix}ᴛᴀɢᴀʟʟ
- [>] ${prefix}ᴛᴀɢᴀʟʟ1
- [>] ${prefix}ᴛᴀɢᴍᴇ
- [>] ${prefix}ᴄᴏᴜᴘʟᴇᴘᴘ
- [>] ${prefix}ɢʀᴏᴜᴘ
- [>] ${prefix}ɢɪɴғᴏ
- [>] ${prefix}ᴀɴᴛɪɢsᴛ
-
-root@status ~$
- [>] ${prefix}ɢsᴛᴀᴛᴜs
-
-root@channel ~$
- [>] ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
-
-root@admin ~$
- [>] ${prefix}ᴋɪᴄᴋ
- [>] ${prefix}ᴘʀᴏᴍᴏᴛᴇ
- [>] ${prefix}ᴅᴇᴍᴏᴛᴇ
-
-# Status: Online & Secure
-> [ ⚡ Executed by Rahul Master ]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> *✨ Powered by Rahul Master // 2026*
 `.trim();
 
+        // Image Set Logic with Backup Protection
+        const defaultImage = 'https://files.catbox.moe/1h7p1a.jpg';
+        const imageUrl = global.menuImage || defaultImage;
+
         try {
-            const imageBuffer = (await axios.get(global.menuImage, {
+            const imageBuffer = (await axios.get(imageUrl, {
                 responseType: 'arraybuffer'
             })).data;
 
@@ -126,8 +87,8 @@ root@admin ~$
             });
 
         } catch (err) {
-            console.error('Menu error:', err);
-            await m.reply('❌ Failed to load menu. Please try again later.');
+            console.error('Menu image error:', err);
+            await m.reply(menuText);
         }
     }
 };

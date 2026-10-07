@@ -1,7 +1,16 @@
 const { exec } = require('child_process');
 
-let handler = async (m, { conn, isOwner }) => {
-    if (!isOwner) return m.reply('Haa command fakt bot ownerich vapru shakto!');
+let handler = async (m, { conn }) => {
+    // Bot cha swatahcha number ani owner number check karne
+    const botNumber = await conn.decodeJid(conn.user.id);
+    const ownerNumber = conn.decodeJid(global.owner?.[0] || ''); // config.js madhla owner number
+    
+    // Sender (msg pathavnara) owner ahe ka kinva bot cha swatahcha number ahe ka te check karne
+    const isAuthorized = [botNumber, ownerNumber].includes(m.sender) || global.owner.includes(m.sender.split('@')[0]);
+
+    if (!isAuthorized) {
+        return m.reply('Haa command fakt bot owner ani bot cha swatahcha number vapru shakto!');
+    }
     
     m.reply('Bot update hot ahe, krupaya thoda vel thamba...');
     
@@ -19,6 +28,5 @@ let handler = async (m, { conn, isOwner }) => {
 handler.help = ['update'];
 handler.tags = ['owner'];
 handler.command = /^(update|gitpull)$/i;
-handler.owner = true;
 
 module.exports = handler;

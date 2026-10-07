@@ -34,7 +34,7 @@ module.exports = {
         const menuText = `
 root@rahul-ai:~# ./system-info.sh
 ┌───────────────────────────
-│ 👾 System: RAHUL-AI v2.0
+│ 👾 System: RAHUL-AI 
 │ 👑 Founder: ${Founder}
 │ 💻 Owner: ${botOwner}
 │ 👤 User: ${user}

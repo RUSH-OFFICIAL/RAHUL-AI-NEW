@@ -43,7 +43,7 @@ FEATURES UPDATING
 ## 🛠️ `Installation Methods`
 1. Fork the repo
     <br>
-<a href='https://github.com/R-A-H-U-L-M-A-S-T-E-R/XRAHUL-AI/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork Repo-100000?style=for-the-badge&logo=scan&logoColor=black&labelColor=white&color=white'/></a>
+<a href='https://github.com/R-A-H-U-L-M-A-S-T-E-R/RAHUL-AI/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork Repo-100000?style=for-the-badge&logo=scan&logoColor=black&labelColor=white&color=white'/></a>
     <br>
 2. Get Session ID
     <br>
@@ -90,10 +90,10 @@ NOW Deploy👇
 <br>
 `Development , Maintainence , Bot Updates`
 
-## `Main Dev` 
-<a href="https://github.com/R-A-H-U-L-M-A-S-T-E-R"><img src="https://avatars.githubusercontent.com/u/120536940?v=4" width="250" height="250" alt="RAHUL-AI Dwamena"/></a>
+## `MY BOT` 
+<a href="https://github.com/R-A-H-U-L-M-A-S-T-E-R"><img src="https://avatars.githubusercontent.com/u/120536940?v=4" width="250" height="250" alt="RAHUL-AI"/></a>
   
-**XRAHUL-AI** - By `RAHUL-MASTER`
+**RAHUL-AI** - By `RAHUL-MASTER`
 <br>
 `Development , Features Enhancement , Plugin Debbuging`
 

@@ -81,18 +81,16 @@ NOW Deploy👇
 <div><button id="boton" type="button">Baileys - By WhiskeySockets & adiwajshing</button></div>
 <a href="https://github.com/WhiskeySockets/Baileys"><img src="https://github.com/WhiskeySockets.png" width="150" height="150" alt="adiwajshing"/></a>
 <div>
-
+  
+## `OWNER` 
+<a href="https://github.com/R-A-H-U-L-M-A-S-T-E-R"><img src="https://github.com/ahmmikun.png" width="250" height="250" alt="RAHUL-AI"/></a>
   
 **RAHUL-AI** - By `R-A-H-U-L-M-A-S-T-E-R`
 <br>
 `Development , Maintainence , Bot Updates`
 
-## `MY BOT` 
-<a href="https://github.com/R-A-H-U-L-M-A-S-T-E-R"><img src="https://avatars.githubusercontent.com/u/120536940?v=4" width="250" height="250" alt="RAHUL-AI"/></a>
+
   
-**RAHUL-AI** - By `RAHUL-MASTER`
-<br>
-`Development , Features Enhancement , Plugin Debbuging`
 
 ## 🌈 `Support Us`
 - **Mail Us:[rahulhiran44@gmail.com]**

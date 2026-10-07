@@ -73,7 +73,7 @@ NOW Deploy👇
 <br>
 ## DEPLOY IN KOYEB  
 
-[![Deploy on Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://RAHUL-AI-deploy-RAHUL-AI/)
+[![Deploy on Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://RAHUL-AI-deploy-vercel.com/)
 <br>
 <p> AFTER CLICKING ON THE KOYEB BUTTON KINDLY CLICK ON VARIABLE AND ADD THE NECESSARY VARIABLE</p>
 

@@ -5,10 +5,9 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            // Safe reaction trigger
-            if (m && m.key) {
-                await sock.sendMessage(m.chat, { react: { text: '⚡', key: m.key } }).catch(() => {});
-            }
+            // Safe JID fallback
+            const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
+            if (!chatJid) return;
 
             const prefix = global.BOT_PREFIX || '.';
             const now = new Date();
@@ -28,7 +27,7 @@ module.exports = {
             });
 
             const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-            const user = m.pushName || (m.sender ? m.sender.split('@')[0] : 'User');
+            const user = m?.pushName || 'User';
             const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
             const menuText = `
@@ -102,22 +101,13 @@ module.exports = {
 │ ᪣ ${prefix}demote
 └───
 
-> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
+> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛ ᴇʀ 」
 `.trim();
 
-            // Safe message options (Prevents Baileys quoted crash)
-            const sendOptions = (m && m.key && m.key.remoteJid) ? { quoted: m } : {};
-
-            await sock.sendMessage(m.chat, { 
-                text: menuText 
-            }, sendOptions);
+            await sock.sendMessage(chatJid, { text: menuText });
 
         } catch (err) {
-            console.error('Menu Execution Error:', err);
-            // Fallback send without quoted parameter
-            await sock.sendMessage(m.chat, { 
-                text: '⚡ Menu load zale ahe, krupaya parat type kara.' 
-            }).catch(() => {});
+            console.error('Menu Command Execution Error:', err);
         }
     }
 };

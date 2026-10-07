@@ -1,14 +1,12 @@
 module.exports = {
     name: 'menu',
-    description: 'Ultra stable image menu with zero crash fail-safe',
+    description: 'Geometric line art style image menu',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        // Direct image link set in code (tumhi dileli link)
         const MENU_IMAGE_URL = 'https://sam-cdn.zone.id/files/ZBp0sbXtJB.jpg';
 
         try {
-            // Safe JID fallback
             const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
             if (!chatJid) return;
 
@@ -29,98 +27,70 @@ module.exports = {
                 timeZone: 'Asia/Kolkata'
             });
 
-            const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
             const user = m?.pushName || 'User';
-            const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
             const menuText = `
-╔═══════════════════════════╗
-   ⚡ *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝙼𝚄𝙻𝚃𝙸-𝙳𝙴𝚅𝙸𝙲𝙴* ⚡
-╚═══════════════════════════╝
+───❖───✦ *𝚁𝙰𝙷𝚄𝙻 - 𝙰𝙸* ✦───❖───
 
-┌───〔 *SYSTEM INFO* 〕───
-│ 👤 *User:* ${user}
-│ 👑 *Owner:* ${botOwner}
-│ 🏛️ *Founder:* ${founder}
-│ 📅 *Date:* ${date}
-│ ⏰ *Time:* ${time}
-│ 🔑 *Prefix:* [ ${prefix} ]
-└─────────────────────────
+◆ ───〔 *USER PROFILE* 〕─── ◆
+  │ 👤 User   : ${user}
+  │ 👑 Master : 𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁
+  │ 📅 Date   : ${date}
+  │ ⏰ Time   : ${time}
+  │ 🔑 Prefix : [ ${prefix} ]
+  └───────────────────────
 
-┌─── ◈ *GENERAL*
-│ ᪣ ${prefix}alive
-│ ᪣ ${prefix}ping
-│ ᪣ ${prefix}uptime
-│ ᪣ ${prefix}owner
-│ ᪣ ${prefix}guide
-└───
+▲ ━━━ *CORE SYSTEM*
+  ◈ ${prefix}alive   ◈ ${prefix}ping
+  ◈ ${prefix}uptime  ◈ ${prefix}owner
+  ◈ ${prefix}guide
 
-┌─── ◈ *DOWNLOADERS*
-│ ᪣ ${prefix}tiktok
-│ ᪣ ${prefix}ytmp3
-│ ᪣ ${prefix}ig
-└───
+▲ ━━━ *DOWNLOAD HUB*
+  ◈ ${prefix}tiktok  ◈ ${prefix}ytmp3
+  ◈ ${prefix}ig
 
-┌─── ◈ *TOOLS*
-│ ᪣ ${prefix}sticker
-│ ᪣ ${prefix}ocr
-│ ᪣ ${prefix}tts
-│ ᪣ ${prefix}poll
-│ ᪣ ${prefix}shazam
-│ ᪣ ${prefix}chid
-└───
+▲ ━━━ *UTILITIES*
+  ◈ ${prefix}sticker ◈ ${prefix}ocr
+  ◈ ${prefix}tts     ◈ ${prefix}poll
+  ◈ ${prefix}shazam  ◈ ${prefix}chid
 
-┌─── ◈ *AI COMMANDS*
-│ ᪣ ${prefix}ai
-│ ᪣ ${prefix}ai-search
-│ ᪣ ${prefix}aiv
-│ ᪣ ${prefix}gen
-└───
+▲ ━━━ *AI MODULES*
+  ◈ ${prefix}ai      ◈ ${prefix}ai-search
+  ◈ ${prefix}aiv     ◈ ${prefix}gen
 
-┌─── ◈ *FUN & UTILITY*
-│ ᪣ ${prefix}blue
-│ ᪣ ${prefix}flag
-│ ᪣ ${prefix}guessgender
-│ ᪣ ${prefix}agecalculator
-│ ᪣ ${prefix}style
-└───
+▲ ━━━ *ENTERTAINMENT*
+  ◈ ${prefix}blue    ◈ ${prefix}flag
+  ◈ ${prefix}guessgender
+  ◈ ${prefix}agecalculator
+  ◈ ${prefix}style
 
-┌─── ◈ *ANIME & SEARCH*
-│ ᪣ ${prefix}weather
-│ ᪣ ${prefix}waifu
-│ ᪣ ${prefix}neko
-│ ᪣ ${prefix}kitsune
-│ ᪣ ${prefix}husbando
-└───
+▲ ━━━ *ANIME WORLD*
+  ◈ ${prefix}weather ◈ ${prefix}waifu
+  ◈ ${prefix}neko    ◈ ${prefix}kitsune
+  ◈ ${prefix}husbando
 
-┌─── ◈ *GROUP & ADMIN*
-│ ᪣ ${prefix}tagall
-│ ᪣ ${prefix}tagme
-│ ᪣ ${prefix}couplepp
-│ ᪣ ${prefix}group
-│ ᪣ ${prefix}ginfo
-│ ᪣ ${prefix}kick
-│ ᪣ ${prefix}promote
-│ ᪣ ${prefix}demote
-└───
+▲ ━━━ *GROUP SUITE*
+  ◈ ${prefix}tagall  ◈ ${prefix}tagme
+  ◈ ${prefix}couplepp◈ ${prefix}group
+  ◈ ${prefix}ginfo   ◈ ${prefix}kick
+  ◈ ${prefix}promote ◈ ${prefix}demote
 
-> 「 ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」
+───❖───✦ *𝚁𝙰𝙷𝚄𝙻 - 𝙼𝙰𝚂𝚃𝙴𝚁* ✦───❖───
+> ⚡ *POWERED BY RAHUL MASTER*
 `.trim();
 
             try {
-                // Method 1: Send Image + Text (Native Baileys Buffer Fetch)
                 await sock.sendMessage(chatJid, {
                     image: { url: MENU_IMAGE_URL },
                     caption: menuText
                 });
             } catch (imgErr) {
-                console.error('Koyeb CDN Image Fetch Fail:', imgErr);
-                // Method 2: Fail-Safe - Jari CDN down jhala tari code Pure Text pathvel
+                console.error('Geometric Image load fail, fallback to text:', imgErr);
                 await sock.sendMessage(chatJid, { text: menuText });
             }
 
         } catch (err) {
-            console.error('Menu Command Crash (Index):', err);
+            console.error('Geometric Menu Error:', err);
         }
     }
 };

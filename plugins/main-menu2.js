@@ -2,13 +2,14 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu2',
-    description: 'Show available bot commands in an ultra-fancy VIP style layout',
+    description: 'Show available bot commands with Video/GIF banner',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('💎');
+        await m.react('🎬');
         
         const prefix = global.BOT_PREFIX || '.';
+
         const now = new Date();
 
         const date = now.toLocaleDateString('en-GB', {
@@ -30,112 +31,116 @@ module.exports = {
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
         const menuText = `
-◈━━━━━━━━━━━━━━━━━━━━◈
-        ❖ 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚅𝙸𝙿 𝙼𝙴𝙽𝚄 ❖
-◈━━━━━━━━━━━━━━━━━━━━◈
+╔════════════════════════╗
+║   ⚡ 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝙼𝚄𝙻𝚃𝙸𝙳𝙴𝚅𝙸𝙲𝙴 ⚡   ║
+╚════════════════════════╝
 
-┌─[ 👑 ᴜsᴇʀ ᴘʀᴏғɪʟᴇ ]
-│ ◈ ᴜsᴇʀ : ${user}
-│ ◈ ᴏᴡɴᴇʀ : ${botOwner}
-│ ◈ ғᴏᴜɴᴅᴇʀ : ${Founder}
-│ ◈ ᴘʀᴇғɪx : [ ${prefix} ]
-│ ◈ ᴅᴀᴛᴇ : ${date}
-│ ◈ ᴛɪᴍᴇ : ${time}
-└───────────────────
+┌─── ｢ 👤 *𝚄𝚂𝙴𝚁 𝙸𝙽𝙵𝙾* ｣
+│ ✦ *User:* ${user}
+│ ✦ *Owner:* ${botOwner}
+│ ✦ *Founder:* ${Founder}
+│ ✦ *Prefix:* [ \`${prefix}\` ]
+│ ✦ *Date:* ${date}
+│ ✦ *Time:* ${time}
+└────────────────────────
 
-┌─[ 🌐 ɢᴇɴᴇʀᴀʟ ]
-│ ❖ ${prefix}alive
-│ ❖ ${prefix}ping
-│ ❖ ${prefix}uptime
-│ ❖ ${prefix}owner
-│ ❖ ${prefix}guide
-│ ❖ ${prefix}menu2
-└───────────────────
+┌─── ｢ 🌐 *𝙶𝙴𝙽𝙴𝚁𝙰𝙻* ｣
+│ ➣ ${prefix}alive
+│ ➣ ${prefix}ping
+│ ➣ ${prefix}uptime
+│ ➣ ${prefix}owner
+│ ➣ ${prefix}guide
+│ ➣ ${prefix}menu2
+└────────────────────────
 
-┌─[ 📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀs ]
-│ ❖ ${prefix}tiktok / ${prefix}tt
-│ ❖ ${prefix}ytmp3
-│ ❖ ${prefix}ig
-└───────────────────
+┌─── ｢ 📥 *𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳𝙴𝚁𝚂* ｣
+│ ➣ ${prefix}tiktok / ${prefix}tt
+│ ➣ ${prefix}ytmp3
+│ ➣ ${prefix}ig
+└────────────────────────
 
-┌─[ 🛠️ ᴛᴏᴏʟs & ᴜᴛɪʟs ]
-│ ❖ ${prefix}sticker
-│ ❖ ${prefix}ocr
-│ ❖ ${prefix}tts
-│ ❖ ${prefix}poll
-│ ❖ ${prefix}shazam
-│ ❖ ${prefix}textpro
-│ ❖ ${prefix}chid
-└───────────────────
+┌─── ｢ 🛠️ *𝚃𝙾𝙾𝙻𝚂 & 𝚄𝚃𝙸𝙻𝚂* ｣
+│ ➣ ${prefix}sticker
+│ ➣ ${prefix}ocr
+│ ➣ ${prefix}tts
+│ ➣ ${prefix}poll
+│ ➣ ${prefix}shazam
+│ ➣ ${prefix}textpro
+│ ➣ ${prefix}chid
+└────────────────────────
 
-┌─[ 🤖 ᴀɪ ғᴇᴀᴛᴜʀᴇs ]
-│ ❖ ${prefix}ai
-│ ❖ ${prefix}ai-search
-│ ❖ ${prefix}aiv
-│ ❖ ${prefix}gen
-└───────────────────
+┌─── ｢ 🤖 *𝙰𝙸 𝙵𝙴𝙰𝚃𝚄𝚁𝙴𝚂* ｣
+│ ➣ ${prefix}ai
+│ ➣ ${prefix}ai-search
+│ ➣ ${prefix}aiv
+│ ➣ ${prefix}gen
+└────────────────────────
 
-┌─[ 🎮 ғᴜɴ & ɢᴀᴍᴇs ]
-│ ❖ ${prefix}blue
-│ ❖ ${prefix}flag
-└───────────────────
+┌─── ｢ 🎮 *𝙵𝚄𝙽 & 𝙶𝙰𝙼𝙴𝚂* ｣
+│ ➣ ${prefix}blue
+│ ➣ ${prefix}flag
+└────────────────────────
 
-┌─[ ✨ ɴᴇᴡ ғᴇᴀᴛᴜʀᴇs ]
-│ ❖ ${prefix}hide
-│ ❖ ${prefix}guessgender
-│ ❖ ${prefix}agecalculator
-│ ❖ ${prefix}style
-└───────────────────
+┌─── ｢ ✨ *𝙽𝙴𝚆 𝙵𝙴𝙰𝚃𝚄𝚁𝙴𝚂* ｣
+│ ➣ ${prefix}hide
+│ ➣ ${prefix}guessgender
+│ ➣ ${prefix}agecalculator
+│ ➣ ${prefix}style
+└────────────────────────
 
-┌─[ 🎌 sᴇᴀʀᴄʜ & ᴀɴɪᴍᴇ ]
-│ ❖ ${prefix}weather
-│ ❖ ${prefix}waifu
-│ ❖ ${prefix}neko
-│ ❖ ${prefix}kitsune
-│ ❖ ${prefix}husbando
-└───────────────────
+┌─── ｢ 🎌 *𝚂𝙴𝙰𝚁𝙲𝙷 & 𝙰𝙽𝙸𝙼𝙴* ｣
+│ ➣ ${prefix}weather
+│ ➣ ${prefix}waifu
+│ ➣ ${prefix}neko
+│ ➣ ${prefix}kitsune
+│ ➣ ${prefix}husbando
+└────────────────────────
 
-┌─[ 👥 ɢʀᴏᴜᴘ ᴜᴛɪʟs ]
-│ ❖ ${prefix}tagall
-│ ❖ ${prefix}tagall1
-│ ❖ ${prefix}tagme
-│ ❖ ${prefix}couplepp
-│ ❖ ${prefix}group
-│ ❖ ${prefix}ginfo
-│ ❖ ${prefix}antigst
-└───────────────────
+┌─── ｢ 👥 *𝙶𝚁𝙾𝚄𝙿 𝚄𝚃𝙸𝙻𝚂* ｣
+│ ➣ ${prefix}tagall
+│ ➣ ${prefix}tagall1
+│ ➣ ${prefix}tagme
+│ ➣ ${prefix}couplepp
+│ ➣ ${prefix}group
+│ ➣ ${prefix}ginfo
+│ ➣ ${prefix}antigst
+└────────────────────────
 
-┌─[ 📢 sᴛᴀᴛᴜs & ᴄʜᴀɴɴᴇʟ ]
-│ ❖ ${prefix}gstatus
-│ ❖ ${prefix}channelid
-└───────────────────
+┌─── ｢ 📢 *𝚂𝚃𝙰𝚃𝚄𝚂 & 𝙲𝙷𝙰𝙽𝙽𝙴𝙻* ｣
+│ ➣ ${prefix}gstatus
+│ ➣ ${prefix}channelid
+└────────────────────────
 
-┌─[ 🛡️ ᴀᴅᴍɪɴ ᴄᴏɴᴛʀᴏʟs ]
-│ ❖ ${prefix}kick
-│ ❖ ${prefix}promote
-│ ❖ ${prefix}demote
-└───────────────────
+┌─── ｢ 🛡️ *𝙰𝙳𝙼𝙸𝙽 𝙲𝙾𝙽𝚃𝚁𝙾𝙻𝚂* ｣
+│ ➣ ${prefix}kick
+│ ➣ ${prefix}promote
+│ ➣ ${prefix}demote
+└────────────────────────
 
-◈━━━━━━━━━━━━━━━━━━━━◈
- 💎 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ 💎
-◈━━━━━━━━━━━━━━━━━━━━◈
+╔════════════════════════╗
+║  🔥 Powered By RAHUL-AI 🔥
+╚════════════════════════╝
 `.trim();
 
         try {
-            const imageUrl = global.menuImage || 'https://sam-cdn.zone.id/files/ZBp0sbXtJB.jpg';
-            const imageBuffer = (await axios.get(imageUrl, {
+            // तुमची व्हिडिओ/GIF लिंक इथे सेट करा (ग्लोबल किंवा थेट URL)
+            const videoUrl = global.menuVideo || 'https://files.catbox.moe/k371w4.mp4'; 
+            
+            const videoBuffer = (await axios.get(videoUrl, {
                 responseType: 'arraybuffer'
             })).data;
 
+            // Video / GIF सोबत मेसेज पाठवणे
             await sock.sendMessage(m.chat, {
-                image: imageBuffer,
-                caption: menuText
+                video: videoBuffer,
+                caption: menuText,
+                gifPlayback: true // GIF प्रमाणे ऑटोमॅटिक चालू ठेवण्यासाठी true ठेवा
             }, { quoted: m });
 
         } catch (err) {
-            console.error('Menu error:', err);
+            console.error('Menu video error:', err);
+            // एरर आल्यास साधा टेक्स्ट मेसेज पाठवेल
             await m.reply(menuText);
         }
     }
 };
-

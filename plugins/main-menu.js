@@ -1,78 +1,133 @@
+const axios = require('axios');
+
 module.exports = {
     name: 'menu',
-    description: 'Safe Text Menu',
-    aliases: ['help', 'cmdlist', 'commands', 'menu2'],
-    tags: ['main'],
-    command: /^(menu|help|cmdlist|commands|menu2)$/i,
+    description: 'Show available bot commands',
+    aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        try {
-            await m.react('⚡');
+        await m.react('⚡');
+        
+        const prefix = global.BOT_PREFIX || '.';
 
-            const menuText = `
-╭━━━〔 *RAHUL - AI* 〕━━━
-┃ 👤 User   : ${m.pushName || 'User'}
-┃ 🔑 Prefix : [ . ]
-╰━━━━━━━━━━━━━━━━━━
+        const now = new Date();
 
-⚡ *SYSTEM CORE*
-  │ • .alive
-  │ • .ping
-  │ • .uptime
-  │ • .owner
-  │ • .guide
+        const date = now.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            timeZone: 'Africa/Accra'
+        });
 
-📥 *DOWNLOAD HUB*
-  │ • .tiktok
-  │ • .ytmp3
-  │ • .ig
+        const time = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'Africa/Accra'
+        });
 
-🛠️ *UTILITY TOOLS*
-  │ • .sticker
-  │ • .ocr
-  │ • .tts
-  │ • .poll
-  │ • .shazam
-  │ • .chid
+        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+        const user = m.pushName || m.sender?.split('@')[0] || 'User';
+        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
-🧠 *AI INTELLIGENCE*
-  │ • .ai
-  │ • .ai-search
-  │ • .aiv
-  │ • .gen
+        const menuText = `
+root@rahul-ai:~# ./system-info.sh
+┌───────────────────────────
+│ 👾 System: RAHUL-AI v2.0
+│ 👑 Founder: ${Founder}
+│ 💻 Owner: ${botOwner}
+│ 👤 User: ${user}
+│ 📅 Date: ${date}
+│ ⏱️ Time: ${time}
+│ ⚡ Prefix: [ ${prefix} ]
+└───────────────────────────
 
-🎭 *ENTERTAINMENT*
-  │ • .blue
-  │ • .flag
-  │ • .guessgender
-  │ • .agecalculator
-  │ • .style
+> root@rahul-ai:~/commands# cat modules.list
 
-🌸 *ANIME ARCHIVE*
-  │ • .weather
-  │ • .waifu
-  │ • .neko
-  │ • .kitsune
-  │ • .husbando
+root@general ~$
+ [>] ${prefix}ᴀʟɪᴠᴇ
+ [>] ${prefix}ᴘɪɴɢ
+ [>] ${prefix}ᴜᴘᴛɪᴍᴇ
+ [>] ${prefix}ᴏᴡɴᴇʀ
+ [>] ${prefix}ɢᴜɪᴅᴇ
+ [>] ${prefix}ᴍᴇɴᴜ2
 
-🛡️ *GROUP SUITE*
-  │ • .tagall
-  │ • .tagme
-  │ • .couplepp
-  │ • .group
-  │ • .ginfo
-  │ • .kick
-  │ • .promote
-  │ • .demote
+root@downloaders ~$
+ [>] ${prefix}ᴛɪᴋᴛᴏᴋ / ${prefix}ᴛᴛ
+ [>] ${prefix}ʏᴛᴍᴘ3
+ [>] ${prefix}ɪɢ
 
-───────────────────
-> _POWERED BY RAHUL MASTER_
+root@tools ~$
+ [>] ${prefix}sᴛɪᴄᴋᴇʀ
+ [>] ${prefix}ᴏᴄʀ
+ [>] ${prefix}ᴛᴛs
+ [>] ${prefix}ᴘᴏʟʟ
+ [>] ${prefix}sʜᴀᴢᴀᴍ
+ [>] ${prefix}ᴛᴇxᴛᴘʀᴏ
+ [>] ${prefix}ᴄʜɪᴅ
+
+root@ai ~$
+ [>] ${prefix}ᴀɪ
+ [>] ${prefix}ᴀɪ-sᴇᴀʀᴄʜ
+ [>] ${prefix}ᴀɪᴠ
+ [>] ${prefix}ɢᴇɴ
+
+root@fun ~$
+ [>] ${prefix}ʙʟᴜᴇ
+ [>] ${prefix}ғʟᴀɢ
+
+root@new ~$
+ [>] ${prefix}ʜɪᴅᴇ
+ [>] ${prefix}ɢᴜᴇssɢᴇɴᴅᴇʀ
+ [>] ${prefix}ᴀɢᴇᴄᴀʟᴄᴜʟᴀᴛᴏʀ
+ [>] ${prefix}sᴛʏʟᴇ
+
+root@search ~$
+ [>] ${prefix}ᴡᴇᴀᴛʜᴇʀ
+
+root@anime ~$
+ [>] ${prefix}ᴡᴀɪғᴜ
+ [>] ${prefix}ɴᴇᴋᴏ
+ [>] ${prefix}ᴋɪᴛꜱᴜɴᴇ
+ [>] ${prefix}ʜᴜꜱʙᴀɴᴅᴏ
+
+root@group ~$
+ [>] ${prefix}ᴛᴀɢᴀʟʟ
+ [>] ${prefix}ᴛᴀɢᴀʟʟ1
+ [>] ${prefix}ᴛᴀɢᴍᴇ
+ [>] ${prefix}ᴄᴏᴜᴘʟᴇᴘᴘ
+ [>] ${prefix}ɢʀᴏᴜᴘ
+ [>] ${prefix}ɢɪɴғᴏ
+ [>] ${prefix}ᴀɴᴛɪɢsᴛ
+
+root@status ~$
+ [>] ${prefix}ɢsᴛᴀᴛᴜs
+
+root@channel ~$
+ [>] ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
+
+root@admin ~$
+ [>] ${prefix}ᴋɪᴄᴋ
+ [>] ${prefix}ᴘʀᴏᴍᴏᴛᴇ
+ [>] ${prefix}ᴅᴇᴍᴏᴛᴇ
+
+# Status: Online & Secure
+> [ ⚡ Executed by Rahul Master ]
 `.trim();
 
-            await sock.sendMessage(m.from, { text: menuText }, { quoted: m });
+        try {
+            const imageBuffer = (await axios.get(global.menuImage, {
+                responseType: 'arraybuffer'
+            })).data;
+
+            await m.reply(imageBuffer, {
+                caption: menuText
+            });
 
         } catch (err) {
-            console.error('❌ Menu plugin error:', err);
+            console.error('Menu error:', err);
+            await m.reply('❌ Failed to load menu. Please try again later.');
         }
-    },
+    }
 };

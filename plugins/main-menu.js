@@ -1,6 +1,6 @@
 module.exports = {
     name: 'menu',
-    description: 'Safe Interactive Slide Menu',
+    description: 'Safe Text Menu',
     aliases: ['help', 'cmdlist', 'commands', 'menu2'],
     tags: ['main'],
     command: /^(menu|help|cmdlist|commands|menu2)$/i,
@@ -15,41 +15,70 @@ module.exports = {
             const prefix = global.BOT_PREFIX || '.';
             const user = m.pushName || 'User';
 
-            // Fixed and structured sections for Baileys Interactive List
-            const sections = [
-                {
-                    title: "⚡ SYSTEM CORE & DOWNLOADS",
-                    rows: [
-                        { title: "Alive Status", rowId: `${prefix}alive`, description: "Check if bot is active" },
-                        { title: "Ping & Uptime", rowId: `${prefix}ping`, description: "Check bot speed and uptime" },
-                        { title: "TikTok Downloader", rowId: `${prefix}tiktok`, description: "Download TikTok videos" },
-                        { title: "YouTube MP3", rowId: `${prefix}ytmp3`, description: "Download YT audio" }
-                    ]
-                },
-                {
-                    title: "🛠️ UTILITY & AI TOOLS",
-                    rows: [
-                        { title: "Sticker Maker", rowId: `${prefix}sticker`, description: "Convert image to sticker" },
-                        { title: "AI Assistant", rowId: `${prefix}ai`, description: "Chat with AI model" },
-                        { title: "OCR Tool", rowId: `${prefix}ocr`, description: "Extract text from images" },
-                        { title: "Weather Info", rowId: `${prefix}weather`, description: "Check live weather" }
-                    ]
-                }
-            ];
+            const menuText = `
+╭━━━〔 *RAHUL - AI* 〕━━━
+┃ 👤 User   : ${user}
+┃ 🔑 Prefix : [ ${prefix} ]
+╰━━━━━━━━━━━━━━━━━━
 
-            const listMessage = {
-                text: `*RAHUL - AI CONTROL HUB*\n\n👋 Hello *${user}*, select an option below from the slide menu list or type commands directly using prefix *[ ${prefix} ]*.\n\n> _POWERED BY RAHUL MASTER_`,
-                footer: "Rahul Master Bot Platform",
-                title: "🌟 INTERACTIVE MENU",
-                buttonText: "Click Here To View Menu",
-                sections
-            };
+⚡ *SYSTEM CORE*
+  │ • ${prefix}alive
+  │ • ${prefix}ping
+  │ • ${prefix}uptime
+  │ • ${prefix}owner
+  │ • ${prefix}guide
 
-            // Safely dispatching interactive list payload to prevent undefined property crashes
-            await sock.sendMessage(targetJid, listMessage, { quoted: m });
+📥 *DOWNLOAD HUB*
+  │ • ${prefix}tiktok
+  │ • ${prefix}ytmp3
+  │ • ${prefix}ig
+
+🛠️ *UTILITY TOOLS*
+  │ • ${prefix}sticker
+  │ • ${prefix}ocr
+  │ • ${prefix}tts
+  │ • ${prefix}poll
+  │ • ${prefix}shazam
+  │ • ${prefix}chid
+
+🧠 *AI INTELLIGENCE*
+  │ • ${prefix}ai
+  │ • ${prefix}ai-search
+  │ • ${prefix}aiv
+  │ • ${prefix}gen
+
+🎭 *ENTERTAINMENT*
+  │ • ${prefix}blue
+  │ • ${prefix}flag
+  │ • ${prefix}guessgender
+  │ • ${prefix}agecalculator
+  │ • ${prefix}style
+
+🌸 *ANIME ARCHIVE*
+  │ • ${prefix}weather
+  │ • ${prefix}waifu
+  │ • ${prefix}neko
+  │ • ${prefix}kitsune
+  │ • ${prefix}husbando
+
+🛡️ *GROUP SUITE*
+  │ • ${prefix}tagall
+  │ • ${prefix}tagme
+  │ • ${prefix}couplepp
+  │ • ${prefix}group
+  │ • ${prefix}ginfo
+  │ • ${prefix}kick
+  │ • ${prefix}promote
+  │ • ${prefix}demote
+
+───────────────────
+> _POWERED BY RAHUL MASTER_
+`.trim();
+
+            await sock.sendMessage(targetJid, { text: menuText }, { quoted: m });
 
         } catch (err) {
-            console.error('❌ Interactive Menu plugin error:', err);
+            console.error('❌ Menu plugin execution error:', err);
         }
     },
 };

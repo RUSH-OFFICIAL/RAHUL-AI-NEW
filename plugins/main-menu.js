@@ -2,11 +2,11 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Paginated / Sliding Style WhatsApp Bot Menu',
-    aliases: ['help', 'cmdlist', 'commands'],
+    description: 'Horizontal Carousel Card Page Navigation Menu',
+    aliases: ['help', 'cmdlist', 'commands', 'p'],
 
     async execute(sock, m, args) {
-        await m.react('📖');
+        await m.react('📱');
 
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -28,67 +28,98 @@ module.exports = {
 
         const botOwner = global.ownerName || 'RAHUL-MASTER';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const page = parseInt(args[0]) || 1; // डिफॉल्ट १ नंबरचे पेज उघडेल
 
+        // सर्व पेजेसचा डेटा (Cards)
         const pages = [
-            // PAGE 1: SYSTEM & GENERAL
             {
-                pageNumber: 1,
-                title: 'SYSTEM & GENERAL',
-                sections: [
-                    { title: 'GENERAL', cmds: ['alive', 'ping', 'uptime', 'owner', 'guide'] },
-                    { title: 'AI COMMANDS', cmds: ['ai', 'ai-search', 'aiv', 'gen'] }
-                ]
+                id: 1,
+                category: 'GENERAL & MAIN COMMANDS',
+                icon: '📌',
+                cmds: ['alive', 'ping', 'uptime', 'owner', 'guide', 'menu2', 'system', 'info']
             },
-            // PAGE 2: DOWNLOADERS & TOOLS
             {
-                pageNumber: 2,
-                title: 'MEDIA & UTILITIES',
-                sections: [
-                    { title: 'DOWNLOADERS', cmds: ['tiktok', 'tt', 'ytmp3', 'ig'] },
-                    { title: 'TOOLS', cmds: ['sticker', 'ocr', 'tts', 'poll', 'shazam'] }
-                ]
+                id: 2,
+                category: 'DOWNLOADERS & MEDIA',
+                icon: '📥',
+                cmds: ['tiktok', 'tt', 'ytmp3', 'ytmp4', 'ig', 'fb', 'play', 'song']
             },
-            // PAGE 3: FUN, ANIME & GROUP
             {
-                pageNumber: 3,
-                title: 'MANAGEMENT & FUN',
-                sections: [
-                    { title: 'FUN & GAMES', cmds: ['blue', 'flag', 'hide', 'style'] },
-                    { title: 'GROUP & ADMIN', cmds: ['tagall', 'group', 'kick', 'promote', 'demote'] }
-                ]
+                id: 3,
+                category: 'TOOLS & UTILITIES',
+                icon: '🛠️',
+                cmds: ['sticker', 'ocr', 'tts', 'poll', 'shazam', 'textpro', 'chid', 'url']
+            },
+            {
+                id: 4,
+                category: 'ARTIFICIAL INTELLIGENCE',
+                icon: '🤖',
+                cmds: ['ai', 'ai-search', 'aiv', 'gen', 'gpt4', 'bing', 'dalle', 'bard']
+            },
+            {
+                id: 5,
+                category: 'FUN & GAMES',
+                icon: '🎮',
+                cmds: ['blue', 'flag', 'hide', 'guessgender', 'agecalculator', 'style', 'truth', 'dare']
+            },
+            {
+                id: 6,
+                category: 'GROUP & ADMIN MANAGEMENT',
+                icon: '👑',
+                cmds: ['tagall', 'tagme', 'couplepp', 'group', 'ginfo', 'antigst', 'kick', 'promote', 'demote']
             }
         ];
 
+        // इनपुटवरून पेज नंबर ओळखणे
+        let requestedPage = parseInt(args[0]) || 1;
+        if (requestedPage < 1) requestedPage = 1;
+        if (requestedPage > pages.length) requestedPage = pages.length;
+
+        const currentCard = pages[requestedPage - 1];
         const totalPages = pages.length;
-        const currentPageData = pages[page - 1] || pages[0];
+
+        // Visual Progress Slider Tracker
+        let progressTrack = '';
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === requestedPage) {
+                progressTrack += '🔘'; // Active Card Slide
+            } else {
+                progressTrack += '➖'; // Inactive Card
+            }
+        }
 
         let menuText = `
-╭━━━〔 *RAHUL-AI MENU* 〕━━━┈
+╭━━━〔 *RAHUL-AI CAROUSEL* 〕━━━┈
 ┃ 👤 *User:* ${user}
 ┃ 👑 *Owner:* ${botOwner}
 ┃ 📅 *Date:* ${date}
 ┃ ⏰ *Time:* ${time}
-┃ 📑 *Page:* [ ${currentPageData.pageNumber} / ${totalPages} ]
-╰━━━━━━━━━━━━━━━━━━━━━━┈\n\n`;
+┃ ⚙️ *Prefix:* [ ${prefix} ]
+╰━━━━━━━━━━━━━━━━━━━━━━┈
 
-        currentPageData.sections.forEach(sec => {
-            menuText += `┌─〔 ◈ *${sec.title}* 〕\n`;
-            sec.cmds.forEach(cmd => {
-                menuText += `├ ◈ ${prefix}${cmd}\n`;
-            });
-            menuText += `└──────────────┈\n\n`;
+┌─〔 ${currentCard.icon} *${currentCard.category}* 〕─┐
+│\n`;
+
+        currentCard.cmds.forEach(cmd => {
+            menuText += `│  ├ 🔹 ${prefix}${cmd}\n`;
         });
 
-        // Left / Right Navigation Indicator
-        menuText += `◀️ *PAGE ${currentPageData.pageNumber} OF ${totalPages}* ▶️\n`;
-        if (currentPageData.pageNumber < totalPages) {
-            menuText += `💡 *Type \`${prefix}menu${currentPageData.pageNumber + 1}\` for Next Page (➡️)*\n\n`;
-        } else {
-            menuText += `💡 *Type \`${prefix}menu 1\` to return to First Page (⬅️)*\n\n`;
+        menuText += `│
+└────────────────────────────┈
+
+◀️ [ ${progressTrack} ] ▶️
+📊 *CARD ${requestedPage} OF ${totalPages}*
+
+─────────────────────────────\n`;
+
+        // Next / Prev Slide Commands Helper
+        if (requestedPage < totalPages) {
+            menuText += `➡️ *Next Slide:* \`${prefix}menu${requestedPage + 1}\`\n`;
+        }
+        if (requestedPage > 1) {
+            menuText += `⬅️ *Prev Slide:* \`${prefix}menu${requestedPage - 1}\`\n`;
         }
 
-        menuText += `> 「 POWERED BY RAHUL MASTER 」`;
+        menuText += `\n> 「 POWERED BY RAHUL MASTER 」`;
 
         try {
             if (global.menuImage) {

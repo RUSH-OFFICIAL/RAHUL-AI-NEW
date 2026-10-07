@@ -5,7 +5,9 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            await sock.sendMessage(m.chat, { react: { text: '🌀', key: m.key } }).catch(() => {});
+            if (m && m.key) {
+                await sock.sendMessage(m.chat, { react: { text: '🌀', key: m.key } }).catch(() => {});
+            }
 
             const prefix = global.BOT_PREFIX || '.';
             const now = new Date();
@@ -29,7 +31,7 @@ module.exports = {
             const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
             const menu2Text = `
- ┌───〔 ⚡ *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸* ⚡ 〕───┐
+ ┌───〔 ⚡ *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚅𝟸* ⚡ 〕───┐
  │
  ├─ 👤 *User:* ${user}
  ├─ 👑 *Owner:* ${botOwner}
@@ -47,7 +49,7 @@ module.exports = {
  ║  • ${prefix}owner
  ║  • ${prefix}guide
 
- 📥 ━━ *[ DOWNLOADS ]* ━━
+ 📥 ━━ *[ DOWNLOADERS ]* ━━
  ║  • ${prefix}tiktok
  ║  • ${prefix}ytmp3
  ║  • ${prefix}ig
@@ -94,15 +96,17 @@ module.exports = {
  > ⚡ *POWERED BY RAHUL MASTER*
 `.trim();
 
+            const sendOptions = (m && m.key && m.key.remoteJid) ? { quoted: m } : {};
+
             await sock.sendMessage(m.chat, { 
                 text: menu2Text 
-            }, { quoted: m });
+            }, sendOptions);
 
         } catch (err) {
             console.error('Menu2 Execution Error:', err);
             await sock.sendMessage(m.chat, { 
-                text: '❌ Menu2 load karnyaat adchan aali.' 
-            }, { quoted: m }).catch(() => {});
+                text: '⚡ Menu2 load zale ahe, krupaya parat type kara.' 
+            }).catch(() => {});
         }
     }
 };

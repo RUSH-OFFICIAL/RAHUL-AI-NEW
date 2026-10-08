@@ -1,119 +1,122 @@
+const axios = require('axios');
+
+if (!global.botStartTime) {
+    global.botStartTime = Date.now();
+}
+
 module.exports = {
     name: 'menu2',
-    description: 'Cyber grid style image menu with zero crash fail-safe',
-    aliases: ['help2', 'commands2'],
+    description: 'Supreme Cyber-Pulse animated circle bot menu',
+    aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        // Direct Image URL set inside code (100% Guaranteed Success)
-        // Tumchi standard sampler zone image link:
-        const MENU2_IMAGE_URL = 'https://sam-cdn.zone.id/files/ZBp0sbXtJB.jpg';
+        const now = new Date();
+        await m.react('💎');
+
+        // Dynamic Cyber-Pulse Live Editing Animation
+        const loadMsg = await m.reply("💎 *[ ＲＡＨＵＬ - ＡＩ ]* 💎\n> *INITIALIZING NEON PULSE... [ ⚡░░░░░░░░ ] 25%*");
+        
+        await new Promise(resolve => setTimeout(resolve, 450));
+        await sock.sendMessage(m.chat, { text: "⚡ *[ ＲＡＨＵＬ - ＡＩ ]* ⚡\n> *SYNCING QUANTUM CORES... [ ████░░░░░░ ] 50%*", edit: loadMsg.key }).catch(() => {});
+
+        await new Promise(resolve => setTimeout(resolve, 450));
+        await sock.sendMessage(m.chat, { text: "🚀 *[ ＲＡＨＵＬ - ＡＩ ]* 🚀\n> *BYPASSING FIREWALLS... [ ████████░░ ] 80%*", edit: loadMsg.key }).catch(() => {});
+
+        await new Promise(resolve => setTimeout(resolve, 450));
+        await sock.sendMessage(m.chat, { text: "✨ *[ ＲＡＨＵＬ - ＡＩ ]* ✨\n> *✨ RAHUL-AI MENU COMPLETED! [ ██████████ ] 100%*", edit: loadMsg.key }).catch(() => {});
+
+        await new Promise(resolve => setTimeout(resolve, 400));
+
+        const prefix = global.BOT_PREFIX || '.';
+        const user = m.pushName || 'User';
+        const menuImageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
+
+        // Uptime Calculation
+        const uptimeSec = Math.floor((Date.now() - global.botStartTime) / 1000);
+        const hours = Math.floor(uptimeSec / 3600);
+        const minutes = Math.floor((uptimeSec % 3600) / 60);
+        const seconds = uptimeSec % 60;
+        const uptime = `${hours}h ${minutes}m ${seconds}s`;
+
+        const menuText = `
+💎 ─── *ＲＡＨＵＬ - A I* ─── 💎
+│
+│ 👤 User   : *${user}*
+│ ⏱️ Uptime : *${uptime}*
+│ ⚙️ Prefix : *${prefix}*
+│ 🚀 Status : *Quantum Pulse Active*
+│
+💎──────────────────────────────💎
+
+🔵 *01. GENERAL COMMANDS*
+⚪ ${prefix}alive
+⚪ ${prefix}ping
+⚪ ${prefix}uptime
+⚪ ${prefix}owner
+⚪ ${prefix}botinfo
+⚪ ${prefix}runtime
+⚪ ${prefix}speed
+
+🔵 *02. DOWNLOAD COMMANDS*
+⚪ ${prefix}tiktok
+⚪ ${prefix}ytmp3
+⚪ ${prefix}ytmp4
+⚪ ${prefix}ig
+⚪ ${prefix}facebook
+⚪ ${prefix}spotify
+⚪ ${prefix}pinterest
+
+🔵 *03. TOOLS & AI ENGINE*
+⚪ ${prefix}sticker
+⚪ ${prefix}take
+⚪ ${prefix}toimg
+⚪ ${prefix}ocr
+⚪ ${prefix}tts
+⚪ ${prefix}ai
+⚪ ${prefix}gen
+⚪ ${prefix}translate
+⚪ ${prefix}calc
+
+🔵 *04. FUN & MISC*
+⚪ ${prefix}blue
+⚪ ${prefix}flag
+⚪ ${prefix}guessgender
+⚪ ${prefix}style
+⚪ ${prefix}dare
+⚪ ${prefix}truth
+⚪ ${prefix}roll
+⚪ ${prefix}ship
+
+🔵 *05. SEARCH & ANIME*
+⚪ ${prefix}weather
+⚪ ${prefix}waifu
+⚪ ${prefix}neko
+⚪ ${prefix}husbando
+⚪ ${prefix}google
+⚪ ${prefix}pinterest
+⚪ ${prefix}lyrics
+⚪ ${prefix}github
+
+🔵 *06. ADMIN & GROUP*
+⚪ ${prefix}tagall
+⚪ ${prefix}tagme
+⚪ ${prefix}group
+⚪ ${prefix}kick
+⚪ ${prefix}promote
+⚪ ${prefix}demote
+⚪ ${prefix}hidetag
+⚪ ${prefix}antilink
+
+💎──────────────────────────────💎
+> *🔥 POWERAD BY RAHUL MASTER*`.trim();
 
         try {
-            // Safe JID fallback
-            const chatJid = m?.chat || m?.key?.remoteJid || m?.from;
-            if (!chatJid) return;
-
-            const prefix = global.BOT_PREFIX || '.';
-            const now = new Date();
-
-            const date = now.toLocaleDateString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                timeZone: 'Asia/Kolkata'
-            });
-
-            const time = now.toLocaleTimeString('en-IN', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,
-                timeZone: 'Asia/Kolkata'
-            });
-
-            const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-            const user = m?.pushName || 'User';
-            const founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-
-            const menu2Text = `
- ┌───〔 ⚡ *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚅𝟸* ⚡ 〕───┐
- │
- ├─ 👤 *User:* ${user}
- ├─ 👑 *Owner:* ${botOwner}
- ├─ 🏛️ *Founder:* ${founder}
- ├─ 📅 *Date:* ${date}
- ├─ ⏰ *Time:* ${time}
- ├─ 🔑 *Prefix:* [ ${prefix} ]
- │
- └───〔 *COMMAND DASHBOARD* 〕───┘
-
- ⚡ ━━ *[ GENERAL ]* ━━
- ║  • ${prefix}alive
- ║  • ${prefix}ping
- ║  • ${prefix}uptime
- ║  • ${prefix}owner
- ║  • ${prefix}guide
-
- 📥 ━━ *[ DOWNLOADERS ]* ━━
- ║  • ${prefix}tiktok
- ║  • ${prefix}ytmp3
- ║  • ${prefix}ig
-
- 🛠️ ━━ *[ TOOLS ]* ━━
- ║  • ${prefix}sticker
- ║  • ${prefix}ocr
- ║  • ${prefix}tts
- ║  • ${prefix}poll
- ║  • ${prefix}shazam
- ║  • ${prefix}chid
-
- 🤖 ━━ *[ AI COMMANDS ]* ━━
- ║  • ${prefix}ai
- ║  • ${prefix}ai-search
- ║  • ${prefix}aiv
- ║  • ${prefix}gen
-
- 🎭 ━━ *[ FUN & UTILITY ]* ━━
- ║  • ${prefix}blue
- ║  • ${prefix}flag
- ║  • ${prefix}guessgender
- ║  • ${prefix}agecalculator
- ║  • ${prefix}style
-
- ⛩️ ━━ *[ ANIME & SEARCH ]* ━━
- ║  • ${prefix}weather
- ║  • ${prefix}waifu
- ║  • ${prefix}neko
- ║  • ${prefix}kitsune
- ║  • ${prefix}husbando
-
- 👥 ━━ *[ GROUP MODS ]* ━━
- ║  • ${prefix}tagall
- ║  • ${prefix}tagme
- ║  • ${prefix}couplepp
- ║  • ${prefix}group
- ║  • ${prefix}ginfo
- ║  • ${prefix}kick
- ║  • ${prefix}promote
- ║  • ${prefix}demote
-
- └────────────────────────────┘
- > ⚡ *POWERED BY RAHUL MASTER*
-`.trim();
-
-            try {
-                // Method 1: Send Image + Text (Native Baileys Buffer Fetch)
-                await sock.sendMessage(chatJid, {
-                    image: { url: MENU2_IMAGE_URL },
-                    caption: menu2Text
-                });
-            } catch (imgErr) {
-                console.error('Koyeb CDN Image Fetch Fail for Menu2:', imgErr);
-                // Method 2: Fail-Safe - Jari CDN down jhala tari code Pure Text pathvel
-                await sock.sendMessage(chatJid, { text: menu2Text });
-            }
-
+            const imageBuffer = (await axios.get(menuImageUrl, {
+                responseType: 'arraybuffer'
+            })).data;
+            await m.reply(imageBuffer, { caption: menuText });
         } catch (err) {
-            console.error('Menu2 Command Crash (Index):', err);
+            await m.reply(menuText);
         }
     }
 };

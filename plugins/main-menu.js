@@ -1,59 +1,50 @@
-// Jevha kontahi message yeil, tevha to check karnyasathi:
-if (m.messages && m.messages[0]) {
-    const msg = m.messages[0];
-    if (!msg.message) return;
-    
-    const remoteJid = msg.key.remoteJid;
-    const messageType = Object.keys(msg.message)[0];
-    
-    // Message text kadhne (Conversation ya Extended Text)
-    const body = (messageType === 'conversation') ? msg.message.conversation : 
-                 (messageType === 'extendedTextMessage') ? msg.message.extendedTextMessage.text : '';
+const { generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 
-    // Prefix ani Command check karne
-    const prefix = ".";
-    if (body.startsWith(prefix)) {
-        const command = body.slice(prefix.length).trim().split(' ').shift().toLowerCase();
-        
-        if (command === 'menu') {
-            // Image sobat menu send karne
-            await sock.sendMessage(remoteJid, {
-                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                caption: `╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣
-┃ *DOWNLOAD COMMAND LIST*
-┃ • .an1
-┃ • .dl-npm
-┃ • .play
-┃ • .video
-┃ • .drama
-┃ • .apk
-┃ • .fb
-┃ • .gitclone
-┃ • .gdrive
-┃ • .mediafire
-┃ • .tiktok
-┃ • .timp3
-┃ • .insta
-┃ • .instamp3
-┃ • .twitter
-┃ • .pinterest
-╰━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 *OWNER COMMAND LIST* 〕━━━⬣
-┃ • .autobio
-┃ • .bgmirefresh
-┃ • .jid
-┃ • .kickadmins
-┃ • .join
-┃ • .left
-┃ • .newgc
-┃ • .smd
-┃ • .chreact
-┃ • .newsletter
-┃ • .status
-╰━━━━━━━━━━━━━━━━━━━⬣
-*POWERED BY RAHUL-MASTER*`
-            });
+if (command === 'menu' || command === 'help') {
+    const listMessage = generateWAMessageFromContent(from, {
+        viewOnceMessage: {
+            message: {
+                interactiveMessage: {
+                    body: {
+                        text: "╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣\n┃ Click the button below to open\n┃ the full command categories list.\n╰━━━━━━━━━━━━━━━━━━━⬣"
+                    },
+                    footer: {
+                        text: "POWERED BY RAHUL-MASTER"
+                    },
+                    nativeFlowMessage: {
+                        buttons: [
+                            {
+                                name: "single_select",
+                                buttonParamsJson: JSON.stringify({
+                                    title: "📂 CLICK HERE TO VIEW MENU",
+                                    sections: [
+                                        {
+                                            title: "POPULAR CATEGORIES",
+                                            rows: [
+                                                { title: "📥 Download Menu", rowId: ".downloadmenu", description: "View all download commands" },
+                                                { title: "👑 Owner Menu", rowId: ".ownermenu", description: "View bot owner control commands" },
+                                                { title: "👥 Group Menu", rowId: ".groupmenu", description: "View group management commands" },
+                                                { title: "🔍 Search Menu", rowId: ".searchmenu", description: "View search & info commands" }
+                                            ]
+                                        },
+                                        {
+                                            title: "OTHER CATEGORIES",
+                                            rows: [
+                                                { title: "🔄 Convert Menu", rowId: ".convertmenu", description: "View media conversion commands" },
+                                                { title: "🤖 AI Menu", rowId: ".aimenu", description: "View AI chat & generation commands" },
+                                                { title: "🎉 Fun Menu", rowId: ".funmenu", description: "View fun & entertainment commands" },
+                                                { title: "⚙️ Settings Menu", rowId: ".settingsmenu", description: "View bot setting commands" }
+                                            ]
+                                        }
+                                    ]
+                                })
+                            }
+                        ]
+                    }
+                }
+            }
         }
-    }
+    }, { quoted: m });
+
+    await sock.relayMessage(from, listMessage.message, { messageId: listMessage.key.id });
 }

@@ -1,13 +1,16 @@
+const axios = require('axios');
+
 module.exports = {
     name: 'menu',
-    description: 'Automatic Random Changing Styles and Images Menu',
+    description: 'Show available bot commands with auto-changing styles and images',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
+        // Safe reaction handler
         try {
             await sock.sendMessage(m.chat, { 
                 react: { text: '⚡', key: m.key } 
-            }).catch(() => {});
+            });
         } catch (e) {}
         
         const prefix = global.BOT_PREFIX || '.';
@@ -31,8 +34,8 @@ module.exports = {
         const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
-        
-        // 🌟 Automatic Rotating Image Links (Pratyek veles random image yeil)
+
+        // 🌟 Automatic Rotating Image URLs (Pratyek veles navin image yeil)
         const menuImages = [
             'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
             'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
@@ -41,67 +44,125 @@ module.exports = {
         ];
         const randomImage = menuImages[Math.floor(Math.random() * menuImages.length)];
 
-        // Commands List
-        const c = {
-            general: `${prefix}alive | ${prefix}ping | ${prefix}uptime | ${prefix}owner`,
-            downloader: `${prefix}tiktok | ${prefix}ytmp3 | ${prefix}ig`,
-            tools: `${prefix}sticker | ${prefix}ocr | ${prefix}tts | ${prefix}shazam`,
-            ai: `${prefix}ai | ${prefix}ai-search | ${prefix}gen`,
-            group: `${prefix}tagall | ${prefix}group | ${prefix}kick`
-        };
+        // Commands block (Tuza original format)
+        const cmdList = `
+├─ム *ɢᴇɴᴇʀᴀʟ*
+│ ᪣ ${prefix}ᴀʟɪᴠᴇ
+│ ᪣ ${prefix}ᴘɪɴɢ
+│ ᪣ ${prefix}ᴜᴘᴛɪᴍᴇ
+│ ᪣ ${prefix}ᴏᴡɴᴇʀ
+│ ᪣ ${prefix}ɢᴜɪᴅᴇ
+│ ᪣ ${prefix}ᴍᴇɴᴜ2
+│
+├─ム *ᴅᴏᴡɴʟᴏᴀᴅᴇʀs*
+│ ᪣ ${prefix}ᴛɪᴋᴛᴏᴋ / ${prefix}ᴛᴛ
+│ ᪣ ${prefix}ʏᴛᴍᴘ3
+│ ᪣ ${prefix}ɪɢ
+│
+├─ム *ᴛᴏᴏʟs*
+│ ᪣ ${prefix}sᴛɪᴄᴋᴇʀ
+│ ᪣ ${prefix}ᴏᴄʀ
+│ ᪣ ${prefix}ᴛᴛs
+│ ᪣ ${prefix}ᴘᴏʟʟ
+│ ᪣ ${prefix}sʜᴀᴢᴀᴍ
+│ ᪣ ${prefix}ᴛᴇxᴛᴘʀᴏ
+│ ᪣ ${prefix}ᴄʜɪᴅ
+│
+├─ム *ᴀɪ*
+│ ᪣ ${prefix}ᴀɪ
+│ ᪣ ${prefix}ᴀɪ-sᴇᴀʀᴄʜ
+│ ᪣ ${prefix}ᴀɪᴠ
+│ ᪣ ${prefix}ɢᴇɴ
+│
+├─ム *ғᴜɴ*
+│ ᪣ ${prefix}ʙʟᴜᴇ
+│ ᪣ ${prefix}ғʟᴀɢ
+│
+├─ム *ɴᴇᴡ*
+│ ᪣ ${prefix}ʜɪᴅᴇ
+│ ᪣ ${prefix}ɢᴜᴇssɢᴇɴᴅᴇʀ
+│ ᪣ ${prefix}ᴀɢᴇᴄᴀʟᴄᴜʟᴀᴛᴏʀ
+│ ᪣ ${prefix}sᴛʏʟᴇ
+│
+├─ム *ꜱᴇᴀʀᴄʜ*
+│ ᪣ ${prefix}ᴡᴇᴀᴛʜᴇʀ
+│
+├─ム *ᴀɴɪᴍᴇ*
+│ ᪣ ${prefix}ᴡᴀɪғᴜ
+│ ᪣ ${prefix}ɴᴇᴋᴏ
+│ ᪣ ${prefix}ᴋɪᴛꜱᴜɴᴇ
+│ ᪣ ${prefix}ʜᴜꜱʙᴀɴᴅᴏ
+│
+├─ム *ɢʀᴏᴜᴘ*
+│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ
+│ ᪣ ${prefix}ᴛᴀɢᴀʟʟ1
+│ ᪣ ${prefix}ᴛᴀɢᴍᴇ
+│ ᪣ ${prefix}ᴄᴏᴜᴘʟᴇᴘᴘ
+│ ᪣ ${prefix}ɢʀᴏᴜᴘ
+│ ᪣ ${prefix}ɢɪɴғᴏ
+│ ᪣ ${prefix}ᴀɴᴛɪɢsᴛ
+│
+├─ム *sᴛᴀᴛᴜs*
+│ ᪣ ${prefix}ɢsᴛᴀᴛᴜs
+│
+├─ム *ᴄʜᴀɴɴᴇʟ*
+│ ᪣ ${prefix}ᴄʜᴀɴɴᴇʟɪᴅ
+│
+├─ム *ᴀᴅᴍɪɴ*
+│ ᪣ ${prefix}ᴋɪᴄᴋ
+│ ᪣ ${prefix}ᴘʀᴏᴍᴏᴛᴇ
+│ ᪣ ${prefix}ᴅᴇᴍᴏᴛᴇ`;
 
-        // 🌟 Automatic Rotating Menu Styles (Pratyek veles random style yeil)
+        // 🌟 Automatic Rotating 5 Different Styles
         const menuStyles = [
-            // Style 1: Matrix Theme
-            `╔════════════════════════════╗
-║ 🧬 *⚡ 𝑹𝑨𝑯𝑼𝑳-𝑨𝑰 𝙼𝙰𝚃𝚁𝙸𝚇 ⚡* 🧬
-╚════════════════════════════╝
-│ 👑 Founder : ${Founder}
-│ ⚡ Owner   : ${botOwner}
-│ 👤 User    : ${user}
-│ 📅 Date    : ${date}
-│ ⏰ Time    : ${time}
-│ ⚙️ Prefix  : ${prefix}
-╚════════════════════════════╝
+            // Style 1 (Tuza original format)
+            `┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ (STYLE 1)
+│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
+│ *ᴏᴡɴᴇʀ:* ${botOwner}
+│ *ᴜsᴇʀ:* ${user}
+│ *ᴅᴀᴛᴇ:* ${date}
+│ *ᴛɪᴍᴇ:* ${time}
+│ *ᴘʀᴇғɪx:* ${prefix}
+╰──────────────────╯
 
-┌─〔 🚀 ɢᴇɴᴇʀᴀʟ 〕
-│ ⚡ ${c.general}
-└───────────────◆
+┌─ム ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
+${cmdList}
+╰─────────◆────────╯
 
-┌─〔 📥 ᴅᴏᴡɴʟᴏᴀᴅꜱ 〕
-│ 📥 ${c.downloader}
-└───────────────◆
+> 「 ᴩᴏᴡᴇʀᴇᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」`,
 
-┌─〔 🛠️ ᴛᴏᴏʟꜱ 〕
-│ 🛠️ ${c.tools}
-└───────────────◆
-
-> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 1)*`,
-
-            // Style 2: Hologram Theme
-            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 ʜᴏʟᴏɢʀ𝖆ᴍ 〕━━━╮
-┃ 👑 Founder : ${Founder}
-┃ ⚡ Owner   : ${botOwner}
-┃ 👤 User    : ${user}
-┃ 📅 Date    : ${date}
-┃ ⚙️ Prefix  : ${prefix}
+            // Style 2 (Hologram style)
+            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 ʜᴏʟᴏɢʀᴀᴍ 〕━━━╮
+┃ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
+┃ *ᴏᴡɴᴇʀ:* ${botOwner}
+┃ *ᴜsᴇʀ:* ${user}
+┃ *ᴅᴀᴛᴇ:* ${date}
+┃ *ᴘʀᴇғɪx:* ${prefix}
 ╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
 
-┌───❖ *🚀 𝐆𝐄𝐍𝐄𝐑𝐀𝐋*
-│ 💎 ${c.general}
+┌───❖ *ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs*
+${cmdList}
 └───────────────◆
 
-┌───❖ *📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒*
-│ 💎 ${c.downloader}
+> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 2)`,
+
+            // Style 3 (Matrix style)
+            `╔════════════════════════════╗
+║ 🧬 *⚡ 𝑹𝑨𝙷𝚄𝙻-𝑨𝙸 𝙼𝙰𝚃𝚁𝙸𝚇 ⚡* 🧬
+╚════════════════════════════╝
+│ 👑 𝐹𝑜𝑢𝑛𝒅𝑒𝑟 : ${Founder}
+│ ⚡ 𝑂𝑤𝑛𝑒𝑟   : ${botOwner}
+│ 👤 𝑈𝑠𝑒𝑟    : ${user}
+│ 📅 𝐷𝑎𝑡𝑒    : ${date}
+╚════════════════════════════╝
+
+┌─〔 ᴄᴏᴍᴍᴀɴᴅꜱ ʟɪꜱᴛ 〕
+${cmdList}
 └───────────────◆
 
-┌───❖ *🤖 𝐀𝐈 & 𝐓𝐎𝐎𝐋𝐒*
-│ 💎 ${c.ai}
-└───────────────◆
+> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 3)*`,
 
-> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 2) ❖`,
-
-            // Style 3: Cyber Console Theme
+            // Style 4 (Cyber Console)
             `╔═════════════════════════════╗
 ║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
 ╚═════════════════════════════╝
@@ -111,295 +172,45 @@ module.exports = {
 │ » ᴛɪᴍᴇ    : ${time}
 ╚═════════════════════════════╝
 
-╭─[ ⚡ ᴍᴀɪɴ ᴄᴍᴅꜱ ]
-│ ◈ ${c.general}
+╭─[ ᴄᴍᴅꜱ ᴄᴏɴꜱᴏʟᴇ ]
+${cmdList}
 ╰───────────────◆
 
-╭─[ 📥 ᴅᴏᴡɴʟᴏᴀᴅꜱ ]
-│ ◈ ${c.downloader}
-╰───────────────◆
+> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 4)`,
 
-╭─[ 👥 ɢʀᴏᴜᴘ ]
-│ ◈ ${c.group}
-╰───────────────◆
-
-> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 3)`
-        ];
-
-        const randomText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
-
-        // Send with automatic image and automatic style
-        try {
-            await sock.sendMessage(m.chat, {
-                image: { url: randomImage },
-                caption: randomText
-            }, { quoted: m });
-        } catch (err) {
-            // Fallback text just in case image fails
-            await sock.sendMessage(m.chat, { text: randomText }, { quoted: m });
-        }
-    }
-};
- = {
-    name: 'menu',
-    description: 'Show available bot commands with ultimate auto-changing styles & direct image url',
-    aliases: ['help', 'cmdlist', 'commands'],
-
-    async execute(sock, m) {
-        // Safe reaction handling
-        try {
-            if (sock.sendMessage && m.key) {
-                await sock.sendMessage(m.chat, { 
-                    react: { text: '⚡', key: m.key } 
-                });
-            }
-        } catch (e) {}
-        
-        const prefix = global.BOT_PREFIX || '.';
-        const now = new Date();
-
-        const date = now.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-            timeZone: 'Asia/Kolkata'
-        });
-
-        const time = now.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true,
-            timeZone: 'Asia/Kolkata'
-        });
-
-        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
-        const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
-        
-        // Rotating Image URLs (Pratyek veles automatically image change hoil)
-        const menuImages = [
-            'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
-            'https://files.catbox.moe/57j7w5.jpg',
-            'https://files.catbox.moe/g24h0f.jpg'
-        ];
-        const menuImageUrl = menuImages[Math.floor(Math.random() * menuImages.length)];
-
-        // Commands list
-        const c = {
-            general: `${prefix}alive\n│ 🚀 ${prefix}ping\n│ 🚀 ${prefix}uptime\n│ 🚀 ${prefix}owner\n│ 🚀 ${prefix}guide\n│ 🚀 ${prefix}menu2`,
-            downloader: `${prefix}tiktok / ${prefix}tt\n│ 📥 ${prefix}ytmp3\n│ 📥 ${prefix}ig`,
-            tools: `${prefix}sticker\n│ 🛠️ ${prefix}ocr\n│ 🛠️ ${prefix}tts\n│ 🛠️ ${prefix}poll\n│ 🛠️ ${prefix}shazam\n│ 🛠️ ${prefix}textpro\n│ 🛠️ ${prefix}chid`,
-            ai: `${prefix}ai\n│ 🤖 ${prefix}ai-search\n│ 🤖 ${prefix}aiv\n│ 🤖 ${prefix}gen`,
-            fun: `${prefix}blue\n│ 🎮 ${prefix}flag`,
-            new: `${prefix}hide\n│ ✨ ${prefix}guessgender\n│ ✨ ${prefix}agecalculator\n│ ✨ ${prefix}style`,
-            search: `${prefix}weather`,
-            anime: `${prefix}waifu\n│ 🌸 ${prefix}neko\n│ 🌸 ${prefix}kitsune\n│ 🌸 ${prefix}husbando`,
-            group: `${prefix}tagall\n│ 👥 ${prefix}tagall1\n│ 👥 ${prefix}tagme\n│ 👥 ${prefix}couplepp\n│ 👥 ${prefix}group\n│ 👥 ${prefix}ginfo\n│ 👥 ${prefix}antigst`,
-            status: `${prefix}gstatus`,
-            channel: `${prefix}channelid`,
-            admin: `${prefix}kick\n│ 🛡️ ${prefix}promote\n│ 🛡️ ${prefix}demote`
-        };
-
-        // Unique Menu Variations (Auto-Changing Styles)
-        const menuStyles = [
-            // Style 1: Matrix Core
+            // Style 5 (Royal Frame)
             `╔════════════════════════════╗
-║ 🧬 *⚡ 𝑹𝑨𝑯𝑼𝑳-𝑨𝑰 𝑴𝑨𝑻𝑹𝑰𝓧 ⚡* 🧬
+║ 👑 *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚁𝙾𝚈𝙰𝙻 𝙼𝙴𝙽𝚄* 👑
 ╚════════════════════════════╝
-│ 👑 𝐹𝑜𝑢𝑛𝒅𝑒𝑟 : ${Founder}
-│ ⚡ 𝑂𝑤𝑛𝑒𝑟   : ${botOwner}
-│ 👤 𝑈𝑠𝑒𝑟    : ${user}
-│ 📅 𝐷𝑎𝑡𝑒    : ${date}
-│ ⏰ 𝑇𝑖𝑚𝑒    : ${time}
-│ ⚙️ 𝑃𝑟𝑒𝑓𝑖𝑥  : ${prefix}
+│ ❖ ꜰᴏᴜɴᴅᴇʀ : ${Founder}
+│ ❖ ᴏᴡɴᴇʀ   : ${botOwner}
+│ ❖ ᴜꜱᴇʀ    : ${user}
 ╚════════════════════════════╝
 
-┌─〔 🚀 ɢᴇɴᴇʀᴀʟ ᴄᴍᴅꜱ 〕
-│ ⚡ ${c.general}
-└───────────────◆
+🚀 *[ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅꜱ ]*
+${cmdList}
 
-┌─〔 📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ 〕
-│ 📥 ${c.downloader}
-└───────────────◆
-
-┌─〔 🛠️ ᴛᴏᴏʟꜱ 〕
-│ 🛠️ ${c.tools}
-└───────────────◆
-
-┌─〔 🤖 ᴀɪ ᴄᴍᴅꜱ 〕
-│ 🤖 ${c.ai}
-└───────────────◆
-
-┌─〔 🎮 ꜰᴜɴ 〕
-│ 🎮 ${c.fun}
-└───────────────◆
-
-┌─〔 ✨ ɴᴇᴡ ᴄᴍᴅꜱ 〕
-│ ✨ ${c.new}
-└───────────────◆
-
-┌─〔 🔍 ꜱᴇᴀʀᴄʜ 〕
-│ 🔍 ${c.search}
-└───────────────◆
-
-┌─〔 🌸 ᴀɴɪᴍᴇ 〕
-│ 🌸 ${c.anime}
-└───────────────◆
-
-┌─〔 👥 ɢʀᴏᴜᴘ ᴄᴍᴅꜱ 〕
-│ 👥 ${c.group}
-└───────────────◆
-
-┌─〔 📊 ꜱᴛᴀᴛᴜꜱ 〕
-│ 📊 ${c.status}
-└───────────────◆
-
-┌─〔 📢 ᴄʜᴀɴɴᴇʟ 〕
-│ 📢 ${c.channel}
-└───────────────◆
-
-┌─〔 🛡️ ᴀᴅᴍɪɴ ᴄᴍᴅꜱ 〕
-│ 🛡️ ${c.admin}
-└───────────────◆
-
-> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝗟-ᴀɪ*`,
-
-            // Style 2: Hologram Grid
-            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 𝖍𝖔𝖑𝖔𝖌𝖗𝖆𝖒 〕━━━╮
-┃ 👑 Founder : ${Founder}
-┃ ⚡ Owner   : ${botOwner}
-┃ 👤 User    : ${user}
-┃ 📅 Date    : ${date}
-┃ ⏰ Time    : ${time}
-┃ ⚙️ Prefix  : ${prefix}
-╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
-
-┌───❖ *🚀 𝐆𝐄𝐍𝐄𝐑𝐀𝐋*
-│ 💎 ${c.general}
-└───────────────◆
-
-┌───❖ *📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒*
-│ 💎 ${c.downloader}
-└───────────────◆
-
-┌───❖ *🛠️ 𝐓𝐎𝐎𝐋𝐒*
-│ 💎 ${c.tools}
-└───────────────◆
-
-┌───❖ *🤖 𝐀𝐈 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
-│ 💎 ${c.ai}
-└───────────────◆
-
-┌───❖ *🎮 𝐅𝐔𝐍*
-│ 💎 ${c.fun}
-└───────────────◆
-
-┌───❖ *✨ 𝐍𝐄𝐖 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
-│ 💎 ${c.new}
-└───────────────◆
-
-┌───❖ *🔍 𝐒𝐄𝐀𝐑𝐂𝐇*
-│ 💎 ${c.search}
-└───────────────◆
-
-┌───❖ *🌸 𝐀𝐍𝐈𝐌𝐄*
-│ 💎 ${c.anime}
-└───────────────◆
-
-┌───❖ *👥 𝐆𝐑𝐎𝚄𝙿*
-│ 💎 ${c.group}
-└───────────────◆
-
-┌───❖ *📊 𝐒𝐓𝐀𝐓𝚄𝚂*
-│ 💎 ${c.status}
-└───────────────◆
-
-┌───❖ *📢 𝐂𝐇𝐀𝐍𝐍𝐄𝐋*
-│ 💎 ${c.channel}
-└───────────────◆
-
-┌───❖ *🛡️ 𝐀𝐃𝙼𝙸𝙽*
-│ 💎 ${c.admin}
-└───────────────◆
-
-> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ ɴᴇᴛᴡᴏʀᴋ ❖`,
-
-            // Style 3: Cyber Console
-            `╔═════════════════════════════╗
-║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
-╚═════════════════════════════╝
-│ » ꜰᴏᴜɴᴅᴇʀ : ${Founder}
-│ » ᴏᴡɴᴇ🇷   : ${botOwner}
-│ » ᴜꜱᴇʀ    : ${user}
-│ » ᴅᴀᴛᴇ    : ${date}
-│ » ᴛɪᴍᴇ    : ${time}
-│ » ᴘʀᴇꜰɪx  : ${prefix}
-╚═════════════════════════════╝
-
-╭─[ ⚡ ɢᴇɴᴇʀᴀʟ ]
-│ ◈ ${c.general}
-╰───────────────◆
-
-╭─[ 📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ ]
-│ ◈ ${c.downloader}
-╰───────────────◆
-
-╭─[ 🛠️ ᴛᴏᴏʟꜱ ]
-│ ◈ ${c.tools}
-╰───────────────◆
-
-╭─[ 🤖 ᴀɪ ]
-│ ◈ ${c.ai}
-╰───────────────◆
-
-╭─[ 🎮 ꜰᴜɴ ]
-│ ◈ ${c.fun}
-╰───────────────◆
-
-╭─[ ✨ ɴᴇᴡ ]
-│ ◈ ${c.new}
-╰───────────────◆
-
-╭─[ 🔍 ꜱᴇᴀʀᴄʜ ]
-│ ◈ ${c.search}
-╰───────────────◆
-
-╭─[ 🌸 ᴀɴɪᴍᴇ ]
-│ ◈ ${c.anime}
-╰───────────────◆
-
-╭─[ 👥 ɢʀᴏᴜᴘ ]
-│ ◈ ${c.group}
-╰───────────────◆
-
-╭─[ 📊 ꜱᴛᴀᴛᴜꜱ ]
-│ ◈ ${c.status}
-╰───────────────◆
-
-╭─[ 📢 ᴄʜᴀɴɴᴇʟ ]
-│ ◈ ${c.channel}
-╰───────────────◆
-
-╭─[ 🛡️ ᴀᴅᴍɪɴ ]
-│ ◈ ${c.admin}
-╰───────────────◆
-
-> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ꜱʏꜱᴛᴇᴍ`
+> 💎 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 5)*`
         ];
 
-        const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
+        // Randomly select one style automatically
+        const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)].trim();
 
-        // Send message with direct Image URL & Auto-Changing Style Text
         try {
+            // Fetch image via axios buffer safely
+            const response = await axios.get(randomImage, {
+                responseType: 'arraybuffer',
+                timeout: 5000
+            });
+
             await sock.sendMessage(m.chat, {
-                image: { url: menuImageUrl },
+                image: Buffer.from(response.data),
                 caption: randomMenuText
             }, { quoted: m });
+
         } catch (err) {
-            console.error('Menu send error:', err);
-            // Fallback to text if image fails to render
+            console.error('Menu error:', err);
+            // Fallback to text message if image fails to download
             await sock.sendMessage(m.chat, { text: randomMenuText }, { quoted: m });
         }
     }

@@ -10,22 +10,28 @@ module.exports = {
             // React with lightning to acknowledge command receipt
             await m.react('⚡');
             
-            // Send Image with Caption
+            // 1. Fetch and Send Image using Buffer
+            const imageRes = await fetch('https://sam-cdn.zone.id/files/C0SGPFVlH3.jpg');
+            const imageBuffer = await imageRes.arrayBuffer();
+
             await sock.sendMessage(m.from, {
-                image: { url: 'https://sam-cdn.zone.id/files/C0SGPFVlH3.jpg' },
+                image: Buffer.from(imageBuffer),
                 caption: '✨ System Status: ONLINE & Active!'
             }, { quoted: m });
 
-            // Send Audio / Voice Note
+            // 2. Fetch and Send Audio / Voice Note using Buffer
+            const audioRes = await fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+            const audioBuffer = await audioRes.arrayBuffer();
+
             await sock.sendMessage(m.from, {
-                audio: { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+                audio: Buffer.from(audioBuffer),
                 mimetype: 'audio/mp4',
                 ptt: true
             }, { quoted: m });
 
         } catch (err) {
             console.error('❌ Alive plugin error:', err);
-            await sock.sendMessage(m.from, { text: '⚠️ An error occurred while executing the alive command.' }, { quoted: m });
+            await sock.sendMessage(m.from, { text: 'Error running command.' }, { quoted: m });
         }
     },
 };

@@ -6,12 +6,18 @@ if (!global.botStartTime) {
 
 module.exports = {
     name: 'menu',
-    description: 'Expanded circle-themed rich bot menu',
+    description: 'Expanded circle-themed rich bot menu with loading animation',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
         const now = new Date();
         await m.react('⭕');
+
+        // 1. Menu yenya aadi loading/completion animation message
+        const loadingMsg = await m.reply("⚡ *[ ＲＡＨＵＬ - ＡＩ ]* ⚡\n> *COMPUTING MENU MATRIX... 🔄*");
+
+        // Chhota delay sathi (1 second)
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
         const prefix = global.BOT_PREFIX || '.';
         const user = m.pushName || 'User';
@@ -94,7 +100,7 @@ module.exports = {
 ⚪ ${prefix}antilink
 
 ⭕──────────────────────────────⭕
-> *⭕ Powered by Rahul Master*`.trim();
+> *✨ RAHUL-AI MENU COMPLETED*`.trim();
 
         try {
             const imageBuffer = (await axios.get(menuImageUrl, {

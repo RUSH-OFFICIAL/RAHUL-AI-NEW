@@ -3,27 +3,41 @@ const axios = require('axios');
 module.exports = {
     name: 'ping',
     aliases: ['speed', 'latency'],
-    description: 'Check bot response speed',
+    description: 'Check bot response speed with a sleek style',
 
     async execute(sock, m, args) {
-        
-            await m.react('🚀');
-        const start = Date.now();
-        const sentMsg = await m.reply('Pinging...');
-        const latency = Date.now() - start;
-        const info = `> 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸: ${latency} ms`;
-
         try {
+            // First reaction and initial message
+            await m.react('⚡');
+            const start = Date.now();
+            
+            // Send initial message with image and caption
+            const sentMsg = await sock.sendMessage(m.from, {
+                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
+                caption: '```🔄 Calculating RAHUL-AI Latency...```'
+            }, { quoted: m });
+
+            const latency = Date.now() - start;
+
+            // Stylish modern dashboard design
+            const pingText = 
+                `╭────────────────────────╮\n` +
+                `│   🚀 **RAHUL-AI STATUS**   │\n` +
+                `├────────────────────────┤\n` +
+                `│ ⚡ **Speed:** ${latency} ms\n` +
+                `│ 🟢 **Status:** Online\n` +
+                `│ 🛡️ **System:** Active\n` +
+                `╰────────────────────────╯`;
+
+            // Edit the caption of the sent image message
             await sock.sendMessage(m.from, {
-                text: info,
+                text: pingText,
                 edit: sentMsg.key
             });
+
         } catch (err) {
-            console.error('Ping error:', err);
-            await sock.sendMessage(m.from, {
-                text: `𝚁𝙰𝙷𝚄𝙻-𝙰𝙸: ${latency} ms`,
-                edit: sentMsg.key
-            });
+            console.error('Ping command error:', err);
+            await m.reply(`❌ Error checking ping: ${err.message}`);
         }
     }
 };

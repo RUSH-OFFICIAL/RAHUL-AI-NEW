@@ -1,44 +1,69 @@
-const axios = require('axios');
+const os = require('os');
 
 module.exports = {
     name: 'ping',
     aliases: ['speed', 'latency', 'p'],
-    description: 'Check bot response speed and system latency',
+    description: 'Check bot ultra-speed and system performance',
 
     async execute(sock, m, args) {
-        const startTime = Date.now();
+        const start = Date.now();
         
-        // Initial reaction and message
-        await m.react('⚡');
-        const sentMsg = await m.reply('*Pinging system...*');
-        
-        const responseTime = Date.now() - startTime;
-        
-        // Optional: Get server uptime if available
-        const uptimeSeconds = process.uptime();
-        const hours = Math.floor(uptimeSeconds / 3600);
-        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
-        const seconds = Math.floor(uptimeSeconds % 60);
-        const uptimeFormatted = `${hours}h ${minutes}m ${seconds}s`;
-
-        const pingText = `
-╭━━━〔 **RAHUL-AI STATUS** 〕━━━⬣
-┃ 🚀 *Response Speed:* \`${responseTime} ms\`
-┃ ⏱️ *Uptime:* \`${uptimeFormatted}\`
-┃ 🟢 *Status:* \`Online & Stable\`
-╰━━━━━━━━━━━━━━━━━━━━━━⬣`.trim();
-
         try {
+            // Initial swift reaction
+            await m.react('🔥');
+            
+            const sentMsg = await m.reply('> *Establishing connection to RAHUL-AI core...* 🛰️');
+            const latency = Date.now() - start;
+
+            // Speed gauge logic
+            let speedBar = '🟩🟩🟩🟩🟩';
+            let speedLabel = 'Lightning Fast ⚡';
+            if (latency > 200 && latency <= 500) {
+                speedBar = '🟨🟨🟨🟩🟩';
+                speedLabel = 'Stable 🟢';
+            } else if (latency > 500) {
+                speedBar = '🟥🟥🟨🟩🟩';
+                speedLabel = 'Sluggish 🐢';
+            }
+
+            // System Uptime Calculation
+            const uptime = process.uptime();
+            const h = Math.floor(uptime / 3600);
+            const m_time = Math.floor((uptime % 3600) / 60);
+            const s = Math.floor(uptime % 60);
+            const uptimeFormatted = `${h}h ${m_time}m${s}s`;
+
+            // Memory Usage
+            const totalRAM = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
+            const freeRAM = (os.freemem() / 1024 / 1024 / 1024).toFixed(2);
+            const usedRAM = (totalRAM - freeRAM).toFixed(2);
+
+            // Cyberpunk/VIP Box Layout
+            const pingText = 
+`╭━━━〔 ⚡ *RAHUL-AI SPEED* ⚡ 〕━━━╮
+┃
+┃  ❖ *Response Time* : \`${latency} ms\`
+┃  ❖ *Performance*   : ${speedLabel}
+┃  ❖ *Speed Meter*   : ${speedBar}
+┃
+┣━━━〔 💻 *SYSTEM STATS* 〕━━━┫
+┃
+┃  ❖ *Uptime*  : \`${uptimeFormatted}\`
+┃  ❖ *RAM Use* : \`${usedRAM} GB / ${totalRAM} GB\`
+┃  ❖ *Platform*: \`${os.platform().toUpperCase()}\`
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━╯`;
+
+            // Update the message
             await sock.sendMessage(m.from, {
                 text: pingText,
                 edit: sentMsg.key
             });
+
         } catch (err) {
-            console.error('Ping edit error:', err);
-            // Fallback if message editing fails
-            await sock.sendMessage(m.from, {
-                text: `*RAHUL-AI Latency:* ${responseTime} ms`
-            });
+            console.error('Ping command error:', err);
+            const fallbackLatency = Date.now() - start;
+            await m.reply(`> *RAHUL-AI Latency:* \`${fallbackLatency} ms\``);
         }
     }
 };

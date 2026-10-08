@@ -39,7 +39,7 @@ async function convertToPtt(buffer) {
 
 module.exports = {
     name: 'alive',
-    description: 'Check bot status with voice note and dynamic info',
+    description: 'Check bot status with full image and voice note',
     aliases: ['status', 'runtime'],
     tags: ['main'],
     command: /^(alive|status|runtime)$/i,
@@ -67,14 +67,12 @@ module.exports = {
             const timeString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
             const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-            // New Image Thumbnail URL (Tumchi navin style image link yithe taka)
+            // Fetch Full Image Buffer
             const imageResponse = await fetch('https://sam-cdn.zone.id/files/rkDfPAPiha.jpg');
             const imageBuffer = await imageResponse.arrayBuffer();
-            const img = await pix.read(Buffer.from(imageBuffer));
-            const resized = await img.resize(300, 300, { fit: 'cover' });
-            const thumb = await resized.toBuffer({ format: 'jpeg', quality: 50 });
+            const fullImageBuffer = Buffer.from(imageBuffer);
 
-            // Brand New Stylish Caption Layout
+            // Stylish Caption Layout
             const aliveCaption = `┏━━━━━━━━━━━━━━━━━━━━┓
 ┃     ⚡ *SYSTEM STATUS* ⚡     
 ┗━━━━━━━━━━━━━━━━━━━━┛
@@ -88,39 +86,29 @@ module.exports = {
   ├ ⏰ *Time:* ${timeString}
   │
   └───────────────────⭔
-  _✨ Powered by PixCore & FFmpeg_`;
+  _✨ Powered by Custom Core_`;
 
-            // Audio Fetch & Conversion
+            // 1. Send Full Image with Caption first
+            await sock.sendMessage(m.from, {
+                image: fullImageBuffer,
+                caption: aliveCaption,
+                mentions: [m.sender]
+            }, { quoted: m });
+
+            // 2. Fetch Audio & Convert to PTT (Voice Note)
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
             if (!audioResponse.ok) throw new Error('Failed to fetch audio url');
             const rawAudioBuffer = await audioResponse.arrayBuffer();
 
-            // Convert raw audio buffer to real WhatsApp PTT format using FFmpeg
             const pttBuffer = await convertToPtt(Buffer.from(rawAudioBuffer));
 
-            const fakeQuoted = {
-                key: {
-                    remoteJid: m.from,
-                    fromMe: false,
-                    participant: m.sender,
-                    id: 'NEW_ALIVE_' + Date.now()
-                },
-                message: {
-                    imageMessage: {
-                        mimetype: 'image/jpeg',
-                        jpegThumbnail: thumb,
-                        caption: aliveCaption,
-                        mentions: [m.sender]
-                    }
-                }
-            };
-
+            // Send Voice Note right after the image
             await sock.sendMessage(m.from, {
                 audio: pttBuffer,
                 mimetype: 'audio/ogg; codecs=opus',
                 ptt: true
-            }, { quoted: fakeQuoted });
+            }, { quoted: m });
 
         } catch (err) {
             console.error('❌ Alive Error:', err);

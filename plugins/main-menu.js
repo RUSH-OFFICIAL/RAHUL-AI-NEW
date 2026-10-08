@@ -2,13 +2,11 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Normal & Clean Auto-Changing Menu with Dynamic RAHUL-AI Logo',
-    aliases: ['help', 'cmdlist', 'commands', 'menu16'],
+    description: 'Show available bot commands',
+    aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        try { 
-            await m.react('📜'); 
-        } catch (e) {}
+        await m.react('✔️');
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -17,102 +15,94 @@ module.exports = {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
-            timeZone: 'Asia/Kolkata'
+            timeZone: 'Africa/Accra'
         });
 
         const time = now.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
+            second: '2-digit',
             hour12: true,
-            timeZone: 'Asia/Kolkata'
+            timeZone: 'Africa/Accra'
         });
 
-        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+        const botOwner = global.ownerName || 'RAHUL-MASTER';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
+        const Founder = 'RAHUL-MASTER';
 
-        // 1. **Automatically Generated RAHUL-AI Logo** (Dynamic 3D Banners)
-        const autoLogos = [
-            `https://www6.flamingtext.com/net-fu/proxy_form.cgi?imageoutput=true&script=runner-logo&text=RAHUL-AI&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=70&fontName=futura`,
-            `https://sam-cdn.zone.id/files/gZ4hyfNQN4.jpg`,
-            `https://sam-cdn.zone.id/files/xQer9GrIVT.jpg` // Tuza default logo
-        ];
-        const selectedLogo = autoLogos[Math.floor(Math.random() * autoLogos.length)];
+        // Direct image URL provided by you
+        const menuImageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
 
-        // 2. **Normal & Clean Menu Styles** (Simple, readable layouts)
-        const menuStyles = [
-            // Theme 1: Simple Bullet List Style
-            `
-👋 Hello *${user}*,
-Here is the command list for *RAHUL-AI*.
+        const menuText = `
+Bot Information:
+- Founder : ${Founder}
+- Owner   : ${botOwner}
+- User    : ${user}
+- Date    : ${date}
+- Time    : ${time} (GMT)
+- Prefix  : ${prefix}
 
-📌 *BOT INFO*
-• Bot Owner : ${botOwner}
-• Prefix : [ ${prefix} ]
-• Date : ${date}
-• Time : ${time}
+General Commands:
+  - ${prefix}alive
+  - ${prefix}ping
+  - ${prefix}uptime
+  - ${prefix}owner
+  - ${prefix}guide
+  - ${prefix}menu2
 
-⚡ *1. MAIN & SYSTEM*
-• ${prefix}alive
-• ${prefix}ping
-• ${prefix}uptime
-• ${prefix}owner
+Downloaders:
+  - ${prefix}tiktok / ${prefix}tt
+  - ${prefix}ytmp3
+  - ${prefix}ig
 
-📥 *2. DOWNLOAD COMMANDS*
-• ${prefix}tiktok <url>
-• ${prefix}ytmp3 <url>
-• ${prefix}ig <url>
+Tools & AI:
+  - ${prefix}sticker
+  - ${prefix}ocr
+  - ${prefix}tts
+  - ${prefix}poll
+  - ${prefix}shazam
+  - ${prefix}textpro
+  - ${prefix}chid
+  - ${prefix}ai
+  - ${prefix}ai-search
+  - ${prefix}aiv
+  - ${prefix}gen
 
-🤖 *3. AI & TOOLS*
-• ${prefix}ai <query>
-• ${prefix}sticker
-• ${prefix}ocr
+Fun & New:
+  - ${prefix}blue
+  - ${prefix}flag
+  - ${prefix}hide
+  - ${prefix}guessgender
+  - ${prefix}agecalculator
+  - ${prefix}style
 
-🛡️ *4. GROUP ADMIN*
-• ${prefix}tagall
-• ${prefix}kick @user
-• ${prefix}promote @user
+Search & Anime:
+  - ${prefix}weather
+  - ${prefix}waifu
+  - ${prefix}neko
+  - ${prefix}kitsune
+  - ${prefix}husbando
 
-> *Powered by RAHUL-MASTER*`.trim(),
+Group & Admin:
+  - ${prefix}tagall
+  - ${prefix}tagall1
+  - ${prefix}tagme
+  - ${prefix}couplepp
+  - ${prefix}group
+  - ${prefix}ginfo
+  - ${prefix}antigst
+  - ${prefix}gstatus
+  - ${prefix}channelid
+  - ${prefix}kick
+  - ${prefix}promote
+  - ${prefix}demote
 
-            // Theme 2: Minimalist Clean Style
-            `
-╭━━━〔 *RAHUL-AI MENU* 〕━━━
-┃ 👤 User : ${user}
-┃ 👑 Owner : ${botOwner}
-┃ ⚡ Prefix : ${prefix}
-┃ ⏰ Time : ${time}
-╰━━━━━━━━━━━━━━━━━━━
-
-🛠️ *SYSTEM COMMANDS*
-- ${prefix}alive
-- ${prefix}ping
-- ${prefix}uptime
-
-📥 *DOWNLOADERS*
-- ${prefix}tiktok
-- ${prefix}ytmp3
-- ${prefix}ig
-
-🧠 *ARTIFICIAL INTELLIGENCE*
-- ${prefix}ai
-- ${prefix}ai-search
-- ${prefix}gen
-
-⚙️ *UTILS & GROUP*
-- ${prefix}sticker
-- ${prefix}tagall
-- ${prefix}kick
-
-> *Powered by RAHUL-MASTER*`.trim()
-        ];
-
-        // Randomly pick a normal menu style every time
-        const menuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
+Powered by Rahul Master
+`.trim();
 
         try {
-            const imageBuffer = (await axios.get(selectedLogo, {
-                responseType: 'arraybuffer',
-                timeout: 7000
+            const imageBuffer = (await axios.get(menuImageUrl, {
+                responseType: 'arraybuffer'
             })).data;
 
             await m.reply(imageBuffer, {
@@ -120,7 +110,7 @@ Here is the command list for *RAHUL-AI*.
             });
 
         } catch (err) {
-            console.error('Logo error, fallback to text:', err.message);
+            console.error('Menu error:', err);
             await m.reply(menuText);
         }
     }

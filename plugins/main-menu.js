@@ -1,27 +1,25 @@
 const { prepareWAMessageMedia, generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 
-async function sendRahulAiMenu(sock, remoteJid) {
+async function sendExactSlideMenu(sock, remoteJid) {
     try {
-        // Tumchya menu sathi laganarya image URLs ya local file paths
-        // Tumhi ithe 2 te 4 images chya links ya paths deu shakta je album banavtil
-        const menuImages = [
-            './assets/menu_banner.jpg', // Banner image (jar asel tar)
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' // Tumhi dileli image link
+        // Tumchya menu madhil veg-veghe category images
+        const images = [
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Image 1: Download & Owner list
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Image 2: Group & Search list
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg'  // Image 3: Convert & Main list
         ];
 
-        let albumMessages = [];
+        let albumArray = [];
 
-        for (let i = 0; i < menuImages.length; i++) {
-            // Media prepare karne
+        for (let i = 0; i < images.length; i++) {
             const media = await prepareWAMessageMedia(
-                { image: { url: menuImages[i] } }, 
+                { image: { url: images[i] } }, 
                 { upload: sock.waUploadToServer }
             );
 
-            // Pahilya image sobat full menu text / command list dena
-            let captionText = "";
+            let textContent = "";
             if (i === 0) {
-                captionText = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣
+                textContent = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣
 ┃ *DOWNLOAD COMMAND LIST*
 ┃ • .an1
 ┃ • .dl-npm
@@ -38,7 +36,6 @@ async function sendRahulAiMenu(sock, remoteJid) {
 ┃ • .insta
 ┃ • .instamp3
 ┃ • .twitter
-┃ • .thwards
 ┃ • .pinterest
 ╰━━━━━━━━━━━━━━━━━━━⬣
 
@@ -55,12 +52,9 @@ async function sendRahulAiMenu(sock, remoteJid) {
 ┃ • .newsletter
 ┃ • .status
 ╰━━━━━━━━━━━━━━━━━━━⬣
-
-*TOTAL COMMANDS LIST : 43*
 *POWERED BY RAHUL-MASTER*`;
             } else if (i === 1) {
-                // Dusrya image sathi pudhchi list (Group, Search, AI, etc.)
-                captionText = `╭━━━〔 *GROUP COMMAND LIST* 〕━━━⬣
+                textContent = `╭━━━〔 *GROUP COMMAND LIST* 〕━━━⬣
 ┃ • .chstatus
 ┃ • .del
 ┃ • .requestlist
@@ -90,23 +84,36 @@ async function sendRahulAiMenu(sock, remoteJid) {
 ┃ • .yts
 ┃ • .google
 ╰━━━━━━━━━━━━━━━━━━━⬣
-
+*POWERED BY RAHUL-MASTER*`;
+            } else if (i === 2) {
+                textContent = `╭━━━〔 *CONVERT COMMAND LIST* 〕━━━⬣
+┃ • .tts
+┃ • .currency
+┃ • .sticker2img
+┃ • .tomp3
+┃ • .toptt
+┃ • .gif
+┃ • .attp
+┃ • .ttp
+┃ • .uploadfile
+╰━━━━━━━━━━━━━━━━━━━⬣
 *POWERED BY RAHUL-MASTER*`;
             }
 
-            albumMessages.push({
+            albumArray.push({
                 imageMessage: media.imageMessage,
-                caption: captionText
+                caption: textContent
             });
         }
 
-        // WhatsApp madhe album format madhe message pathvane
+        // WhatsApp madhe album send karne
         await sock.sendMessage(remoteJid, {
-            album: albumMessages
+            album: albumArray
         });
 
-    } catch (error) {
-        console.error("Menu pathavtana error ala:", error);
-        await sock.sendMessage(remoteJid, { text: "❌ Menu load hot nahiy, kachari error ala ahe." });
+    } catch (e) {
+        console.error("Menu error:", e);
+        // Fallback option jar album support karat nasel
+        await sock.sendMessage(remoteJid, { text: "❌ Menu load hot nahiy." });
     }
 }

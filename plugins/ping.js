@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = {
     name: 'ping',
     aliases: ['speed', 'latency'],
-    description: 'Check bot response speed with audio response',
+    description: 'Check bot response speed with a working audio voice note',
 
     async execute(sock, m, args) {
         try {
@@ -20,9 +20,14 @@ module.exports = {
                 text: `> 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 Ping: ${latency}ms`
             }, { quoted: m });
 
-            // Send clean audio message (Syntax error fixed completely)
+            // Download audio as buffer first to prevent external URL crashes
+            const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
+            const response = await axios.get(audioUrl, { responseType: 'arraybuffer' });
+            const audioBuffer = Buffer.from(response.data);
+
+            // Send the buffer audio safely
             await sock.sendMessage(chatId, {
-                audio: { url: 'https://spider-avik.zone.id/file/jwfyt2.mpeg' },
+                audio: audioBuffer,
                 mimetype: 'audio/mp4',
                 ptt: true
             }, { quoted: m });

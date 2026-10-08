@@ -1,199 +1,142 @@
-// --- TUMCHYA MESSAGE HANDLER CHA FULL WORKING CODE ---
+const axios = require('axios');
 
-// 1. Message text ani command baher kadhne
-const prefix = "."; // Ithe prefix . set kelela ahe
-const budy = (m.mtype === 'conversation') ? m.message.conversation : 
-             (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : 
-             (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : '';
+module.exports = {
+    name: 'menu',
+    description: 'Show available bot commands',
+    aliases: ['help', 'cmdlist', 'commands'],
 
-const isCmd = budy.startsWith(prefix);
-const command = isCmd ? budy.slice(prefix.length).trim().split(' ').shift().toLowerCase() : '';
-const from = m.key.remoteJid;
+    async execute(sock, m) {
+        await m.react('💎');
+        
+        const prefix = global.BOT_PREFIX || '.';
+        const now = new Date();
 
-// Image URL
-const menuBanner = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
+        const date = now.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            timeZone: 'Africa/Accra'
+        });
 
-// 2. Menu Commands Switch / If-Else Handler
-if (command === 'menu' || command === 'help') {
-    const mainText = `┏━━━✦ *R A HUL - A I* ✦━━━
-┃ 👑 *Owner*  : Rahul-Master
-┃ ⚡ *Prefix* : [ . ]
-┃ 🟢 *Status* : Active
-┗━━━━━━━━━━━━━━━━━━━━━✦
+        const time = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'Africa/Accra'
+        });
 
-📂 *SELECT A CATEGORY:*
-┃ ➔ \`.downloadmenu\`
-┃ ➔ \`.ownermenu\`
-┃ ➔ \`.groupmenu\`
-┃ ➔ \`.searchmenu\`
-┃ ➔ \`.convertmenu\`
-┃ ➔ \`.aimenu\`
-┗━━━━━━━━━━━━━━━━━━━━━✦
-*POWERED BY RAHUL-MASTER*`;
+        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+        const user = m.pushName || m.sender?.split('@')[0] || 'User';
+        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+        
+        // Custom menu image set
+        const menuImageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
 
-    await sock.sendMessage(from, { 
-        image: { url: menuBanner }, 
-        caption: mainText 
-    }, { quoted: m });
-}
+        const menuText = `
+┏━━━✦ 𝑹𝑨𝑯𝑼𝑳-𝑨𝑰 𝑴𝑼𝑳𝑻𝑰𝑫𝑬𝑽𝑰𝑪𝑬 ✦━━━┓
+┃ 👑 𝐹𝑜𝑢𝑛𝒅𝑒𝑟 : ${Founder}
+┃ ⚡ 𝑂𝑤𝑛𝑒𝑟   : ${botOwner}
+┃ 👤 𝑈𝑠𝑒𝑟    : ${user}
+┃ 📅 𝐷𝑎𝑡𝑒    : ${date}
+┃ ⏰ 𝑇𝑖𝑚𝑒    : ${time}
+┃ ⚙️ 𝑃𝑟𝑒𝑓𝑖𝑥  : ${prefix}
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-else if (command === 'downloadmenu') {
-    const downloadText = `┏━━━✦ *DOWNLOAD MENU* ✦━━━
-┃ • .an1
-┃ • .dl-npm
-┃ • .play
-┃ • .video
-┃ • .drama
-┃ • .apk
-┃ • .fb
-┃ • .gitclone
-┃ • .gdrive
-┃ • .mediafire
-┃ • .tiktok
-┃ • .insta
-┃ • .twitter
-┗━━━━━━━━━━━━━━━━━━━━━✦
-*POWERED BY RAHUL-MASTER*`;
+┌───❖ *⚡ 𝐆𝐄𝐍𝐄𝐑𝐀𝐋*
+│ ➣ ${prefix}alive
+│ ➣ ${prefix}ping
+│ ➣ ${prefix}uptime
+│ ➣ ${prefix}owner
+│ ➣ ${prefix}guide
+│ ➣ ${prefix}menu2
+└───────────────◆
 
-    await sock.sendMessage(from, { 
-        image: { url: menuBanner }, 
-        caption: downloadText 
-    }, { quoted: m });
-}
+┌───❖ *📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒*
+│ ➣ ${prefix}tiktok / ${prefix}tt
+│ ➣ ${prefix}ytmp3
+│ ➣ ${prefix}ig
+└───────────────◆
 
-else if (command === 'ownermenu') {
-    const ownerText = `┏━━━✦ *OWNER MENU* ✦━━━
-┃ • .autobio
-┃ • .bgmirefresh
-┃ • .jid
-┃ • .kickadmins
-┃ • .join
-┃ • .left
-┃ • .newgc
-┃ • .smd
-┃ • .chreact
-┃ • .status
-┗━━━━━━━━━━━━━━━━━━━━━✦
-*POWERED BY RAHUL-MASTER*`;
+┌───❖ *🛠️ 𝐓𝐎𝐎𝐋𝐒*
+│ ➣ ${prefix}sticker
+│ ➣ ${prefix}ocr
+│ ➣ ${prefix}tts
+│ ➣ ${prefix}poll
+│ ➣ ${prefix}shazam
+│ ➣ ${prefix}textpro
+│ ➣ ${prefix}chid
+└───────────────◆
 
-    await sock.sendMessage(from, { 
-        image: { url: menuBanner }, 
-        caption: ownerText 
-    }, { quoted: m });
-}
+┌───❖ *🤖 𝐀𝐈 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
+│ ➣ ${prefix}ai
+│ ➣ ${prefix}ai-search
+│ ➣ ${prefix}aiv
+│ ➣ ${prefix}gen
+└───────────────◆
 
-else if (command === 'groupmenu') {
-    const groupText = `┏━━━✦ *GROUP MENU* ✦━━━
-┃ • .del
-┃ • .accept
-┃ • .reject
-┃ • .add
-┃ • .remove
-┃ • .kickall
-┃ • .warn
-┃ • .promote
-┃ • .demote
-┗━━━━━━━━━━━━━━━━━━━━━✦
-*POWERED BY RAHUL-MASTER*`;
+┌───❖ *🎮 𝐅𝐔𝐍*
+│ ➣ ${prefix}blue
+│ ➣ ${prefix}flag
+└───────────────◆
 
-    await sock.sendMessage(from, { 
-        image: { url: menuBanner }, 
-        caption: groupText 
-    }, { quoted: m });
-}
+┌───❖ *✨ 𝐍𝐄𝐖 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
+│ ➣ ${prefix}hide
+│ ➣ ${prefix}guessgender
+│ ➣ ${prefix}agecalculator
+│ ➣ ${prefix}style
+└───────────────◆
 
-else if (command === 'searchmenu') {
-    const searchMenuText = `┏━━━✦ *SEARCH MENU* ✦━━━
-┃ • .pins2
-┃ • .facebook3
-┃ • .define
-┃ • .gitstalk
-┃ • .moviesearch
-┃ • .srepo
-┃ • .yts
-┃ • .google
-┗━━━━━━━━━━━━━━━━━━━━━✦
-*POWERED BY RAHUL-MASTER*`;
+┌───❖ *🔍 𝐒𝐄𝐀𝐑𝐂𝐇*
+│ ➣ ${prefix}weather
+└───────────────◆
 
-    await sock.sendMessage(from, { 
-        image: { url: menuBanner }, 
-        caption: searchMenuText 
-    }, { quoted: m });
-}
+┌───❖ *🌸 𝐀𝐍𝐈𝐌𝐄*
+│ ➣ ${prefix}waifu
+│ ➣ ${prefix}neko
+│ ➣ ${prefix}kitsune
+│ ➣ ${prefix}husbando
+└───────────────◆
 
-else if (command === 'convertmenu') {
-    const convertText = `┏━━━✦ *CONVERT MENU* ✦━━━
-┃ • .tts
-┃ • .currency
-┃ • .sticker2img
-┃ • .tomp3
-┃ • .toptt
-┃ • .gif
-┃ • .attp
-┃ • .ttp
-┗━━━━━━━━━━━━━━━━━━━━━✦
-*POWERED BY RAHUL-MASTER*`;
+┌───❖ *👥 𝐆𝐑𝐎𝐔𝐏*
+│ ➣ ${prefix}tagall
+│ ➣ ${prefix}tagall1
+│ ➣ ${prefix}tagme
+│ ➣ ${prefix}couplepp
+│ ➣ ${prefix}group
+│ ➣ ${prefix}ginfo
+│ ➣ ${prefix}antigst
+└───────────────◆
 
-    await sock.sendMessage(from, { 
-        image: { url: menuBanner }, 
-        caption: convertText 
-    }, { quoted: m });
-}
+┌───❖ *📊 𝐒𝐓𝐀𝐓𝐔𝐒*
+│ ➣ ${prefix}gstatus
+└───────────────◆
 
-else if (command === 'aimenu') {
-    const aiText = `┏━━━✦ *AI MENU* ✦━━━
-┃ • .copilot
-┃ • .chatgpt
-┃ • .mistral
-┃ • .llama
-┃
- { generateWAMessageFromContent } = require('@whiskeysockets/baileys');
+┌───❖ *📢 𝐂𝐇𝐀𝐍𝐍ᴇʟ*
+│ ➣ ${prefix}channelid
+└───────────────◆
 
-if (command === 'menu' || command === 'help') {
-    const listMessage = generateWAMessageFromContent(from, {
-        viewOnceMessage: {
-            message: {
-                interactiveMessage: {
-                    body: {
-                        text: "╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣\n┃ Click the button below to open\n┃ the full command categories list.\n╰━━━━━━━━━━━━━━━━━━━⬣"
-                    },
-                    footer: {
-                        text: "POWERED BY RAHUL-MASTER"
-                    },
-                    nativeFlowMessage: {
-                        buttons: [
-                            {
-                                name: "single_select",
-                                buttonParamsJson: JSON.stringify({
-                                    title: "📂 CLICK HERE TO VIEW MENU",
-                                    sections: [
-                                        {
-                                            title: "POPULAR CATEGORIES",
-                                            rows: [
-                                                { title: "📥 Download Menu", rowId: ".downloadmenu", description: "View all download commands" },
-                                                { title: "👑 Owner Menu", rowId: ".ownermenu", description: "View bot owner control commands" },
-                                                { title: "👥 Group Menu", rowId: ".groupmenu", description: "View group management commands" },
-                                                { title: "🔍 Search Menu", rowId: ".searchmenu", description: "View search & info commands" }
-                                            ]
-                                        },
-                                        {
-                                            title: "OTHER CATEGORIES",
-                                            rows: [
-                                                { title: "🔄 Convert Menu", rowId: ".convertmenu", description: "View media conversion commands" },
-                                                { title: "🤖 AI Menu", rowId: ".aimenu", description: "View AI chat & generation commands" },
-                                                { title: "🎉 Fun Menu", rowId: ".funmenu", description: "View fun & entertainment commands" },
-                                                { title: "⚙️ Settings Menu", rowId: ".settingsmenu", description: "View bot setting commands" }
-                                            ]
-                                        }
-                                    ]
-                                })
-                            }
-                        ]
-                    }
-                }
-            }
+┌───❖ *🛡️ 𝐀𝐃𝐌𝐈𝐍*
+│ ➣ ${prefix}kick
+│ ➣ ${prefix}promote
+│ ➣ ${prefix}demote
+└───────────────◆
+
+> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ ❖
+`.trim();
+
+        try {
+            const imageBuffer = (await axios.get(menuImageUrl, {
+                responseType: 'arraybuffer'
+            })).data;
+
+            await m.reply(imageBuffer, {
+                caption: menuText
+            });
+
+        } catch (err) {
+            console.error('Menu error:', err);
+            await m.reply(menuText);
         }
-    }, { quoted: m });
-
-    await sock.relayMessage(from, listMessage.message, { messageId: listMessage.key.id });
-}
+    }
+};

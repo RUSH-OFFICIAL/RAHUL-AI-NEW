@@ -2,17 +2,20 @@ const pix = require('pixcore');
 
 module.exports = {
     name: 'alive',
-    description: 'Check if the bot is alive',
-    aliases: [],
+    description: 'Check if the bot is alive with a modern style and custom audio',
+    aliases: ['status', 'botstatus'],
     tags: ['main'],
-    command: /^(alive)$/i,
+    command: /^(alive|status)$/i,
 
     async execute(sock, m) {
         try {
+            // React with lightning to acknowledge command receipt
             await m.react('⚡');
+            
             const width = 300;
             const height = 300;
 
+            // Fetching thumbnail image
             const imageResponse = await fetch('https://i.ibb.co/wnWJtrP/8a55300e87bc.jpg');
             const imageBuffer = await imageResponse.arrayBuffer();
 
@@ -20,7 +23,8 @@ module.exports = {
             const resized = await img.resize(width, height, { fit: 'cover' });
             const thumb = await resized.toBuffer({ format: 'jpeg', quality: 40 });
 
-            const audioUrl = 'https://eliteprotech-url.zone.id/1787244048021ghdr1r.mp3';
+            // Updated audio URL for "See You Again"
+            const audioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Replace with your direct See You Again MP3 link if needed
             const audioResponse = await fetch(audioUrl);
             const audioBuffer = await audioResponse.arrayBuffer();
 
@@ -29,21 +33,22 @@ module.exports = {
                     remoteJid: m.from,
                     fromMe: false,
                     participant: m.sender,
-                    id: 'fakeid123'
+                    id: 'ALIVE_V2_ID'
                 },
                 message: {
                     imageMessage: {
                         mimetype: 'image/jpeg',
                         jpegThumbnail: thumb,
-                        caption: 'i am alive'
+                        caption: '✨ System Status: ONLINE & Active!'
                     }
                 }
             };
 
+            // Sending voice note / audio file
             await sock.sendMessage(m.from, {
                 audio: Buffer.from(audioBuffer),
                 mimetype: 'audio/mp4',
-                ptt: false
+                ptt: true // Set to false if you want it as a regular audio file instead of a voice note
             }, { quoted: fakeQuoted });
 
         } catch (err) {

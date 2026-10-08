@@ -47,7 +47,7 @@ module.exports = {
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
             // Audio Fetch (Using a stable raw link, you can replace with your own audio raw link)
-            const audioUrl = 'https://raw.githubusercontent.com/Khushalsoni08/Database/main/audio/alive.mp3';
+            const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
             const audioBuffer = await audioResponse.arrayBuffer();
 

@@ -1,38 +1,33 @@
-const axios = require('axios');
-
 module.exports = {
     name: 'ping',
     aliases: ['speed', 'latency'],
-    description: 'Check bot response speed with a sleek style',
+    description: 'Royal HUD style latency checker',
 
     async execute(sock, m, args) {
         try {
-            // First reaction
-            await m.react('⚡');
-            const start = Date.now();
-            
-            // Calculate latency immediately
-            const latency = Date.now() - start;
+            const startTimer = Date.now();
+            const recipient = m.from || m.chat || m.sender;
+            const latencyTime = Date.now() - startTimer;
 
-            // Stylish modern dashboard design with your image URL
-            const pingText = 
+            const hudText = 
                 `╭────────────────────────╮\n` +
-                `│   🚀 **RAHUL-AI STATUS**   │\n` +
+                `│   👑 *RAHUL-AI.0*       │\n` +
                 `├────────────────────────┤\n` +
-                `│ ⚡ **Speed:** ${latency} ms\n` +
-                `│ 🟢 **Status:** Online\n` +
-                `│ 🛡️ **System:** Active\n` +
-                `╰────────────────────────╯`;
+                `│ 🔹 *Core Engine* : Active\n` +
+                `│ ⚡ *Response*    : ${latencyTime}ms\n` +
+                `│ 🌐 *Network*     : Stable\n` +
+                `│ 👤 *Owner*       : Rahul Hiran\n` +
+                `╰────────────────────────╯\n` +
+                `> _⚡ Powered by RAHUL-AI Systems_`;
 
-            // Send image directly with the styled text as caption (No editing = No errors!)
-            await sock.sendMessage(m.from, {
+            await sock.sendMessage(recipient, {
                 image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                caption: pingText
+                caption: hudText
             }, { quoted: m });
 
         } catch (err) {
-            console.error('Ping command error:', err);
-            await m.reply(`❌ Error checking ping: ${err.message}`);
+            console.error('Ping Error:', err);
         }
     }
 };
+

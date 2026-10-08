@@ -6,74 +6,123 @@ if (!global.botStartTime) {
 
 module.exports = {
     name: 'menu',
-    description: 'Ultra-compact menu with live pulsing quantum wave animation',
+    description: 'Advanced dynamic rotating menu with futuristic quantum aesthetic',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
         const now = new Date();
-        
-        // 1. Live Pulsing Wave Animation for Icons
-        const quantumWaves = ['⚡ ⠋', '💎 ⠙', '🔥 ⠹', '🌟 ⠸', '💫 ⠼', '🚀 ⠴', '🔮 ⠦', '✨ ⠧'];
-        const activeWave = quantumWaves[now.getSeconds() % quantumWaves.length];
-
-        await m.react('⚡');
+        await m.react('💎');
         
         const prefix = global.BOT_PREFIX || '.';
         const user = m.pushName || 'User';
-        const menuImageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
 
-        // 2. Dynamic Time & Greeting System
-        const hour = now.getHours();
-        let greeting = 'Night 🌙';
-        if (hour >= 5 && hour < 12) greeting = 'Morning 🌅';
-        else if (hour >= 12 && hour < 17) greeting = 'Afternoon ☀️';
-        else if (hour >= 17 && hour < 21) greeting = 'Evening 🌆';
-
-        // 3. Auto-Rotating Neural Status Engine
-        const neuralStatus = [
-            "⚡ Quantum Core: Fully Synced",
-            "🚀 Rahul Master Hub: Active",
-            "🛡️ Secure Gateway Online",
-            "💎 Blazing Fast Response Rate"
+        // 1. Dynamic Rotating Menu Themes (Har vela automatic navin look yeil!)
+        const menuThemes = [
+            {
+                borderTop: '╔══════════════════════════╗',
+                borderMid: '╠══════════════════════════╣',
+                borderBot: '╚══════════════════════════╝',
+                accent: '💠',
+                name: 'CYBERPUNK NEON'
+            },
+            {
+                borderTop: '┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓',
+                borderMid: '┣━━━━━━━━━━━━━━━━━━━━━━━━━━┫',
+                borderBot: '┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛',
+                accent: '⚡',
+                name: 'QUANTUM CORE'
+            },
+            {
+                borderTop: '╔══════════════════════════╗',
+                borderMid: '╟──────────────────────────╢',
+                borderBot: '╚══════════════════════════╝',
+                accent: '🔥',
+                name: 'MASTER PRIME'
+            }
         ];
-        const activeStatus = neuralStatus[Math.floor(now.getTime() / 2000) % neuralStatus.length];
+        // Automatically theme change honar based on current minute/hour rotation
+        const activeTheme = menuThemes[now.getMinutes() % menuThemes.length];
 
-        // 4. Dynamic Live Bullet Stream
-        const bullets = ['◈', '◇', '▪', '▫', '✦', '✧'];
-        const bullet = bullets[now.getSeconds() % bullets.length];
+        // 2. Time & Greeting System
+        const hour = now.getHours();
+        let greeting = 'Good Night 🌙';
+        if (hour >= 5 && hour < 12) greeting = 'Good Morning 🌅';
+        else if (hour >= 12 && hour < 17) greeting = 'Good Afternoon ☀️';
+        else if (hour >= 17 && hour < 21) greeting = 'Good Evening 🌆';
+
+        // 3. Dynamic Live Status Engine
+        const systemStatuses = [
+            "🟢 Core Status: Optimized & Stable",
+            "🚀 Speed: Blazing Fast (0.1ms)",
+            "🛡️ Security Gateway: Active",
+            "✨ Neural AI Engine: Online"
+        ];
+        const currentStatus = systemStatuses[Math.floor(now.getTime() / 3000) % systemStatuses.length];
 
         // Uptime Calculation
         const uptimeSec = Math.floor((Date.now() - global.botStartTime) / 1000);
-        const uptime = `${Math.floor(uptimeSec / 3600)}h ${Math.floor((uptimeSec % 3600) / 60)}m`;
+        const hours = Math.floor(uptimeSec / 3600);
+        const minutes = Math.floor((uptimeSec % 3600) / 60);
+        const seconds = uptimeSec % 60;
+        const uptime = `${hours}h ${minutes}m ${seconds}s`;
 
+        // Menu Image (Tumhi tumchya pasandichy link taku shakta)
+        const menuImageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
+
+        // 4. Clean & Modern Structured Menu Text
         const menuText = `
-${activeWave} *ＲＡＨＵＬ - ＭＡＳＴＥＲ* ${activeWave}
-> *${greeting}, ${user}!*
+${activeTheme.borderTop}
+   ${activeTheme.accent} *ＲＡＨＵＬ - ＭＡＳＴＥＲ ＢＯＴ* ${activeTheme.accent}
+${activeTheme.borderMid}
+> 👋 *Hello, ${user}!*
+> 🕒 *Time:* ${now.toLocaleTimeString()}
+> 🌐 *Theme:* ${activeTheme.name}
 
-┌ *QUANTUM METRICS*
+┌ 📊 *SYSTEM METRICS*
 ├ ⏱️ Uptime : ${uptime}
 ├ ⚙️ Prefix : ${prefix}
-└ 🔮 Status : ${activeStatus}
+└ 🔮 Status : ${currentStatus}
+${activeTheme.borderMid}
 
-${bullet} *General:*
-\`${prefix}alive \vert{}${prefix}ping | ${prefix}uptime \vert{}${prefix}owner\`
+📂 *[ 01 ] GENERAL COMMANDS*
+• \`${prefix}alive\` - Check bot status
+• \`${prefix}ping\` - Check speed latency
+• \`${prefix}uptime\` - Check running time
+• \`${prefix}owner\` - Contact bot owner
 
-${bullet} *Downloads:*
-\`${prefix}tiktok | ${prefix}ytmp3 \vert{}${prefix}ig\`
+📥 *[ 02 ] DOWNLOAD COMMANDS*
+• \`${prefix}tiktok\` - Download TikTok videos
+• \`${prefix}ytmp3\` - Download YouTube audio
+• \`${prefix}ig\` - Download Instagram reels/posts
 
-${bullet} *Tools & AI:*
-\`${prefix}sticker | ${prefix}ocr \vert{}${prefix}tts | ${prefix}ai \vert{}${prefix}gen\`
+🛠️ *[ 03 ] TOOLS & AI*
+• \`${prefix}sticker\` - Make sticker from media
+• \`${prefix}ocr\` - Extract text from image
+• \`${prefix}tts\` - Text to speech generator
+• \`${prefix}ai\` - Chat with smart AI
+• \`${prefix}gen\` - Generate creative content
 
-${bullet} *Fun & Misc:*
-\`${prefix}blue \vert{}${prefix}flag | ${prefix}guessgender \vert{}${prefix}style\`
+🎮 *[ 04 ] FUN & MISC*
+• \`${prefix}blue\` - Blue filter effect
+• \`${prefix}flag\` - Country flag games
+• \`${prefix}guessgender\` - Predict name gender
+• \`${prefix}style\` - Fancy text generator
 
-${bullet} *Search & Anime:*
-\`${prefix}weather \vert{}${prefix}waifu | ${prefix}neko \vert{}${prefix}husbando\`
+✨ *[ 05 ] SEARCH & ANIME*
+• \`${prefix}weather\` - Check live weather
+• \`${prefix}waifu\` - Random anime waifu
+• \`${prefix}neko\` - Cute neko images
+• \`${prefix}husbando\` - Random anime husbando
 
-${bullet} *Admin & Group:*
-\`${prefix}tagall \vert{}${prefix}tagme | ${prefix}group \vert{}${prefix}kick\`
+🛡️ *[ 06 ] ADMIN & GROUP*
+• \`${prefix}tagall\` - Tag all members
+• \`${prefix}tagme\` - Tag yourself
+• \`${prefix}group\` - Open/Close group
+• \`${prefix}kick\` - Remove member from group
 
-> *🔥 Powered by Rahul Master*`.trim();
+${activeTheme.borderMid}
+> *🔥 Powered by Rahul Master*
+${activeTheme.borderBot}`.trim();
 
         try {
             const imageBuffer = (await axios.get(menuImageUrl, {

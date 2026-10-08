@@ -2,11 +2,11 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Show available bot commands with auto-changing styles',
+    description: 'Show available bot commands with ultimate auto-changing styles v3.0',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        await m.react('🔥');
+        m.react('⚡').catch(() => {});
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -30,227 +30,278 @@ module.exports = {
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         
-        // Fixed Menu Image Link
         const menuImageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
 
-        // Command lists structure
-        const cmds = {
-            general: `${prefix}alive | ${prefix}ping | ${prefix}uptime | ${prefix}owner | ${prefix}guide | ${prefix}menu2`,
-            downloader: `${prefix}tiktok (${prefix}tt) | ${prefix}ytmp3 | ${prefix}ig`,
-            tools: `${prefix}sticker | ${prefix}ocr | ${prefix}tts | ${prefix}poll | ${prefix}shazam | ${prefix}textpro | ${prefix}chid`,
-            ai: `${prefix}ai | ${prefix}ai-search | ${prefix}aiv | ${prefix}gen`,
-            fun: `${prefix}blue | ${prefix}flag`,
-            new: `${prefix}hide | ${prefix}guessgender | ${prefix}agecalculator | ${prefix}style`,
+        // Optimized Command Arrays
+        const c = {
+            general: `${prefix}alive\n│ 🚀 ${prefix}ping\n│ 🚀 ${prefix}uptime\n│ 🚀 ${prefix}owner\n│ 🚀 ${prefix}guide\n│ 🚀 ${prefix}menu2`,
+            downloader: `${prefix}tiktok / ${prefix}tt\n│ 📥 ${prefix}ytmp3\n│ 📥 ${prefix}ig`,
+            tools: `${prefix}sticker\n│ 🛠️ ${prefix}ocr\n│ 🛠️ ${prefix}tts\n│ 🛠️ ${prefix}poll\n│ 🛠️ ${prefix}shazam\n│ 🛠️ ${prefix}textpro\n│ 🛠️ ${prefix}chid`,
+            ai: `${prefix}ai\n│ 🤖 ${prefix}ai-search\n│ 🤖 ${prefix}aiv\n│ 🤖 ${prefix}gen`,
+            fun: `${prefix}blue\n│ 🎮 ${prefix}flag`,
+            new: `${prefix}hide\n│ ✨ ${prefix}guessgender\n│ ✨ ${prefix}agecalculator\n│ ✨ ${prefix}style`,
             search: `${prefix}weather`,
-            anime: `${prefix}waifu | ${prefix}neko | ${prefix}kitsune | ${prefix}husbando`,
-            group: `${prefix}tagall | ${prefix}tagall1 | ${prefix}tagme | ${prefix}couplepp | ${prefix}group | ${prefix}ginfo | ${prefix}antigst`,
+            anime: `${prefix}waifu\n│ 🌸 ${prefix}neko\n│ 🌸 ${prefix}kitsune\n│ 🌸 ${prefix}husbando`,
+            group: `${prefix}tagall\n│ 👥 ${prefix}tagall1\n│ 👥 ${prefix}tagme\n│ 👥 ${prefix}couplepp\n│ 👥 ${prefix}group\n│ 👥 ${prefix}ginfo\n│ 👥 ${prefix}antigst`,
             status: `${prefix}gstatus`,
             channel: `${prefix}channelid`,
-            admin: `${prefix}kick | ${prefix}promote | ${prefix}demote`
+            admin: `${prefix}kick\n│ 🛡️ ${prefix}promote\n│ 🛡️ ${prefix}demote`
         };
 
-        // Array of different menu designs that change automatically
+        // 8 Ultra-Different Auto-Changing Styles
         const menuStyles = [
-            // Style 1: Cyberpunk Box Style
+            // Style 1: Neural Matrix
             `
-┏━━━✦ 𝑹𝑨𝑯𝑼𝑳-𝑨𝑰 𝑴𝑼𝑳𝑻𝑰𝑫𝑬𝑽𝑰𝑪𝑬 ✦━━━┓
+╔══════════════════════╗
+║ 🧬 *${Founder.toUpperCase()} MATRIX* 🧬
+╚══════════════════════╝
+│ 👑 Founder : ${Founder}
+│ ⚡ Owner   : ${botOwner}
+│ 👤 User    : ${user}
+│ 📅 Date    : ${date}
+│ ⏰ Time    : ${time}
+│ ⚙️ Prefix  : ${prefix}
+╚══════════════════════╝
+
+┌─〔 ⚡ ɢᴇɴᴇʀᴀʟ ᴄᴍᴅꜱ 〕
+│ 🚀 ${c.general}
+└───────────────◆
+
+┌─〔 📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ 〕
+│ 📥 ${c.downloader}
+└───────────────◆
+
+┌─〔 🛠️ ᴛᴏᴏʟꜱ 〕
+│ 🛠️ ${c.tools}
+└───────────────◆
+
+┌─〔 🤖 ᴀɪ ᴄᴍᴅꜱ 〕
+│ 🤖 ${c.ai}
+└───────────────◆
+
+┌─〔 🎮 ꜰᴜɴ 〕
+│ 🎮 ${c.fun}
+└───────────────◆
+
+┌─〔 ✨ ɴᴇᴡ ᴄᴍᴅꜱ 〕
+│ ✨ ${c.new}
+└───────────────◆
+
+┌─〔 🔍 ꜱᴇᴀʀᴄʜ 〕
+│ 🔍 ${c.search}
+└───────────────◆
+
+┌─〔 🌸 ᴀɴɪᴍᴇ 〕
+│ 🌸 ${c.anime}
+└───────────────◆
+
+┌─〔 👥 ɢʀᴏᴜᴘ ᴄᴍᴅꜱ 〕
+│ 👥 ${c.group}
+└───────────────◆
+
+┌─〔 📊 ꜱᴛᴀᴛᴜꜱ 〕
+│ 📊 ${c.status}
+└───────────────◆
+
+┌─〔 📢 ᴄʜᴀɴɴᴇʟ 〕
+│ 📢 ${c.channel}
+└───────────────◆
+
+┌─〔 🛡️ ᴀᴅᴍɪɴ ᴄᴍᴅꜱ 〕
+│ 🛡️ ${c.admin}
+└───────────────◆
+
+> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${Founder}*`.trim(),
+
+            // Style 2: Neon Hologram Grid
+            `
+╭━━━〔 💫 ʀᴀʜᴜʟ-ᴀɪ ʜᴏʟᴏɢʀᴀᴍ 〕━━━╮
 ┃ 👑 𝐹𝑜𝑢𝑛𝒅𝑒𝑟 : ${Founder}
 ┃ ⚡ 𝑂𝑤𝑛𝑒𝑟   : ${botOwner}
 ┃ 👤 𝑈𝑠𝑒𝑟    : ${user}
 ┃ 📅 𝐷𝑎𝑡𝑒    : ${date}
 ┃ ⏰ 𝑇𝑖𝑚𝑒    : ${time}
 ┃ ⚙️ 𝑃𝑟𝑒𝑓𝑖𝑥  : ${prefix}
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
 
-┌───❖ *⚡ 𝐆𝐄𝐍𝐄𝐑𝐀𝐋*
-│ ➣ ${cmds.general.replaceAll(' | ', '\n│ ➣ ')}
+┌───❖ *🚀 𝐆𝐄𝐍𝐄𝐑𝐀𝐋*
+│ 💎 ${c.general}
 └───────────────◆
 
 ┌───❖ *📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒*
-│ ➣ ${cmds.downloader.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.downloader}
 └───────────────◆
 
 ┌───❖ *🛠️ 𝐓𝐎𝐎𝐋𝐒*
-│ ➣ ${cmds.tools.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.tools}
 └───────────────◆
 
 ┌───❖ *🤖 𝐀𝐈 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
-│ ➣ ${cmds.ai.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.ai}
 └───────────────◆
 
 ┌───❖ *🎮 𝐅𝐔𝐍*
-│ ➣ ${cmds.fun.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.fun}
 └───────────────◆
 
 ┌───❖ *✨ 𝐍𝐄𝐖 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
-│ ➣ ${cmds.new.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.new}
 └───────────────◆
 
 ┌───❖ *🔍 𝐒𝐄𝐀𝐑𝐂𝐇*
-│ ➣ ${cmds.search.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.search}
 └───────────────◆
 
 ┌───❖ *🌸 𝐀𝐍𝐈𝐌𝐄*
-│ ➣ ${cmds.anime.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.anime}
 └───────────────◆
 
 ┌───❖ *👥 𝐆𝐑𝐎𝐔𝐏*
-│ ➣ ${cmds.group.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.group}
 └───────────────◆
 
 ┌───❖ *📊 𝐒𝐓𝐀𝐓𝐔𝐒*
-│ ➣ ${cmds.status.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.status}
 └───────────────◆
 
 ┌───❖ *📢 𝐂𝐇𝐀𝐍𝐍𝐄𝐋*
-│ ➣ ${cmds.channel.replaceAll(' | ', '\n│ ➣ ')}
+│ 💎 ${c.channel}
 └───────────────◆
 
-┌───❖ *🛡️ 𝐀𝐃𝐌𝐈𝐍*
-│ ➣ ${cmds.admin.replaceAll(' | ', '\n│ ➣ ')}
+┌───❖ *🛡️ 𝐀𝐃𝙼𝙸𝙽*
+│ 💎 ${c.admin}
 └───────────────◆
 
-> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛ𝙴ʀ ❖`.trim(),
+> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ ❖`.trim(),
 
-            // Style 2: Modern Minimal Box Style
+            // Style 3: Deep Console Retro
             `
-╭━━━〔 🅡︎🅐︎🅗︎🅤︎-🅛︎🅘︎🅣︎🅔︎ 🅑︎🅞︎🅣︎ 〕━━━⬣
-┃ 👑 *Founder:* ${Founder}
-┃ ⚡ *Owner:* ${botOwner}
-┃ 👤 *User:* ${user}
-┃ 📅 *Date:* ${date}
-┃ ⏰ *Time:* ${time}
-┃ ⚙️ *Prefix:* ${prefix}
-╰━━━━━━━━━━━━━━━━━━━⬣
+╔═════════════════════════╗
+║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄᴏɴꜱᴏʟᴇ ᴠ3.0 ║
+╚═════════════════════════╝
+│ » ꜰᴏᴜɴᴅᴇʀ : ${Founder}
+│ » ᴏᴡɴᴇʀ   : ${botOwner}
+│ » ᴜꜱᴇʀ    : ${user}
+│ » ᴅᴀᴛᴇ    : ${date}
+│ » ᴛɪᴍᴇ    : ${time}
+│ » ᴘʀᴇꜰɪx  : ${prefix}
+╚═════════════════════════╝
 
-╭─〔 🚀 ɢᴇɴᴇʀᴀʟ ᴄᴍᴅs 〕
-│ ✦ ${cmds.general.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ ⚡ ɢᴇɴᴇʀᴀʟ ]
+│ ◈ ${c.general}
 ╰───────────────◆
 
-╭─〔 📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀs 〕
-│ ✦ ${cmds.downloader.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 📥 ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ ]
+│ ◈ ${c.downloader}
 ╰───────────────◆
 
-╭─〔 🛠️ ᴛᴏᴏʟs 〕
-│ ✦ ${cmds.tools.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 🛠️ ᴛᴏᴏʟꜱ ]
+│ ◈ ${c.tools}
 ╰───────────────◆
 
-╭─〔 🤖 ᴀɪ ᴄᴏᴍᴍᴀɴᴅs 〕
-│ ✦ ${cmds.ai.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 🤖 ᴀɪ ]
+│ ◈ ${c.ai}
 ╰───────────────◆
 
-╭─〔 🎮 ꜰᴜɴ 〕
-│ ✦ ${cmds.fun.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 🎮 ꜰᴜɴ ]
+│ ◈ ${c.fun}
 ╰───────────────◆
 
-╭─〔 ✨ ɴᴇᴡ ᴄᴍᴅs 〕
-│ ✦ ${cmds.new.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ ✨ ɴᴇᴡ ]
+│ ◈ ${c.new}
 ╰───────────────◆
 
-╭─〔 🔍 sᴇᴀʀᴄʜ 〕
-│ ✦ ${cmds.search.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 🔍 ꜱᴇᴀʀᴄʜ ]
+│ ◈ ${c.search}
 ╰───────────────◆
 
-╭─〔 🌸 ᴀɴɪᴍᴇ 〕
-│ ✦ ${cmds.anime.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 🌸 ᴀɴɪᴍᴇ ]
+│ ◈ ${c.anime}
 ╰───────────────◆
 
-╭─〔 👥 ɢʀᴏᴜ𝚙 ᴄᴍᴅs 〕
-│ ✦ ${cmds.group.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 👥 ɢʀᴏᴜᴘ ]
+│ ◈ ${c.group}
 ╰───────────────◆
 
-╭─〔 📊 sᴛᴀᴛᴜs 〕
-│ ✦ ${cmds.status.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 📊 ꜱᴛᴀᴛᴜꜱ ]
+│ ◈ ${c.status}
 ╰───────────────◆
 
-╭─〔 📢 ᴄʜᴀɴɴᴇʟ 〕
-│ ✦ ${cmds.channel.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 📢 ᴄʜᴀɴɴᴇʟ ]
+│ ◈ ${c.channel}
 ╰───────────────◆
 
-╭─〔 🛡️ ᴀᴅᴍɪɴ 〕
-│ ✦ ${cmds.admin.replaceAll(' | ', '\n│ ✦ ')}
+╭─[ 🛡️ ᴀᴅᴍɪɴ ]
+│ ◈ ${c.admin}
 ╰───────────────◆
 
-> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ*`.trim(),
+> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${Founder}`.trim(),
 
-            // Style 3: Hacker Terminal Style
+            // Style 4: Minimal Elegant Box
             `
-┌──────────────────────────
-│ 🅡︎🅐︎🅗︎🅤︎🅛︎-🅐︎🅘︎ 🅜︎🅤︎🅛︎🅣︎🅘︎🅥︎🅔︎🅡︎🅢︎𝙴
-├──────────────────────────
-│ » 𝙁𝙤𝙪𝙣𝙙𝙚𝙧 : ${Founder}
-│ » 𝙊𝙬𝙣𝙚𝙧   : ${botOwner}
-│ » 𝙐𝙨𝙚𝙧    : ${user}
-│ » 𝘿𝙖𝙩𝙚    : ${date}
-│ » 𝙏𝙞𝙢𝙚    : ${time}
-│ » 𝙋𝙧𝙚𝙛𝙞𝙭  : ${prefix}
-└──────────────────────────
+┌ ❖ *ʀᴀʜᴜʟ-ᴀɪ ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ*
+│ 👑 Founder : ${Founder}
+│ ⚡ Owner   : ${botOwner}
+│ 👤 User    : ${user}
+│ 📅 Date    : ${date}
+│ ⏰ Time    : ${time}
+│ ⚙️ Prefix  : ${prefix}
+└───────────────┈⊷
 
-╭───「 🌐 𝙂𝙀𝙉𝙀𝙍𝘼𝙇 」
-│ ◈ ${cmds.general.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ɢᴇɴᴇʀᴀʟ*
+  ◦ ${c.general.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 📥 𝘿𝙊𝙒𝙉𝙇𝙊𝘼𝘿𝙀𝙍𝙎 」
-│ ◈ ${cmds.downloader.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ*
+  ◦ ${c.downloader.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 🛠️ 𝙏𝙊𝙊𝙇𝙎 」
-│ ◈ ${cmds.tools.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ᴛᴏᴏʟꜱ*
+  ◦ ${c.tools.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 🤖 𝘼𝙄 𝘾𝙊𝙈𝙼𝘼𝙉𝘿𝙎 」
-│ ◈ ${cmds.ai.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ᴀɪ ᴄᴍᴅꜱ*
+  ◦ ${c.ai.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 🎮 𝙁𝙐𝙉 」
-│ ◈ ${cmds.fun.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ꜰᴜɴ*
+  ◦ ${c.fun.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 ✨ 𝙉𝙀𝙒 𝘾𝙈𝘿𝙎 」
-│ ◈ ${cmds.new.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ɴᴇᴡ*
+  ◦ ${c.new.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 🔍 𝙎𝙀𝘼𝙍𝘾𝙃 」
-│ ◈ ${cmds.search.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ꜱᴇᴀʀᴄʜ*
+  ◦ ${c.search}
 
-╭───「 🌸 𝘼𝙉𝙄𝙈𝙀 」
-│ ◈ ${cmds.anime.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ᴀɴɪᴍᴇ*
+  ◦ ${c.anime.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 👥 𝙂𝙍𝙊𝙐𝙋 」
-│ ◈ ${cmds.group.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ɢʀᴏᴜᴘ*
+  ◦ ${c.group.replace(/\n│ /g, '\n  ◦ ')}
 
-╭───「 📊 𝙎𝙏𝘼𝙏𝙐𝙎 」
-│ ◈ ${cmds.status.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ꜱᴛᴀᴛᴜꜱ*
+  ◦ ${c.status}
 
-╭───「 📢 𝘾𝙃𝘼𝙉𝙉𝙀𝙇 」
-│ ◈ ${cmds.channel.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ᴄʜᴀɴɴᴇʟ*
+  ◦ ${c.channel}
 
-╭───「 🛡️ 𝘼𝘿𝐌𝙸𝙽 」
-│ ◈ ${cmds.admin.replaceAll(' | ', '\n│ ◈ ')}
-╰───────────────◆
+◈ *ᴀᴅᴍɪɴ*
+  ◦ ${c.admin.replace(/\n│ /g, '\n  ◦ ')}
 
-> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${Founder}`.trim()
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${Founder}*`.trim()
         ];
 
-        // Automatically pick a random style every time the command is triggered
+        // Pick one style randomly automatically
         const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
 
         try {
-            const imageBuffer = (await axios.get(menuImageUrl, {
-                responseType: 'arraybuffer'
-            })).data;
+            const response = await axios.get(menuImageUrl, {
+                responseType: 'arraybuffer',
+                timeout: 3500 // Ultra-fast optimized timeout
+            });
 
-            await m.reply(imageBuffer, {
+            await m.reply(response.data, {
                 caption: randomMenuText
             });
 
         } catch (err) {
-            console.error('Menu error:', err);
+            console.error('Fast menu fallback:', err.message);
             await m.reply(randomMenuText);
         }
     }

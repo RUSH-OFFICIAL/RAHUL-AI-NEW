@@ -20,7 +20,7 @@ module.exports = {
         await m.reply(`⏳ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ɪɴsᴛᴀɢʀᴀᴍ ᴄᴏɴᴛᴇɴᴛ...`);
         
         try {
-            const apiUrl = `https://api-rebix.zone.id/api/igdl?quality=480&url=${encodeURIComponent(url)}`;
+            const apiUrl = `https://knightbotapi.stream/api/download/instagram?apikey=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',

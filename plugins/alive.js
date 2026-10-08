@@ -39,14 +39,14 @@ async function convertToPtt(buffer) {
 
 module.exports = {
     name: 'alive',
-    description: 'Check bot status with full image and voice note',
+    description: 'Check bot status with voice note and dynamic info',
     aliases: ['status', 'runtime'],
     tags: ['main'],
     command: /^(alive|status|runtime)$/i,
 
     async execute(sock, m) {
         try {
-            await m.react('🔥');
+            await m.react('⚡');
 
             // Dynamic Uptime Calculation
             const uptimeSeconds = process.uptime();
@@ -60,55 +60,58 @@ module.exports = {
             const totalMem = (os.totalmem() / 1024 / 1024).toFixed(0);
             const freeMem = (os.freemem() / 1024 / 1024).toFixed(0);
             const usedMem = totalMem - freeMem;
-            const ramPercentage = ((usedMem / totalMem) * 100).toFixed(1);
 
             // Current Time & Date (Asia/Kolkata)
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
             const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-            // Fetch Full Image Buffer
-            const imageResponse = await fetch('https://sam-cdn.zone.id/files/rkDfPAPiha.jpg');
+            // Image Thumbnail Generation
+            const imageResponse = await fetch('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60');
             const imageBuffer = await imageResponse.arrayBuffer();
-            const fullImageBuffer = Buffer.from(imageBuffer);
+            const img = await pix.read(Buffer.from(imageBuffer));
+            const resized = await img.resize(300, 300, { fit: 'cover' });
+            const thumb = await resized.toBuffer({ format: 'jpeg', quality: 50 });
 
-            // Stylish Caption Layout
-            const aliveCaption = `┏━━━━━━━━━━━━━━━━━━━━┓
-┃     ⚡ *SYSTEM STATUS* ⚡     
-┗━━━━━━━━━━━━━━━━━━━━┛
-  │
-  ├ 👤 *User:* @${m.sender.split('@')[0]}
-  ├ 🟢 *Status:* Online & Stable
-  ├ ⏱️ *Uptime:* ${uptimeString}
-  ├ 💾 *Memory:* ${usedMem}MB / ${totalMem}MB (${ramPercentage}%)
-  ├ 💻 *Platform:* ${os.type()} (${os.arch()})
-  ├ 📅 *Date:* ${dateString}
-  ├ ⏰ *Time:* ${timeString}
-  │
-  └───────────────────⭔
-  _✨ Powered by Custom Core_`;
+            // Unique Layout Caption
+            const aliveCaption = `╭━━━〔 *SYSTEM STATUS* 〕━━━⬣
+┃ 🟢 *Bot:* Online & Active
+┃ ⏱️ *Uptime:* ${uptimeString}
+┃ 💾 *RAM:* ${usedMem}MB / ${totalMem}MB
+┃ 📅 *Date:* ${dateString}
+┃ ⏰ *Time:* ${timeString}
+╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
-            // 1. Send Full Image with Caption first
-            await sock.sendMessage(m.from, {
-                image: fullImageBuffer,
-                caption: aliveCaption,
-                mentions: [m.sender]
-            }, { quoted: m });
-
-            // 2. Fetch Audio & Convert to PTT (Voice Note)
+            // Audio Fetch & Conversion
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
             if (!audioResponse.ok) throw new Error('Failed to fetch audio url');
             const rawAudioBuffer = await audioResponse.arrayBuffer();
 
+            // Convert raw audio buffer to real WhatsApp PTT format using FFmpeg
             const pttBuffer = await convertToPtt(Buffer.from(rawAudioBuffer));
 
-            // Send Voice Note right after the image
+            const fakeQuoted = {
+                key: {
+                    remoteJid: m.from,
+                    fromMe: false,
+                    participant: m.sender,
+                    id: 'ALIVE_STATUS_' + Date.now()
+                },
+                message: {
+                    imageMessage: {
+                        mimetype: 'image/jpeg',
+                        jpegThumbnail: thumb,
+                        caption: aliveCaption
+                    }
+                }
+            };
+
             await sock.sendMessage(m.from, {
                 audio: pttBuffer,
                 mimetype: 'audio/ogg; codecs=opus',
                 ptt: true
-            }, { quoted: m });
+            }, { quoted: fakeQuoted });
 
         } catch (err) {
             console.error('❌ Alive Error:', err);

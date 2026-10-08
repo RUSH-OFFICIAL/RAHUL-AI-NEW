@@ -14,7 +14,7 @@ module.exports = {
         await m.react('⭕');
 
         // 1. Menu yenya aadi loading/completion animation message
-        const loadingMsg = await m.reply("⚡ *[ ＲＡＨＵＬ - ＡＩ ]* ⚡\n> *COMPUTING MENU MATRIX... 🔄*");
+        const loadingMsg = await m.reply("⚡ *[ ＲＡＨＵＬ - ＡＩ ]* ⚡\n> *COMPETING RAHUL MENU ... 🔄*");
 
         // Chhota delay sathi (1 second)
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -31,7 +31,7 @@ module.exports = {
         const uptime = `${hours}h ${minutes}m ${seconds}s`;
 
         const menuText = `
-⭕ ─── *ＲＡＨＵＬ - ＭＡＳＴＥＲ* ─── ⭕
+⭕ ─── *ＲＡＨＵＬ-ＭＡＳＴＥＲ* ─── ⭕
 │
 │ 👤 User   : *${user}*
 │ ⏱️ Uptime : *${uptime}*
@@ -41,7 +41,7 @@ module.exports = {
 ⭕──────────────────────────────⭕
 
 🔵 *01. GENERAL COMMANDS*
-⚪ ${prefix}alive
+🔴 ${prefix}alive
 ⚪ ${prefix}ping
 ⚪ ${prefix}uptime
 ⚪ ${prefix}owner
@@ -50,7 +50,7 @@ module.exports = {
 ⚪ ${prefix}speed
 
 🔵 *02. DOWNLOAD COMMANDS*
-⚪ ${prefix}tiktok
+🔴 ${prefix}tiktok
 ⚪ ${prefix}ytmp3
 ⚪ ${prefix}ytmp4
 ⚪ ${prefix}ig
@@ -59,7 +59,7 @@ module.exports = {
 ⚪ ${prefix}pinterest
 
 🔵 *03. TOOLS & AI ENGINE*
-⚪ ${prefix}sticker
+🔴 ${prefix}sticker
 ⚪ ${prefix}take
 ⚪ ${prefix}toimg
 ⚪ ${prefix}ocr
@@ -98,7 +98,7 @@ module.exports = {
 ⚪ ${prefix}demote
 ⚪ ${prefix}hidetag
 ⚪ ${prefix}antilink
-
+🔴 🔴 🔴 🔵 🔵 🔵
 ⭕──────────────────────────────⭕
 > *✨ RAHUL-AI MENU COMPLETED*`.trim();
 

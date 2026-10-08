@@ -50,7 +50,7 @@ module.exports = {
 ┃ ⏰ **Time:** ${timeString}
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
-            const audioUrl = 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=notification-sound-7062.mp3';
+            const audioUrl = 'https://tmpfiles.org/dl/wXApgYwfGOZf/file_1791436873351.mp3?filename=notification-sound-7062.mp3';
             const audioResponse = await fetch(audioUrl);
             const audioBuffer = await audioResponse.arrayBuffer();
 

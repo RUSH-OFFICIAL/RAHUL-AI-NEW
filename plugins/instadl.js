@@ -26,13 +26,14 @@ module.exports = {
         }
         
         // Cyber-Matrix Live Editing Animation Sequence with Progress Bar
-        const loadMsg = await m.reply("╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ⚡ *CONNECTING... [ ⚡░░░░░░░░ ] 25%*\n╰━━━━━━━━━━━━━━━━━━⬣");
+        const loadMsg = await m.reply("╭━━━〔 🌐 *ʀᴀʜᴜʟ - ai* 〕━━━⬣\n┃ ⚡ *CONNECTING... [ ⚡░░░░░░░░ ] 25%*\n╰━━━━━━━━━━━━━━━━━━⬣");
         
         try {
-            await new Promise(resolve => setTimeout(resolve, 400));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜլ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await new Promise(resolve => setTimeout(resolve, 300));
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - AI* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
-            const apiUrl = `https://api-rebix.zone.id/api/igdl?quality=480&url=${encodeURIComponent(url)}`;
+            // Updated working API endpoint
+            const apiUrl = `https://api.siputzx.my.id/api/s/igdl?url=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',
@@ -40,20 +41,21 @@ module.exports = {
                 timeout: 30000
             });
             
-            if (!response.data.status || !response.data.result) {
+            if (!response.data || (!response.data.status && !response.data.data)) {
                 throw new Error('API returned invalid response or empty result');
             }
             
-            const result = response.data.result;
-            const metadata = result.metadata || {};
-            const mediaUrl = result.url && result.url[0] ? result.url[0] : null;
+            // Handle different JSON structures returned by public APIs
+            const resData = response.data.data || response.data.result || response.data;
+            const mediaList = Array.isArray(resData) ? resData : (resData.url || resData.data || [resData]);
+            const mediaUrl = typeof mediaList === 'string' ? mediaList : (mediaList[0]?.url || mediaList[0]);
 
             if (!mediaUrl) {
                 throw new Error('Media URL not found in API response');
             }
             
-            await new Promise(resolve => setTimeout(resolve, 400));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await new Promise(resolve => setTimeout(resolve, 300));
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - AI* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const mediaResponse = await axios({
                 method: 'get',
@@ -65,31 +67,29 @@ module.exports = {
             const buffer = Buffer.from(mediaResponse.data);
             
             // Final Completion Status Update
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 🚀 *COMPLETED! [ ██████████ ] 100%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - AI* 〕━━━⬣\n┃ 🚀 *COMPLETED! [ ██████████ ] 100%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const caption = `
 ╭━━━〔 💎 *ɪɴsᴛᴀɢʀᴀᴍ ᴍᴇᴅɪᴀ* 〕━━━⬣
-┃ 👤 *User*     : *${metadata.username || 'Unknown'}*
-┃ ❤️ *Likes*    : *${metadata.like || '0'}*
-┃ 💬 *Comments* : *${metadata.comment || '0'}*
+┃ 👤 *Status*   : *Success*
 ╰━━━━━━━━━━━━━━━━━━━━━━━━━━⬣
-
-📝 *Caption:* 
-${metadata.caption || 'No caption available'}
 
 > *🔥 Powered by Rahul Master*`.trim();
             
-            if (metadata.isVideo) {
-                await m.reply(buffer, { 
-                    caption: caption,
+            // Automatically detect if it's video based on link extension or mime
+            const isVideo = mediaUrl.includes('.mp4') || mediaResponse.headers['content-type']?.includes('video');
+
+            if (isVideo) {
+                await sock.sendMessage(m.chat, { 
                     video: buffer,
-                    mimetype: 'video/mp4'
-                });
-            } else {
-                await m.reply(buffer, { 
                     caption: caption,
-                    image: buffer
-                });
+                    mimetype: 'video/mp4'
+                }, { quoted: m });
+            } else {
+                await sock.sendMessage(m.chat, { 
+                    image: buffer,
+                    caption: caption
+                }, { quoted: m });
             }
             
         } catch (err) {

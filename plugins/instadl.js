@@ -32,7 +32,7 @@ module.exports = {
             await new Promise(resolve => setTimeout(resolve, 300));
             await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
-            const apiUrl = `https://api.aswinsparky.qzz.io/api/downloader/igdl?url=${encodeURIComponent(url)}`;
+            const apiUrl = `https://api.gifted.co.ke/api/download/instadl?apikey=gifted&url=${encodeURIComponent(url)}`;
             
             // Added headers to bypass basic 401 Unauthorized blocks (User-Agent & Referer)
             const response = await axios({

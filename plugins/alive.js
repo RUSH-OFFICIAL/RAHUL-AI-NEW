@@ -15,8 +15,8 @@ module.exports = {
             const width = 300;
             const height = 300;
 
-            // Fetching thumbnail image
-            const imageResponse = await fetch('https://i.ibb.co/wnWJtrP/8a55300e87bc.jpg');
+            // Fetching thumbnail image (Updated with your link)
+            const imageResponse = await fetch('https://sam-cdn.zone.id/files/C0SGPFVlH3.jpg');
             const imageBuffer = await imageResponse.arrayBuffer();
 
             const img = await pix.read(Buffer.from(imageBuffer));
@@ -24,7 +24,7 @@ module.exports = {
             const thumb = await resized.toBuffer({ format: 'jpeg', quality: 40 });
 
             // Updated audio URL for "See You Again"
-            const audioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Replace with your direct See You Again MP3 link if needed
+            const audioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
             const audioResponse = await fetch(audioUrl);
             const audioBuffer = await audioResponse.arrayBuffer();
 

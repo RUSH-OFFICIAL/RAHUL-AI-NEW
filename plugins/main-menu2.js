@@ -7,7 +7,7 @@ if (!global.botStartTime) {
 module.exports = {
     name: 'menu2',
     description: 'Supreme Cyber-Pulse animated circle bot menu',
-    aliases: ['help', 'cmdlist', 'commands'],
+    aliases: ['help', 'cmdlist', 'commands', 'rahulai',],
 
     async execute(sock, m) {
         const now = new Date();
@@ -44,7 +44,8 @@ module.exports = {
 │ 👤 User   : *${user}*
 │ ⏱️ Uptime : *${uptime}*
 │ ⚙️ Prefix : *${prefix}*
-│ 🚀 Status : *Quantum Pulse Active*
+│ 🚀 Status : *Quantum Pulse 
+│ ✅  BOT   :  🚀   *Active*
 │
 💎──────────────────────────────💎
 

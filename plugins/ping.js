@@ -11,14 +11,10 @@ module.exports = {
             await m.react('⚡');
             const start = Date.now();
             
-            // Send initial text message
-            const sentMsg = await sock.sendMessage(m.from, {
-                text: '```🔄 Initializing RAHUL-AI Latency Test...```'
-            }, { quoted: m });
-
+            // Calculate latency immediately
             const latency = Date.now() - start;
 
-            // Stylish modern dashboard design including the image link aesthetic
+            // Stylish modern dashboard design with your image URL
             const pingText = 
                 `╭────────────────────────╮\n` +
                 `│   🚀 **RAHUL-AI STATUS**   │\n` +
@@ -26,14 +22,13 @@ module.exports = {
                 `│ ⚡ **Speed:** ${latency} ms\n` +
                 `│ 🟢 **Status:** Online\n` +
                 `│ 🛡️ **System:** Active\n` +
-                `╰────────────────────────╯\n` +
-                `🖼️ *Media:* https://sam-cdn.zone.id/files/xQer9GrIVT.jpg`;
+                `╰────────────────────────╯`;
 
-            // Seamlessly edit the text message without any crash
+            // Send image directly with the styled text as caption (No editing = No errors!)
             await sock.sendMessage(m.from, {
-                text: pingText,
-                edit: sentMsg.key
-            });
+                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
+                caption: pingText
+            }, { quoted: m });
 
         } catch (err) {
             console.error('Ping command error:', err);

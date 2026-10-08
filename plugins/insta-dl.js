@@ -1,54 +1,48 @@
-const axios = require("axios");
-const { cmd, commands } = require('../command');
+});
 
-
-cmd({
-    pattern: "ig",
-    alias: ["igdl", "reel", "ig", "instadl"],
-    desc: "Download Instagram reels or image posts",
-    category: "downloader",
-    react: "⏳",
-    filename: __filename
-},
-async (conn, mek, m, { from, args, q, reply, react }) => {
-    try {
-        if (!q) return reply("*🏷️ ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀɴ ɪɴsᴛᴀɢʀᴀᴍ ᴘᴏsᴛ ᴏʀ ʀᴇᴇʟ ʟɪɴᴋ.*");
-        if (!q.includes("instagram.com")) return reply("Invalid Instagram link.");
-
-        const apiUrl = `https://delirius-apiofc.vercel.app/download/igv2?url=${q}`;
-        const { data } = await axios.get(apiUrl);
-
-        if (!data.status || !data.data) {
-            await react("❌"); 
-            return reply("Failed to fetch Instagram media.");
-        }
-
-        const { username, fullname, caption, likes, comments, followed, download } = data.data;
-
-        const captionText = `*❒ RAHUL-AI ᴠɪᴅᴇᴏ ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ ❒*\n\n` +
-                            `👤 *ᴜsᴇʀ:* ${fullname}\n` +
-                            `♥️ *ʟɪᴋᴇs:* ${likes}\n💬 *ᴄᴏᴍᴍᴇɴᴛs:* ${comments}\n👥 *ғᴏʟʟᴏᴡᴇʀs:* ${followed}\n`;
-
-        for (const media of download) {
-            if (media.type === "image") {
-                await conn.sendMessage(from, {
-                    image: { url: media.url },
-                    caption: captionText,
-                    contextInfo: { mentionedJid: [m.sender] }
-                }, { quoted: mek });
-            } else if (media.type === "video") {
-                await conn.sendMessage(from, {
-                    video: { url: media.url },
-                    caption: captionText,
-                    contextInfo: { mentionedJid: [m.sender] }
-                }, { quoted: mek });
-            }
-        }
-
-        await react("✅"); // React after successfully sending media
-    } catch (e) {
-        console.error("Error in Instagram downloader command:", e);
-        await react("❌");
-        reply(`An error occurred: ${e.message}`);
+System({
+    pattern: 'insta',
+    fromMe: isPrivate,
+    type: 'download',
+    desc: 'instagram downloader',
+}, async (message, match) => {
+    const url = (await extractUrlsFromText(match || message.reply_message.text))[0];
+    if (!url) return await message.reply('Please provide an Instagram *url*'); 
+    if (!isUrl(url)) return await message.reply("Please provide a valid Instagram *url*");
+    if (!url.includes("instagram.com")) return await message.reply("*Please provide a valid Instagram url*");
+    const data = await instaDL(url);
+    if (!data || data.length === 0) return await message.reply("*No content found at the provided URL*");
+    for (const imageUrl of data) {
+        if (imageUrl) await message.sendFromUrl(imageUrl.url, { quoted: message.data });
     }
+});
+
+System({
+  pattern: "story",
+  fromMe: isPrivate,
+  type: "download",
+  desc: "To download insta story",
+}, async (message, match) => {
+  match = match || message.reply_message.text;
+  if (!isUrl(match)) {
+    const { media: result } = await getJson(IronMan("ironman/ig/story?user=" + match));
+    if (!result) return await message.reply("*Exᴀᴍᴘʟᴇ: .story username/link*");
+    if(result.length === 1) return await message.sendFromUrl(result[0], { caption: "*done ♥️*", quoted: message });
+    const options = result.map((u, index) => ({ displayText:`${index + 1}/${result.length}`, id: `sendurl ${u}` }));
+    if(message.isGroup) return await message.send("\n*Story downloader*\n", { values: options, withPrefix: true, participates: [message.sender] }, "poll");
+    for (const media of result) {
+      await message.sendFromUrl(media, { quoted: message.data });
+    }
+    return;
+  }
+  const url = (await extractUrlsFromText(match))[0];
+  if (!url.includes("instagram.com")) return message.reply("_*Provide a valid Instagram story URL*_");
+  const result = await instaDL(url);
+  if (!result || result.length === 0) return await message.reply("*Exᴀᴍᴘʟᴇ: .story username/link*");
+  if(result.length === 1) return await message.sendFromUrl(result[0].url, { caption: "*done ♥️*", quoted: message });
+  const options = result.map((u, index) => ({ displayText:`${index + 1}/${result.length}`, id: `sendurl ${u.url}` }));
+  if(message.isGroup) return await message.send("\n*Story downloader*\n", { values: options, withPrefix: true, participates: [message.sender] }, "poll");
+  for (const media of result) {
+    await message.sendFromUrl(media.url, { quoted: message.data });
+  }
 });

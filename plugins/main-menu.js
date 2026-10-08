@@ -2,12 +2,12 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Advanced RPG/Neon Style Auto-Changing Menu with Rotating Logos',
-    aliases: ['help', 'cmdlist', 'commands', 'menu3'],
+    description: 'Cyber-Matrix Nexus Prime Auto-Changing Menu with Dynamic RAHUL-AI Logos',
+    aliases: ['help', 'cmdlist', 'commands', 'menu14'],
 
     async execute(sock, m) {
         try { 
-            await m.react('🔥'); 
+            await m.react('🌟'); 
         } catch (e) {}
         
         const prefix = global.BOT_PREFIX || '.';
@@ -31,92 +31,86 @@ module.exports = {
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
-        // 1. **Automatically Rotating Logos** (Tuza main link + extra HD options)
-        const logoUrls = [
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Tuza dillela main logo
-            'https://images.unsplash.com/photo-1579546929518-9e396f3cc809', // Neon Gradient Theme
-            'https://images.unsplash.com/photo-1550684848-fac1c5b4e853', // Cyber Orange Neon
-            'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f'  // Abstract Tech Art
+        // 1. **Automatically Generated & Rotating RAHUL-AI Logos** (Dynamic 3D & Cyber Banners)
+        const autoLogos = [
+            `https://www6.flamingtext.com/net-fu/proxy_form.cgi?imageoutput=true&script=infernal-logo&text=RAHUL-AI&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=70&fontName=futura`,
+            `https://www6.flamingtext.com/net-fu/proxy_form.cgi?imageoutput=true&script=flux-logo&text=RAHUL-AI&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=70&fontName=futura`,
+            `https://www6.flamingtext.com/net-fu/proxy_form.cgi?imageoutput=true&script=crafts-logo&text=RAHUL+AI&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=70`,
+            `https://sam-cdn.zone.id/files/xQer9GrIVT.jpg` // Tuza custom default high-tech logo
         ];
-        const selectedImage = logoUrls[Math.floor(Math.random() * logoUrls.length)];
+        const selectedLogo = autoLogos[Math.floor(Math.random() * autoLogos.length)];
 
-        // 2. **Automatically Changing Styles/Themes** (Prati vela navin layout disnar)
+        // 2. **Automatically Changing Menu Styles/Themes** (Prati vela completely different layout)
         const menuStyles = [
-            // Theme 1: Neon RPG Box Style
+            // Theme 1: Nexus Prime HUD Style
             `
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃   ⚡ **RAHUL-AI ULTIMATE** ⚡  ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
- ❖ User    : ${user}
- ❖ Owner   : ${botOwner}
- ❖ Founder : ${Founder}
- ❖ Time    : ${time} (${date})
- ❖ Prefix  : ${prefix}
+╭─────────────────────────────╮
+│ 🌟 **[ RAHUL-AI NEXUS PRIME ]** 🌟
+╰─────────────────────────────╯
+ ◈ *User*    : ${user}
+ ◈ *Owner*   : ${botOwner}
+ ◈ *Founder* : ${Founder}
+ ◈ *Time*    : ${time} | ${date}
+ ◈ *Prefix*  : ${prefix}
 
-🔮 *[ 01 ] SYSTEM CORE*
-  ├── ${prefix}alive
-  ├── ${prefix}ping
-  ├── ${prefix}uptime
-  └── ${prefix}owner
-
-🎬 *[ 02 ] MEDIA & DOWNLOADS*
-  ├── ${prefix}tiktok / ${prefix}tt
-  ├── ${prefix}ytmp3
-  └── ${prefix}ig
-
-🤖 *[ 03 ] NEURAL AI & TOOLS*
-  ├── ${prefix}ai | ${prefix}ai-search
-  ├── ${prefix}sticker | ${prefix}ocr
-  └── ${prefix}tts | ${prefix}style
-
-🛡️ *[ 04 ] GROUP & ADMIN*
-  ├── ${prefix}tagall
-  ├── ${prefix}kick
-  ├── ${prefix}promote
-  └── ${prefix}demote
-
-> *「 SYSTEM STATUS: ONLINE 」*`.trim(),
-
-            // Theme 2: Futuristic Game Dashboard Style
-            `
-╔═══════════════════════════╗
-║   🎮 **RAHUL-AI HUD v5** 🎮   ║
-╚═══════════════════════════╝
- 👤 PPLAYER : ${user}
- 👑 CREATOR : ${botOwner}
- ⚡ PREFIX  : ${prefix}
-
-┌─── 🚀 **MAIN COMMANDS** ───┐
+┌── ⚡ **SYSTEM & CORE** ──────┐
 │ • ${prefix}alive   • ${prefix}ping
-│ • ${prefix}menu    • ${prefix}owner
-└───────────────────────────┘
+│ • ${prefix}uptime  • ${prefix}owner
+└─────────────────────────────┘
 
-┌─── 📥 **MEDIA DOWNLOADS** ───┐
+┌── 📥 **MEDIA DOWNLOADS** ───┐
 │ • ${prefix}tiktok  • ${prefix}ytmp3
 │ • ${prefix}ig      • ${prefix}tt
-└───────────────────────────┘
+└─────────────────────────────┘
 
-┌─── 🧠 **AI & UTILITIES** ───┐
+┌── 🧠 **NEURAL AI SUITE** ───┐
 │ • ${prefix}ai      • ${prefix}ai-search
-│ • ${prefix}sticker • ${prefix}ocr
-└───────────────────────────┘
+│ • ${prefix}aiv     • ${prefix}gen
+└─────────────────────────────┘
 
-┌─── ⚡ **ADMIN & TOOLS** ───┐
+┌── 🛠️ **UTILS & TOOLS** ─────┐
+│ • ${prefix}sticker • ${prefix}ocr
+│ • ${prefix}tts     • ${prefix}style
+└─────────────────────────────┘
+
+┌── 🛡️ **GROUP & ADMIN** ────┐
 │ • ${prefix}tagall  • ${prefix}kick
 │ • ${prefix}promote • ${prefix}demote
-└───────────────────────────┘
+└─────────────────────────────┘
 
-> *Powered by RAHUL-MASTER Engine*`.trim()
+> *[NEXUS STATUS: 100% UNSTOPPABLE]*`.trim(),
+
+            // Theme 2: Matrix Hyper-Grid Protocol Style
+            `
+╔═════════════════════════════╗
+║  ⚡ **RAHUL-AI MATRIX V14** ⚡  ║
+╚═════════════════════════════╝
+ 👤 **Operator:** ${user}
+ 👑 **Master:**   ${botOwner}
+ ⚡ **Prefix:**   ${prefix}
+
+┌─── 📂 **COMMAND DIRECTORY** ────┐
+│
+├─► *Core:* ${prefix}alive | ${prefix}ping | ${prefix}uptime
+├─► *Downloads:* ${prefix}tiktok | ${prefix}ytmp3 | ${prefix}ig
+├─► *AI Tools:* ${prefix}ai | ${prefix}ai-search | ${prefix}gen
+├─► *Utilities:* ${prefix}sticker | ${prefix}ocr | ${prefix}style
+├─► *Fun & New:* ${prefix}hide | ${prefix}guessgender | ${prefix}blue
+├─► *Anime:* ${prefix}waifu | ${prefix}neko | ${prefix}kitsune
+└─► *Admin:* ${prefix}tagall | ${prefix}kick | ${prefix}promote
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> 「 Powered by RAHUL-MASTER Engine 」`.trim()
         ];
 
-        // Randomly pick one style every time command is executed
+        // Randomly pick a menu style every time command is run
         const menuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
 
         try {
-            // Fast image fetch with timeout
-            const imageBuffer = (await axios.get(selectedImage, {
+            // Fetch the dynamically generated RAHUL-AI logo/image
+            const imageBuffer = (await axios.get(selectedLogo, {
                 responseType: 'arraybuffer',
-                timeout: 5000
+                timeout: 7000
             })).data;
 
             await m.reply(imageBuffer, {
@@ -124,7 +118,7 @@ module.exports = {
             });
 
         } catch (err) {
-            console.error('Menu error, fallback to text:', err.message);
+            console.error('Dynamic logo generation error, fallback to text:', err.message);
             await m.reply(menuText);
         }
     }

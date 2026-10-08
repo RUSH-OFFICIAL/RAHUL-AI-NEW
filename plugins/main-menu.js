@@ -1,25 +1,24 @@
-const { prepareWAMessageMedia, generateWAMessageFromContent } = require('@whiskeysockets/baileys');
+const { prepareWAMessageMedia } = require('@whiskeysockets/baileys');
 
+// 1. Command handler madhe asha prakare check kara (Tumcha prefix '.' ahe)
+// Example: inside your message listener function:
+/*
+const prefix = ".";
+const isCmd = body.startsWith(prefix);
+const command = isCmd ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : "";
+
+if (command === "menu") {
+    await sendExactSlideMenu(sock, from);
+}
+*/
+
+// 2. Menu Function
 async function sendExactSlideMenu(sock, remoteJid) {
     try {
-        // Tumchya menu madhil veg-veghe category images
-        const images = [
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Image 1: Download & Owner list
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Image 2: Group & Search list
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg'  // Image 3: Convert & Main list
-        ];
+        const imageUrl = 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg';
 
-        let albumArray = [];
-
-        for (let i = 0; i < images.length; i++) {
-            const media = await prepareWAMessageMedia(
-                { image: { url: images[i] } }, 
-                { upload: sock.waUploadToServer }
-            );
-
-            let textContent = "";
-            if (i === 0) {
-                textContent = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣
+        // List 1: Download & Owner
+        const text1 = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣
 ┃ *DOWNLOAD COMMAND LIST*
 ┃ • .an1
 ┃ • .dl-npm
@@ -53,8 +52,9 @@ async function sendExactSlideMenu(sock, remoteJid) {
 ┃ • .status
 ╰━━━━━━━━━━━━━━━━━━━⬣
 *POWERED BY RAHUL-MASTER*`;
-            } else if (i === 1) {
-                textContent = `╭━━━〔 *GROUP COMMAND LIST* 〕━━━⬣
+
+        // List 2: Group & Search
+        const text2 = `╭━━━〔 *GROUP COMMAND LIST* 〕━━━⬣
 ┃ • .chstatus
 ┃ • .del
 ┃ • .requestlist
@@ -85,8 +85,9 @@ async function sendExactSlideMenu(sock, remoteJid) {
 ┃ • .google
 ╰━━━━━━━━━━━━━━━━━━━⬣
 *POWERED BY RAHUL-MASTER*`;
-            } else if (i === 2) {
-                textContent = `╭━━━〔 *CONVERT COMMAND LIST* 〕━━━⬣
+
+        // List 3: Convert List
+        const text3 = `╭━━━〔 *CONVERT COMMAND LIST* 〕━━━⬣
 ┃ • .tts
 ┃ • .currency
 ┃ • .sticker2img
@@ -98,22 +99,14 @@ async function sendExactSlideMenu(sock, remoteJid) {
 ┃ • .uploadfile
 ╰━━━━━━━━━━━━━━━━━━━⬣
 *POWERED BY RAHUL-MASTER*`;
-            }
 
-            albumArray.push({
-                imageMessage: media.imageMessage,
-                caption: textContent
-            });
-        }
-
-        // WhatsApp madhe album send karne
-        await sock.sendMessage(remoteJid, {
-            album: albumArray
-        });
+        // Eka mage ek images pathvane jevhyane te WhatsApp madhe swipe album sarkhe disatat
+        await sock.sendMessage(remoteJid, { image: { url: imageUrl }, caption: text1 });
+        await sock.sendMessage(remoteJid, { image: { url: imageUrl }, caption: text2 });
+        await sock.sendMessage(remoteJid, { image: { url: imageUrl }, caption: text3 });
 
     } catch (e) {
         console.error("Menu error:", e);
-        // Fallback option jar album support karat nasel
-        await sock.sendMessage(remoteJid, { text: "❌ Menu load hot nahiy." });
+        await sock.sendMessage(remoteJid, { text: "❌ Menu load hot nahiy: " + e.message });
     }
 }

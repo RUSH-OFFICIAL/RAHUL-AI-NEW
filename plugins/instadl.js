@@ -2,19 +2,19 @@ const axios = require('axios');
 
 module.exports = {
     name: 'instadl',
-    description: 'Advanced Instagram downloader with live animation and circle theme',
+    description: 'Ultimate cyber-matrix Instagram downloader with live progress animation',
     aliases: ['insta', 'instagram', 'ig', 'igdl'],
     
     async execute(sock, m, args) {
-        await m.react('📥');
+        await m.react('⚡');
 
         if (!args.length) {
             const prefix = global.BOT_PREFIX || '.';
             return m.reply(
-                `╭━━━〔 📸 *ɪɴsᴛᴀɢʀᴀᴍ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ* 〕━━━⬣\n` +
+                `╭━━━〔 ⚡ *ɪɴsᴛᴀɢʀᴀᴍ ᴍᴀᴛʀɪx ʜᴜʙ* 〕━━━⬣\n` +
                 `┃ ⚙️ *Usage*   : \`${prefix}ig <url>\`\n` +
                 `┃ 🌐 *Example* : \`${prefix}ig https://www.instagram.com/reel/xxxx\`\n` +
-                `╰━━━━━━━━━━━━━━━━━━━━━━━━━━⬣\n` +
+                `╰━━━━━━━━━━━━━━━━━━━━━━━━━━━⬣\n` +
                 `> *⭕ Powered by Rahul Master*`
             );
         }
@@ -25,12 +25,12 @@ module.exports = {
             return m.reply('❌ *Error:* Please provide a valid Instagram URL!');
         }
         
-        // 1. Live Animated Status
-        const loadMsg = await m.reply("🌐 *[ ＲＡＨＵＬ - ＡＩ ]* 🌐\n> *CONNECTING TO INSTAGRAM API... ⏳*");
+        // Cyber-Matrix Live Editing Animation Sequence with Progress Bar
+        const loadMsg = await m.reply("╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ⚡ *CONNECTING... [ ⚡░░░░░░░░ ] 25%*\n╰━━━━━━━━━━━━━━━━━━⬣");
         
         try {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            await sock.sendMessage(m.chat, { text: "📥 *[ ＲＡＨＵＬ - ＡＩ ]* 📥\n> *DOWNLOADING MEDIA CONTENT... 🔄*", edit: loadMsg.key }).catch(() => {});
+            await new Promise(resolve => setTimeout(resolve, 400));
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜլ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const apiUrl = `https://api-rebix.zone.id/api/igdl?quality=480&url=${encodeURIComponent(url)}`;
             
@@ -52,7 +52,8 @@ module.exports = {
                 throw new Error('Media URL not found in API response');
             }
             
-            await sock.sendMessage(m.chat, { text: "✨ *[ ＲＡＨＵＬ - ＡＩ ]* ✨\n> *PROCESSING & SENDING MEDIA... 🚀*", edit: loadMsg.key }).catch(() => {});
+            await new Promise(resolve => setTimeout(resolve, 400));
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const mediaResponse = await axios({
                 method: 'get',
@@ -63,18 +64,20 @@ module.exports = {
             
             const buffer = Buffer.from(mediaResponse.data);
             
+            // Final Completion Status Update
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 🚀 *COMPLETED! [ ██████████ ] 100%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+
             const caption = `
-⭕ ─── *ɪɴsᴛᴀɢʀᴀᴍ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ* ─── ⭕
-│
-│ 👤 *User*     : *${metadata.username || 'Unknown'}*
-│ ❤️ *Likes*    : *${metadata.like || '0'}*
-│ 💬 *Comments* : *${metadata.comment || '0'}*
-│
-⭕──────────────────────────────⭕
+╭━━━〔 💎 *ɪɴsᴛᴀɢʀᴀᴍ ᴍᴇᴅɪᴀ* 〕━━━⬣
+┃ 👤 *User*     : *${metadata.username || 'Unknown'}*
+┃ ❤️ *Likes*    : *${metadata.like || '0'}*
+┃ 💬 *Comments* : *${metadata.comment || '0'}*
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━⬣
+
 📝 *Caption:* 
 ${metadata.caption || 'No caption available'}
 
-> *⭕ Powered by Rahul Master*`.trim();
+> *🔥 Powered by Rahul Master*`.trim();
             
             if (metadata.isVideo) {
                 await m.reply(buffer, { 

@@ -1,8 +1,6 @@
-const axios = require('axios');
-
 module.exports = {
     name: 'menu',
-    description: 'Show available bot commands with ultimate auto-changing styles v3.1 (Cleaned)',
+    description: 'Show available bot commands with ultimate auto-changing styles & direct image url',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
@@ -22,7 +20,7 @@ module.exports = {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
-            timeZone: 'Africa/Accra'
+            timeZone: 'Asia/Kolkata'
         });
 
         const time = now.toLocaleTimeString('en-US', {
@@ -30,14 +28,14 @@ module.exports = {
             minute: '2-digit',
             second: '2-digit',
             hour12: true,
-            timeZone: 'Africa/Accra'
+            timeZone: 'Asia/Kolkata'
         });
 
         const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
         
-        // Rotating Image URLs
+        // Rotating Image URLs (Pratyek veles automatically image change hoil)
         const menuImages = [
             'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
             'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
@@ -62,7 +60,7 @@ module.exports = {
             admin: `${prefix}kick\n│ 🛡️ ${prefix}promote\n│ 🛡️ ${prefix}demote`
         };
 
-        // Unique Menu Variations
+        // Unique Menu Variations (Auto-Changing Styles)
         const menuStyles = [
             // Style 1: Matrix Core
             `╔════════════════════════════╗
@@ -168,7 +166,7 @@ module.exports = {
 │ 💎 ${c.anime}
 └───────────────◆
 
-┌───❖ *👥 𝐆𝐑𝐎𝐔𝐏*
+┌───❖ *👥 𝐆𝐑𝐎𝚄𝙿*
 │ 💎 ${c.group}
 └───────────────◆
 
@@ -184,14 +182,14 @@ module.exports = {
 │ 💎 ${c.admin}
 └───────────────◆
 
-> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ɴᴇᴛᴡᴏʀᴋ ❖`,
+> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ ɴᴇᴛᴡᴏʀᴋ ❖`,
 
             // Style 3: Cyber Console
             `╔═════════════════════════════╗
 ║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
 ╚═════════════════════════════╝
 │ » ꜰᴏᴜɴᴅᴇʀ : ${Founder}
-│ » ᴏᴡɴᴇʀ   : ${botOwner}
+│ » ᴏᴡɴᴇ🇷   : ${botOwner}
 │ » ᴜꜱᴇʀ    : ${user}
 │ » ᴅᴀᴛᴇ    : ${date}
 │ » ᴛɪᴍᴇ    : ${time}
@@ -251,20 +249,15 @@ module.exports = {
 
         const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
 
-        // Safe message delivery with bulletproof image/text fallback
+        // Send message with direct Image URL & Auto-Changing Style Text
         try {
-            const response = await axios.get(menuImageUrl, {
-                responseType: 'arraybuffer',
-                timeout: 3000
-            });
-
             await sock.sendMessage(m.chat, {
-                image: Buffer.from(response.data),
+                image: { url: menuImageUrl },
                 caption: randomMenuText
             }, { quoted: m });
-
         } catch (err) {
-            // If image fails or times out, immediately send the text menu without throwing errors
+            console.error('Menu send error:', err);
+            // Fallback to text if image fails to render
             await sock.sendMessage(m.chat, { text: randomMenuText }, { quoted: m });
         }
     }

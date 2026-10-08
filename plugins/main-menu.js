@@ -2,20 +2,18 @@ const axios = require('axios');
 
 module.exports = {
     name: 'menu',
-    description: 'Show available bot commands with ultimate auto-changing styles v3.0 (Fixed)',
+    description: 'Show available bot commands with ultimate auto-changing styles v3.1 (Cleaned)',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        // Safe reaction handling (Crash avoid karnyasathi try-catch)
+        // Safe reaction handling
         try {
             if (sock.sendMessage && m.key) {
                 await sock.sendMessage(m.chat, { 
                     react: { text: '⚡', key: m.key } 
                 });
             }
-        } catch (e) {
-            console.log('React error skipped:', e.message);
-        }
+        } catch (e) {}
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -39,16 +37,16 @@ module.exports = {
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
         
-        // 🌟 Rotating Image Links (Pratyek veles automatically image change hoil)
+        // Rotating Image URLs
         const menuImages = [
-            'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg', // Tuji main RAHUL-AI image
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Tech backup image
-            'https://files.catbox.moe/57j7w5.jpg',         // Cyber neon image
-            'https://files.catbox.moe/g24h0f.jpg'          // Dark aesthetic image
+            'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
+            'https://files.catbox.moe/57j7w5.jpg',
+            'https://files.catbox.moe/g24h0f.jpg'
         ];
         const menuImageUrl = menuImages[Math.floor(Math.random() * menuImages.length)];
 
-        // Optimized Command Arrays
+        // Commands list
         const c = {
             general: `${prefix}alive\n│ 🚀 ${prefix}ping\n│ 🚀 ${prefix}uptime\n│ 🚀 ${prefix}owner\n│ 🚀 ${prefix}guide\n│ 🚀 ${prefix}menu2`,
             downloader: `${prefix}tiktok / ${prefix}tt\n│ 📥 ${prefix}ytmp3\n│ 📥 ${prefix}ig`,
@@ -64,11 +62,10 @@ module.exports = {
             admin: `${prefix}kick\n│ 🛡️ ${prefix}promote\n│ 🛡️ ${prefix}demote`
         };
 
-        // ♾️ Unlimited RAHUL-AI Dynamic Logo & Layout Pools
+        // Unique Menu Variations
         const menuStyles = [
-            // Style 1: RAHUL-AI Matrix Core
-            `
-╔════════════════════════════╗
+            // Style 1: Matrix Core
+            `╔════════════════════════════╗
 ║ 🧬 *⚡ 𝑹𝑨𝑯𝑼𝑳-𝑨𝑰 𝑴𝑨𝑻𝑹𝑰𝓧 ⚡* 🧬
 ╚════════════════════════════╝
 │ 👑 𝐹𝑜𝑢𝑛𝒅𝑒𝑟 : ${Founder}
@@ -127,11 +124,10 @@ module.exports = {
 │ 🛡️ ${c.admin}
 └───────────────◆
 
-> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ᴄᴏʀᴇ*`.trim(),
+> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝗟-ᴀɪ*`,
 
-            // Style 2: RAHUL-AI Hologram Grid
-            `
-╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 𝖍𝖔𝖑𝖔𝖌𝖗𝖆𝖒 〕━━━╮
+            // Style 2: Hologram Grid
+            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 𝖍𝖔𝖑𝖔𝖌𝖗𝖆𝖒 〕━━━╮
 ┃ 👑 Founder : ${Founder}
 ┃ ⚡ Owner   : ${botOwner}
 ┃ 👤 User    : ${user}
@@ -188,11 +184,10 @@ module.exports = {
 │ 💎 ${c.admin}
 └───────────────◆
 
-> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ɴᴇᴛᴡᴏʀᴋ ❖`.trim(),
+> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ɴᴇᴛᴡᴏʀᴋ ❖`,
 
-            // Style 3: RAHUL-AI Cyber Console
-            `
-╔═════════════════════════════╗
+            // Style 3: Cyber Console
+            `╔═════════════════════════════╗
 ║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
 ╚═════════════════════════════╝
 │ » ꜰᴏᴜɴᴅᴇʀ : ${Founder}
@@ -247,71 +242,20 @@ module.exports = {
 │ ◈ ${c.channel}
 ╰───────────────◆
 
-╭─[ 🛡️ 🛡️ ᴀᴅᴍɪɴ ]
+╭─[ 🛡️ ᴀᴅᴍɪɴ ]
 │ ◈ ${c.admin}
 ╰───────────────◆
 
-> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ꜱʏꜱᴛᴇᴍ`.trim(),
-
-            // Style 4: RAHUL-AI Minimal Neon Box
-            `
-┌ ❖ *ʀᴀʜᴜʟ-ᴀɪ ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ*
-│ 👑 Founder : ${Founder}
-│ ⚡ Owner   : ${botOwner}
-│ 👤 User    : ${user}
-│ 📅 Date    : ${date}
-│ ⏰ Time    : ${time}
-│ ⚙️ Prefix  : ${prefix}
-└───────────────┈⊷
-
-◈ *ɢᴇɴᴇʀᴀʟ*
-  ◦ ${c.general.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ᴅᴏᴡɴʟᴏᴀᴅᴇʀꜱ*
-  ◦ ${c.downloader.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ᴛᴏᴏʟꜱ*
-  ◦ ${c.tools.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ᴀɪ ᴄᴍᴅꜱ*
-  ◦ ${c.ai.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ꜰᴜɴ*
-  ◦ ${c.fun.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ɴᴇᴡ*
-  ◦ ${c.new.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ꜱᴇᴀʀᴄʜ*
-  ◦ ${c.search}
-
-◈ *ᴀɴɪᴍᴇ*
-  ◦ ${c.anime.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ɢʀᴏᴜ]='
-◈ *ɢʀᴏᴜᴘ*
-  ◦ ${c.group.replace(/\n│ /g, '\n  ◦ ')}
-
-◈ *ꜱᴛᴀᴛᴜꜱ*
-  ◦ ${c.status}
-
-◈ *ᴄʜᴀɴɴᴇʟ*
-  ◦ ${c.channel}
-
-◈ *ᴀᴅᴍ𝙸𝙽*
-  ◦ ${c.admin.replace(/\n│ /g, '\n  ◦ ')}
-
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ*`.trim()
+> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ ꜱʏꜱᴛᴇᴍ`
         ];
 
-        // Randomly pick 1 style out of 4 distinct unique variations automatically every time
         const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
 
+        // Safe message delivery with bulletproof image/text fallback
         try {
-            // Attempt to fetch and send with image
             const response = await axios.get(menuImageUrl, {
                 responseType: 'arraybuffer',
-                timeout: 4000
+                timeout: 3000
             });
 
             await sock.sendMessage(m.chat, {
@@ -320,8 +264,7 @@ module.exports = {
             }, { quoted: m });
 
         } catch (err) {
-            console.error('Menu image fallback error:', err.message);
-            // Safe fallback to plain text if image fails
+            // If image fails or times out, immediately send the text menu without throwing errors
             await sock.sendMessage(m.chat, { text: randomMenuText }, { quoted: m });
         }
     }

@@ -37,7 +37,7 @@ module.exports = {
             await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             // Correct API URL construction
-            const apiUrl = `https://api.gifted.co.ke/api/download/instadl?apikey=gifted&url=${encodeURIComponent(url)}`;
+            const apiUrl = `https://delirius-apiofc.vercel.app/download/igv2?url=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',

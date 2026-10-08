@@ -30,10 +30,10 @@ module.exports = {
         
         try {
             await new Promise(resolve => setTimeout(resolve, 300));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜլ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
-            // Updated working alternative API endpoint
-            const apiUrl = `https://widipe.com/download/igdl?url=${encodeURIComponent(url)}`;
+            // Stable working endpoint from Siputzx API
+            const apiUrl = `https://api.siputzx.my.id/api/d/fastdl?url=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',
@@ -41,11 +41,11 @@ module.exports = {
                 timeout: 30000
             });
             
-            if (!response.data || (!response.data.status && !response.data.result)) {
+            if (!response.data || (!response.data.status && !response.data.data)) {
                 throw new Error('API returned invalid response or empty result');
             }
             
-            const resData = response.data.result || response.data.data;
+            const resData = response.data.data || response.data.result;
             const mediaList = Array.isArray(resData) ? resData : (resData.url || [resData]);
             const mediaUrl = typeof mediaList === 'string' ? mediaList : (mediaList[0]?.url || mediaList[0]);
 

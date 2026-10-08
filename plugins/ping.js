@@ -1,33 +1,39 @@
+const axios = require('axios');
+
 module.exports = {
     name: 'ping',
     aliases: ['speed', 'latency'],
-    description: 'Royal HUD style latency checker',
+    description: 'Check bot response speed',
 
     async execute(sock, m, args) {
         try {
-            const startTimer = Date.now();
-            const recipient = m.from || m.chat || m.sender;
-            const latencyTime = Date.now() - startTimer;
-
-            const hudText = 
-                `╭────────────────────────╮\n` +
-                `│   👑 *RAHUL-AI.0*       │\n` +
-                `├────────────────────────┤\n` +
-                `│ 🔹 *Core Engine* : Active\n` +
-                `│ ⚡ *Response*    : ${latencyTime}ms\n` +
-                `│ 🌐 *Network*     : Stable\n` +
-                `│ 👤 *Owner*       : Rahul Hiran\n` +
-                `╰────────────────────────╯\n` +
-                `> _⚡ Powered by RAHUL-AI Systems_`;
-
-            await sock.sendMessage(recipient, {
+            await m.react('🚀');
+            const start = Date.now();
+            
+            // Send initial image message with pinging text
+            const sentMsg = await sock.sendMessage(m.from, {
                 image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                caption: hudText
+                caption: '```Pinging...```'
             }, { quoted: m });
 
+            const latency = Date.now() - start;
+            const info = `> 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸: ${latency} ms`;
+
+            // Edit the caption of the image message safely
+            await sock.sendMessage(m.from, {
+                text: info,
+                edit: sentMsg.key
+            });
+
         } catch (err) {
-            console.error('Ping Error:', err);
+            console.error('Ping error:', err);
+            // Fallback just in case editing fails
+            const startFallback = Date.now();
+            const latencyFallback = Date.now() - startFallback;
+            await sock.sendMessage(m.from, {
+                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
+                caption: `> 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸: ${latencyFallback} ms`
+            }, { quoted: m });
         }
     }
 };
-

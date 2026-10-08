@@ -26,14 +26,14 @@ module.exports = {
         }
         
         // Cyber-Matrix Live Editing Animation Sequence with Progress Bar
-        const loadMsg = await m.reply("╭━━━〔 🌐 *ʀᴀʜᴜʟ - ai* 〕━━━⬣\n┃ ⚡ *CONNECTING... [ ⚡░░░░░░░░ ] 25%*\n╰━━━━━━━━━━━━━━━━━━⬣");
+        const loadMsg = await m.reply("╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ⚡ *CONNECTING... [ ⚡░░░░░░░░ ] 25%*\n╰━━━━━━━━━━━━━━━━━━⬣");
         
         try {
             await new Promise(resolve => setTimeout(resolve, 300));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - AI* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜլ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
-            // Updated working API endpoint
-            const apiUrl = `https://api.siputzx.my.id/api/s/igdl?url=${encodeURIComponent(url)}`;
+            // Updated working alternative API endpoint
+            const apiUrl = `https://widipe.com/download/igdl?url=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',
@@ -41,13 +41,12 @@ module.exports = {
                 timeout: 30000
             });
             
-            if (!response.data || (!response.data.status && !response.data.data)) {
+            if (!response.data || (!response.data.status && !response.data.result)) {
                 throw new Error('API returned invalid response or empty result');
             }
             
-            // Handle different JSON structures returned by public APIs
-            const resData = response.data.data || response.data.result || response.data;
-            const mediaList = Array.isArray(resData) ? resData : (resData.url || resData.data || [resData]);
+            const resData = response.data.result || response.data.data;
+            const mediaList = Array.isArray(resData) ? resData : (resData.url || [resData]);
             const mediaUrl = typeof mediaList === 'string' ? mediaList : (mediaList[0]?.url || mediaList[0]);
 
             if (!mediaUrl) {
@@ -55,7 +54,7 @@ module.exports = {
             }
             
             await new Promise(resolve => setTimeout(resolve, 300));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - AI* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const mediaResponse = await axios({
                 method: 'get',
@@ -67,7 +66,7 @@ module.exports = {
             const buffer = Buffer.from(mediaResponse.data);
             
             // Final Completion Status Update
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - AI* 〕━━━⬣\n┃ 🚀 *COMPLETED! [ ██████████ ] 100%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 🚀 *COMPLETED! [ ██████████ ] 100%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const caption = `
 ╭━━━〔 💎 *ɪɴsᴛᴀɢʀᴀᴍ ᴍᴇᴅɪᴀ* 〕━━━⬣
@@ -76,7 +75,6 @@ module.exports = {
 
 > *🔥 Powered by Rahul Master*`.trim();
             
-            // Automatically detect if it's video based on link extension or mime
             const isVideo = mediaUrl.includes('.mp4') || mediaResponse.headers['content-type']?.includes('video');
 
             if (isVideo) {

@@ -1,15 +1,16 @@
+const axios = require('axios');
+
 module.exports = {
     name: 'menu',
-    description: 'Show available bot commands with auto-changing styles and images',
+    description: 'Show available bot commands with dynamic themes and auto-changing logos',
     aliases: ['help', 'cmdlist', 'commands'],
 
     async execute(sock, m) {
-        // Safe reaction handler
         try {
-            await sock.sendMessage(m.chat, { 
-                react: { text: '⚡', key: m.key } 
-            });
-        } catch (e) {}
+            await m.react('✔️');
+        } catch (e) {
+            // Ignore reaction errors if unsupported
+        }
         
         const prefix = global.BOT_PREFIX || '.';
         const now = new Date();
@@ -18,7 +19,7 @@ module.exports = {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
-            timeZone: 'Asia/Kolkata'
+            timeZone: 'Africa/Accra'
         });
 
         const time = now.toLocaleTimeString('en-US', {
@@ -26,24 +27,36 @@ module.exports = {
             minute: '2-digit',
             second: '2-digit',
             hour12: true,
-            timeZone: 'Asia/Kolkata'
+            timeZone: 'Africa/Accra'
         });
 
         const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
-        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
+        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
 
-        // 🌟 Automatic Rotating Image URLs (Direct URL passing - No Axios Crash)
-        const menuImages = [
-            'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
-            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
-            'https://files.catbox.moe/57j7w5.jpg',
-            'https://files.catbox.moe/g24h0f.jpg'
+        // 1. Automatically Rotating Logo URLs (RAHUL-AI Logos including your requested link)
+        const logoUrls = [
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg', // Tuza dillela main logo
+            'https://i.ibb.co/3r1w7ZJ/rahul-ai-v2.jpg',      // Dynamic logo alternative 1
+            'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe' // Dynamic tech style alternative 2
         ];
-        const randomImage = menuImages[Math.floor(Math.random() * menuImages.length)];
+        const selectedImage = logoUrls[Math.floor(Math.random() * logoUrls.length)];
 
-        // Commands block
-        const cmdList = `
+        // 2. Automatically Changing Menu Styles/Themes (Multiple layouts with your complete command lists)
+        const menuStyles = [
+            // Theme 1: Clean Frame Style
+            `
+┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ
+│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
+│ *ᴏᴡɴᴇʀ:* ${botOwner}
+│ *ᴜsᴇʀ:* ${user}
+│ *ᴅᴀᴛᴇ:* ${date}
+│ *ᴛɪᴍᴇ:* ${time} (GMT)
+│ *ᴘʀᴇғɪx:* ${prefix}
+╰──────────────────╯
+
+┌─ム ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
+│
 ├─ム *ɢᴇɴᴇʀᴀʟ*
 │ ᪣ ${prefix}ᴀʟɪᴠᴇ
 │ ᪣ ${prefix}ᴘɪɴɢ
@@ -109,97 +122,53 @@ module.exports = {
 ├─ム *ᴀᴅᴍɪɴ*
 │ ᪣ ${prefix}ᴋɪᴄᴋ
 │ ᪣ ${prefix}ᴘʀᴏᴍᴏᴛᴇ
-│ ᪣ ${prefix}ᴅᴇᴍᴏᴛᴇ`;
-
-        // 🌟 Automatic Rotating 5 Different Styles
-        const menuStyles = [
-            `┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ (STYLE 1)
-│ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
-│ *ᴏᴡɴᴇʀ:* ${botOwner}
-│ *ᴜsᴇʀ:* ${user}
-│ *ᴅᴀᴛᴇ:* ${date}
-│ *ᴛɪᴍᴇ:* ${time}
-│ *ᴘʀᴇғɪx:* ${prefix}
-╰──────────────────╯
-
-┌─ム ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
-${cmdList}
+│ ᪣ ${prefix}ᴅᴇᴍᴏᴛᴇ
+│
 ╰─────────◆────────╯
 
-> 「 ᴩᴏᴡᴇʀᴇᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」`,
+> 「 ᴩᴏᴡᴇʀᴇᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」`.trim(),
 
-            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 ʜᴏʟᴏɢʀ𝖆ᴍ 〕━━━╮
-┃ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
-┃ *ᴏᴡɴᴇʀ:* ${botOwner}
-┃ *ᴜsᴇʀ:* ${user}
-┃ *ᴅᴀᴛᴇ:* ${date}
-┃ *ᴘʀᴇғɪx:* ${prefix}
-╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
+            // Theme 2: Minimalist Box Style
+            `
+╭─────────────────────────╮
+│   ⚡ *RAHUL-AI V2* ⚡     │
+╰─────────────────────────╯
+ 👤 User   : ${user}
+ 👑 Owner  : ${botOwner}
+ 🏛️ Founder: ${Founder}
+ ⏰ Time   : ${time}
+ ⚙️ Prefix : ${prefix}
 
-┌───❖ *ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs*
-${cmdList}
-└───────────────◆
+📂 *CATEGORIES & COMMANDS:*
+• *General:* ${prefix}alive, ${prefix}ping, ${prefix}uptime, ${prefix}owner, ${prefix}guide
+• *Downloads:* ${prefix}tiktok, ${prefix}ytmp3, ${prefix}ig
+• *Tools:* ${prefix}sticker, ${prefix}ocr, ${prefix}tts, ${prefix}poll, ${prefix}shazam
+• *AI:* ${prefix}ai, ${prefix}ai-search, ${prefix}aiv, ${prefix}gen
+• *Fun & New:* ${prefix}blue, ${prefix}flag, ${prefix}hide, ${prefix}guessgender, ${prefix}style
+• *Anime:* ${prefix}waifu, ${prefix}neko, ${prefix}kitsune, ${prefix}husbando
+• *Group & Admin:* ${prefix}tagall, ${prefix}kick, ${prefix}promote, ${prefix}demote, ${prefix}group
 
-> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 2)`,
-
-            `╔════════════════════════════╗
-║ 🧬 *⚡ 𝑹𝑨𝙷𝚄𝙻-𝑨𝙸 𝙼𝙰𝚃𝚁𝙸𝚇 ⚡* 🧬
-╚════════════════════════════╝
-│ 👑 𝐹𝑜𝑢𝑛𝒅𝑒𝑟 : ${Founder}
-│ ⚡ 𝑂𝑤𝑛𝑒𝑟   : ${botOwner}
-│ 👤 𝑈𝑠𝑒𝑟    : ${user}
-│ 📅 𝐷𝑎𝑡𝑒    : ${date}
-╚════════════════════════════╝
-
-┌─〔 ᴄᴏᴍᴍᴀɴᴅꜱ ʟɪꜱᴛ 〕
-${cmdList}
-└───────────────◆
-
-> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 3)*`,
-
-            `╔═════════════════════════════╗
-║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
-╚═════════════════════════════╝
-│ » ꜰᴏᴜɴᴅᴇʀ : ${Founder}
-│ » ᴏᴡɴᴇʀ   : ${botOwner}
-│ » ᴜꜱᴇʀ    : ${user}
-│ » ᴛɪᴍᴇ    : ${time}
-╚═════════════════════════════╝
-
-╭─[ ᴄᴍᴅꜱ ᴄᴏɴꜱᴏʟᴇ ]
-${cmdList}
-╰───────────────◆
-
-> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 4)`,
-
-            `╔════════════════════════════╗
-║ 👑 *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚁𝙾𝚈𝙰𝙻 𝙼𝙴𝙽𝚄* 👑
-╚════════════════════════════╝
-│ ❖ ꜰᴏᴜɴᴅᴇʀ : ${Founder}
-│ ❖ ᴏᴡɴᴇʀ   : ${botOwner}
-│ ❖ ᴜꜱᴇʀ    : ${user}
-╚════════════════════════════╝
-
-🚀 *[ ᴀʟʟ ᴄᴏᴍᴍᱟɴᴅꜱ ]*
-${cmdList}
-
-> 💎 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 5)*`
+> *Powered by RAHUL-AI Engine*`.trim()
         ];
 
-        // Randomly select one style automatically
-        const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)].trim();
+        // Randomly pick one of the menu styles automatically
+        const menuText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
 
         try {
-            // Direct safe URL sending (No Axios Buffer needed)
-            await sock.sendMessage(m.chat, {
-                image: { url: randomImage },
-                caption: randomMenuText
-            }, { quoted: m });
+            // Check global.menuImage or fallback to our automatically rotating logos
+            const imageUrl = global.menuImage || selectedImage;
+            const imageBuffer = (await axios.get(imageUrl, {
+                responseType: 'arraybuffer',
+                timeout: 8000
+            })).data;
+
+            await m.reply(imageBuffer, {
+                caption: menuText
+            });
 
         } catch (err) {
-            console.error('Menu error:', err);
-            // Fallback text just in case
-            await sock.sendMessage(m.chat, { text: randomMenuText }, { quoted: m });
+            console.error('Menu image error, sending text menu:', err.message);
+            await m.reply(menuText);
         }
     }
 };

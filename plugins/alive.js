@@ -1,5 +1,41 @@
 const pix = require('pixcore');
 const os = require('os');
+const fs = require('fs');
+const path = require('path');
+const ffmpeg = require('fluent-ffmpeg');
+
+// Helper function to convert any audio buffer to WhatsApp PTT (OGG/Opus) format
+async function convertToPtt(buffer) {
+    return new Promise((resolve, reject) => {
+        const tmpDir = os.tmpdir();
+        const inputPath = path.join(tmpDir, `input_${Date.now()}.mp3`);
+        const outputPath = path.join(tmpDir, `output_${Date.now()}.ogg`);
+
+        fs.writeFileSync(inputPath, buffer);
+
+        ffmpeg(inputPath)
+            .audioCodec('libopus')
+            .format('ogg')
+            .audioChannels(1)
+            .audioFrequency(48000)
+            .on('error', (err) => {
+                try { fs.unlinkSync(inputPath); } catch {}
+                try { fs.unlinkSync(outputPath); } catch {}
+                reject(err);
+            })
+            .on('end', () => {
+                try {
+                    const outputBuffer = fs.readFileSync(outputPath);
+                    fs.unlinkSync(inputPath);
+                    fs.unlinkSync(outputPath);
+                    resolve(outputBuffer);
+                } catch (e) {
+                    reject(e);
+                }
+            })
+            .save(outputPath);
+    });
+}
 
 module.exports = {
     name: 'alive',
@@ -46,11 +82,14 @@ module.exports = {
 ┃ ⏰ *Time:* ${timeString}
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
-            // Audio Fetch with Error Handling
+            // Audio Fetch & Conversion
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
-            if (!audioResponse.ok) throw new Error('Failed to fetch audio');
-            const audioBuffer = await audioResponse.arrayBuffer();
+            if (!audioResponse.ok) throw new Error('Failed to fetch audio url');
+            const rawAudioBuffer = await audioResponse.arrayBuffer();
+
+            // Convert raw audio buffer to real WhatsApp PTT format using FFmpeg
+            const pttBuffer = await convertToPtt(Buffer.from(rawAudioBuffer));
 
             const fakeQuoted = {
                 key: {
@@ -69,8 +108,8 @@ module.exports = {
             };
 
             await sock.sendMessage(m.from, {
-                audio: Buffer.from(audioBuffer),
-                mimetype: 'audio/mp4', // Koyeb/Baileys par agar ogg/opus play na ho toh 'audio/mp4' ya 'audio/mpeg' try karein
+                audio: pttBuffer,
+                mimetype: 'audio/ogg; codecs=opus',
                 ptt: true
             }, { quoted: fakeQuoted });
 

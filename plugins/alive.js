@@ -50,7 +50,8 @@ module.exports = {
 ┃ ⏰ **Time:** ${timeString}
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
-            const audioUrl = 'https://tmpfiles.org/dl/wXApgYwfGOZf/file_1791436873351.mp3?filename=notification-sound-7062.mp3';
+            // Updated Audio URL
+            const audioUrl = 'https://tmpfiles.org/dl/wXApgYwfGOZf/file_1791436873351.mp3';
             const audioResponse = await fetch(audioUrl);
             const audioBuffer = await audioResponse.arrayBuffer();
 
@@ -78,7 +79,7 @@ module.exports = {
 
         } catch (err) {
             console.error('❌ Unique Alive Plugin Error:', err);
-            await m.reply('⚠️ Ani error occurred while checking bot status.');
+            await m.reply('⚠️ An error occurred while checking bot status.');
         }
     },
 };

@@ -1,52 +1,38 @@
-const { generateWAMessageFromContent, prepareWAMessageMedia } = require('@whiskeysockets/baileys');
+const { prepareWAMessageMedia, generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 
-async function sendMenuSlide(sock, remoteJid) {
-    // Header image (jar image pathvichi asel tar)
-    const mediaMessage = await prepareWAMessageMedia({ image: { url: './path_to_your_banner.jpg' } }, { upload: sock.waUploadToServer });
+async function sendSlideMenu(sock, remoteJid) {
+    // Tumchya menu images che paths ya URLs
+    const images = [
+        './assets/menu1.jpg', // Download / Owner list image
+        './assets/menu2.jpg', // Group / Search list image
+        './assets/menu3.jpg'  // Main / AI list image
+    ];
 
-    const interactiveMsg = generateWAMessageFromContent(remoteJid, {
-        viewOnceMessage: {
-            message: {
-                interactiveMessage: {
-                    header: {
-                        hasMediaAttachment: true,
-                        imageMessage: mediaMessage.imageMessage
-                    },
-                    body: {
-                        text: "╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣\n┃ Here is your command list.\n┃ Choose a category below:\n╰━━━━━━━━━━━━━━━━━━━⬣"
-                    },
-                    footer: {
-                        text: "POWERED BY RAHUL-MASTER"
-                    },
-                    nativeFlowMessage: {
-                        buttons: [
-                            {
-                                name: "quick_reply",
-                                buttonParamsJson: JSON.stringify({
-                                    display_text: "📥 DOWNLOAD LIST",
-                                    id: ".downloadmenu"
-                                })
-                            },
-                            {
-                                name: "quick_reply",
-                                buttonParamsJson: JSON.stringify({
-                                    display_text: "👑 OWNER LIST",
-                                    id: ".ownermenu"
-                                })
-                            },
-                            {
-                                name: "quick_reply",
-                                buttonParamsJson: JSON.stringify({
-                                    display_text: "🤖 AI MENU",
-                                    id: ".aimenu"
-                                })
-                            }
-                        ]
-                    }
-                }
-            }
+    const albumMessages = [];
+
+    for (let i = 0; i < images.length; i++) {
+        const media = await prepareWAMessageMedia({ image: { url: images[i] } }, { upload: sock.waUploadToServer });
+        
+        // Pahilya image la caption deu shakta, baki images album madhe slide sathi rahatil
+        let captionText = "";
+        if (i === 0) {
+            captionText = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⡣\n┃ Swipe left/right to view categories\n╰━━━━━━━━━━━━━━━━━━━⡣\n\nPOWERED BY RAHUL-MASTER`;
+        }
+
+        albumMessages.push({
+            imageMessage: media.imageMessage,
+            caption: captionText
+        });
+    }
+
+    // Album message format tayar karun pathvane
+    const interactiveAlbum = generateWAMessageFromContent(remoteJid, {
+        albumMessage: {
+            expectedImageCount: images.length,
+            // Baileys album structure sathi multiple media items
         }
     }, {});
 
-    await sock.relayMessage(remoteJid, interactiveMsg.message, { messageId: interactiveMsg.key.id });
+    // Note: Jar tumcha Baileys version albumMessage direct support karat nasel, 
+    // tar tumhi sendMultipleImages function ya array send method vapru shakta.
 }

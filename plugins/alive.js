@@ -12,83 +12,70 @@ module.exports = {
         try {
             await m.react('⚡');
 
-            // Dynamic Uptime
+            // Dynamic Uptime Calculation
             const uptimeSeconds = process.uptime();
-            const d = Math.floor(uptimeSeconds / (3600 * 24));
-            const h = Math.floor((uptimeSeconds % (3600 * 24)) / 3600);
-            const mMin = Math.floor((uptimeSeconds % 3600) / 60);
-            const s = Math.floor(uptimeSeconds % 60);
-            const uptime = `${d}d ${h}h ${mMin}m ${s}s`;
+            const days = Math.floor(uptimeSeconds / (3600 * 24));
+            const hours = Math.floor((uptimeSeconds % (3600 * 24)) / 3600);
+            const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+            const seconds = Math.floor(uptimeSeconds % 60);
+            const uptimeString = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-            // System RAM
+            // System Memory RAM
             const totalMem = (os.totalmem() / 1024 / 1024).toFixed(0);
             const freeMem = (os.freemem() / 1024 / 1024).toFixed(0);
             const usedMem = totalMem - freeMem;
 
-            // Date & Time
-            const dateObj = new Date();
-            const time = dateObj.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
-            const date = dateObj.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
+            // Current Time & Date (Asia/Kolkata)
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
+            const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-            // Thumbnail Image Processing
-            const imgRes = await fetch('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=60');
-            const imgBuffer = await imgRes.arrayBuffer();
-            const img = await pix.read(Buffer.from(imgBuffer));
+            // Image Thumbnail Generation
+            const imageResponse = await fetch('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60');
+            const imageBuffer = await imageResponse.arrayBuffer();
+            const img = await pix.read(Buffer.from(imageBuffer));
             const resized = await img.resize(300, 300, { fit: 'cover' });
             const thumb = await resized.toBuffer({ format: 'jpeg', quality: 50 });
 
-            // Stylish Text Layout
-            const caption = `┏━━⟪ *BOT STATUS* ⟫━━┓
-┃ 🟢 *State:* Active & Running
-┃ ⏱️ *Uptime:* ${uptime}
-┃ 💾 *Memory:* ${usedMem}MB / ${totalMem}MB
-┃ 📅 *Date:* ${date}
-┃ ⏰ *Time:* ${time}
-┗━━━━━━━━━━━━━━━┛\n_✨ Designed for Elite Performance_`;
+            // Unique Layout Caption
+            const aliveCaption = `╭━━━〔 *SYSTEM STATUS* 〕━━━⬣
+┃ 🟢 *Bot:* Online & Active
+┃ ⏱️ *Uptime:* ${uptimeString}
+┃ 💾 *RAM:* ${usedMem}MB / ${totalMem}MB
+┃ 📅 *Date:* ${dateString}
+┃ ⏰ *Time:* ${timeString}
+╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
-            // Stable Audio URL (GitHub raw or direct CDN link use kara jo download support karto)
-            // Me ithe ek reliable direct audio link takli ahe, tumhi tumcha audio pan ya format madhe taku shakta.
-            const audioUrl = 'https://raw.githubusercontent.com/Khushalsoni08/Database/main/audio/alive.mp3'; 
-            
-            // Jari tumhala tunch audio use karaycha asel, tar to GitHub raw link var upload karun ithe taka, mhanje error येणार nahi.
-            let audioBuffer;
-            try {
-                const audioRes = await fetch(audioUrl);
-                audioBuffer = await audioRes.arrayBuffer();
-            } catch (e) {
-                // Fallback direct audio stream jar fetch fail zali tar
-                audioBuffer = null;
-            }
+            // Audio Fetch (Using a stable raw link, you can replace with your own audio raw link)
+            const audioUrl = 'https://raw.githubusercontent.com/Khushalsoni08/Database/main/audio/alive.mp3';
+            const audioResponse = await fetch(audioUrl);
+            const audioBuffer = await audioResponse.arrayBuffer();
 
             const fakeQuoted = {
                 key: {
                     remoteJid: m.from,
                     fromMe: false,
                     participant: m.sender,
-                    id: 'ALIVE_' + Math.floor(Math.random() * 1000000)
+                    id: 'ALIVE_STATUS_' + Date.now()
                 },
                 message: {
                     imageMessage: {
                         mimetype: 'image/jpeg',
                         jpegThumbnail: thumb,
-                        caption: caption
+                        caption: aliveCaption
                     }
                 }
             };
 
-            if (audioBuffer) {
-                await sock.sendMessage(m.from, {
-                    audio: Buffer.from(audioBuffer),
-                    mimetype: 'audio/mp4',
-                    ptt: true // Voice note sathi true thevla ahe
-                }, { quoted: fakeQuoted });
-            } else {
-                await sock.sendMessage(m.from, { text: caption }, { quoted: fakeQuoted });
-            }
+            await sock.sendMessage(m.from, {
+                audio: Buffer.from(audioBuffer),
+                mimetype: 'audio/ogg; codecs=opus', // Fix for audio playback error
+                ptt: true
+            }, { quoted: fakeQuoted });
 
         } catch (err) {
             console.error('❌ Alive Error:', err);
-            await m.reply('❌ Error executing alive command.');
+            await m.reply('⚠️ Error executing alive command.');
         }
     },
 };

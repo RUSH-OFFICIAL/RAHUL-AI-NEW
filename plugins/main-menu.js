@@ -1,38 +1,112 @@
 const { prepareWAMessageMedia, generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 
-async function sendSlideMenu(sock, remoteJid) {
-    // Tumchya menu images che paths ya URLs
-    const images = [
-        './assets/menu1.jpg', // Download / Owner list image
-        './assets/menu2.jpg', // Group / Search list image
-        './assets/menu3.jpg'  // Main / AI list image
-    ];
+async function sendRahulAiMenu(sock, remoteJid) {
+    try {
+        // Tumchya menu sathi laganarya image URLs ya local file paths
+        // Tumhi ithe 2 te 4 images chya links ya paths deu shakta je album banavtil
+        const menuImages = [
+            './assets/menu_banner.jpg', // Banner image (jar asel tar)
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' // Tumhi dileli image link
+        ];
 
-    const albumMessages = [];
+        let albumMessages = [];
 
-    for (let i = 0; i < images.length; i++) {
-        const media = await prepareWAMessageMedia({ image: { url: images[i] } }, { upload: sock.waUploadToServer });
-        
-        // Pahilya image la caption deu shakta, baki images album madhe slide sathi rahatil
-        let captionText = "";
-        if (i === 0) {
-            captionText = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⡣\n┃ Swipe left/right to view categories\n╰━━━━━━━━━━━━━━━━━━━⡣\n\nPOWERED BY RAHUL-MASTER`;
+        for (let i = 0; i < menuImages.length; i++) {
+            // Media prepare karne
+            const media = await prepareWAMessageMedia(
+                { image: { url: menuImages[i] } }, 
+                { upload: sock.waUploadToServer }
+            );
+
+            // Pahilya image sobat full menu text / command list dena
+            let captionText = "";
+            if (i === 0) {
+                captionText = `╭━━━〔 *RAHUL-AI MENU* 〕━━━⬣
+┃ *DOWNLOAD COMMAND LIST*
+┃ • .an1
+┃ • .dl-npm
+┃ • .play
+┃ • .video
+┃ • .drama
+┃ • .apk
+┃ • .fb
+┃ • .gitclone
+┃ • .gdrive
+┃ • .mediafire
+┃ • .tiktok
+┃ • .timp3
+┃ • .insta
+┃ • .instamp3
+┃ • .twitter
+┃ • .thwards
+┃ • .pinterest
+╰━━━━━━━━━━━━━━━━━━━⬣
+
+╭━━━〔 *OWNER COMMAND LIST* 〕━━━⬣
+┃ • .autobio
+┃ • .bgmirefresh
+┃ • .jid
+┃ • .kickadmins
+┃ • .join
+┃ • .left
+┃ • .newgc
+┃ • .smd
+┃ • .chreact
+┃ • .newsletter
+┃ • .status
+╰━━━━━━━━━━━━━━━━━━━⬣
+
+*TOTAL COMMANDS LIST : 43*
+*POWERED BY RAHUL-MASTER*`;
+            } else if (i === 1) {
+                // Dusrya image sathi pudhchi list (Group, Search, AI, etc.)
+                captionText = `╭━━━〔 *GROUP COMMAND LIST* 〕━━━⬣
+┃ • .chstatus
+┃ • .del
+┃ • .requestlist
+┃ • .acceptall
+┃ • .rejectall
+┃ • .accept
+┃ • .reject
+┃ • .add
+┃ • .remove
+┃ • .kickall
+┃ • .warn
+┃ • .warnings
+┃ • .resetwarn
+┃ • .promote
+┃ • .demote
+╰━━━━━━━━━━━━━━━━━━━⬣
+
+╭━━━〔 *SEARCH COMMAND LIST* 〕━━━⬣
+┃ • .pins2
+┃ • .facebook3
+┃ • .define
+┃ • .gitstalk
+┃ • .moviesearch
+┃ • .srepo
+┃ • .spotifasearch
+┃ • .tiks
+┃ • .yts
+┃ • .google
+╰━━━━━━━━━━━━━━━━━━━⬣
+
+*POWERED BY RAHUL-MASTER*`;
+            }
+
+            albumMessages.push({
+                imageMessage: media.imageMessage,
+                caption: captionText
+            });
         }
 
-        albumMessages.push({
-            imageMessage: media.imageMessage,
-            caption: captionText
+        // WhatsApp madhe album format madhe message pathvane
+        await sock.sendMessage(remoteJid, {
+            album: albumMessages
         });
+
+    } catch (error) {
+        console.error("Menu pathavtana error ala:", error);
+        await sock.sendMessage(remoteJid, { text: "❌ Menu load hot nahiy, kachari error ala ahe." });
     }
-
-    // Album message format tayar karun pathvane
-    const interactiveAlbum = generateWAMessageFromContent(remoteJid, {
-        albumMessage: {
-            expectedImageCount: images.length,
-            // Baileys album structure sathi multiple media items
-        }
-    }, {});
-
-    // Note: Jar tumcha Baileys version albumMessage direct support karat nasel, 
-    // tar tumhi sendMultipleImages function ya array send method vapru shakta.
 }

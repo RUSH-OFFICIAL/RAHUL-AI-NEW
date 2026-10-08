@@ -32,8 +32,8 @@ module.exports = {
             await new Promise(resolve => setTimeout(resolve, 300));
             await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
-            // Stable working endpoint from Siputzx API
-            const apiUrl = `https://api.aswinsparky.qzz.io/api/downloader/igdl${encodeURIComponent(url)}`;
+            // Corrected API endpoint with query parameter properly attached
+            const apiUrl = `https://api.aswinsparky.qzz.io/api/downloader/igdl?url=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',
@@ -41,12 +41,12 @@ module.exports = {
                 timeout: 30000
             });
             
-            if (!response.data || (!response.data.status && !response.data.data)) {
+            if (!response.data || (!response.data.status && !response.data.data && !response.data.result)) {
                 throw new Error('API returned invalid response or empty result');
             }
             
-            const resData = response.data.data || response.data.result;
-            const mediaList = Array.isArray(resData) ? resData : (resData.url || [resData]);
+            const resData = response.data.data || response.data.result || response.data;
+            const mediaList = Array.isArray(resData) ? resData : (resData.url || resData.downloadUrl || [resData]);
             const mediaUrl = typeof mediaList === 'string' ? mediaList : (mediaList[0]?.url || mediaList[0]);
 
             if (!mediaUrl) {
@@ -54,7 +54,7 @@ module.exports = {
             }
             
             await new Promise(resolve => setTimeout(resolve, 300));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜﾙ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const mediaResponse = await axios({
                 method: 'get',

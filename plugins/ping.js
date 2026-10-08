@@ -3,54 +3,37 @@ const axios = require('axios');
 module.exports = {
     name: 'ping',
     aliases: ['speed', 'latency'],
-    description: 'Check bot response speed with a sleek image layout',
+    description: 'Check bot response speed with audio response',
 
     async execute(sock, m, args) {
         try {
-            // Safe reaction
+            // Reaction sathi safe check
             if (m && typeof m.react === 'function') {
-                await m.react('🚀').catch(() => {});
+                await m.react('🎵').catch(() => {});
             }
 
-            const start = Date.now();
+            const startTime = Date.now();
             const chatId = m.from || m.chat || (m.key && m.key.remoteJid);
+            const latency = Date.now() - startTime;
 
-            // Send initial image with loading text
-            const sentMsg = await sock.sendMessage(chatId, {
-                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                caption: '```🔄 Measuring RAHUL-AI speed...```'
+            // Text info sobat (optional)
+            await sock.sendMessage(chatId, {
+                text: `> 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 Ping: ${latency}ms`
             }, { quoted: m });
 
-            const latency = Date.now() - start;
-
-            const finalCaption = 
-                `╭────────────────────────╮\n` +
-                `│   ⚡ **RAHUL-AI LATENCY**  │\n` +
-                `├────────────────────────┤\n` +
-                `│ 🚀 Response : ${latency} ms\n` +
-                `│ 🛡️ Status   : Active\n` +
-                `╰────────────────────────╯`;
-
-            // Edit the image caption smoothly
-            if (sentMsg && sentMsg.key) {
-                await sock.sendMessage(chatId, {
-                    text: finalCaption,
-                    edit: sentMsg.key
-                });
-            } else {
-                // Fallback if key is missing
-                await sock.sendMessage(chatId, {
-                    image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                    caption: finalCaption
-                }, { quoted: m });
-            }
+            // Audio pathvnyasathi khali URL kinva local file path taku shaktoS
+            // Jar local file asel tar: { url: './path/to/audio.mp3' }
+            await sock.sendMessage(chatId, {
+                audio: { url: 'https://spider-avik.zone.id/file/jwfyt2.mpeg';'}, // Yethe tuza audio URL kinva path tak
+                mimetype: 'audio/mp4',
+                ptt: true // true kelyavar voice note sarakhi disel, false kelyavar normal audio file
+            }, { quoted: m });
 
         } catch (err) {
-            console.error('Ping error:', err);
+            console.error('Audio Ping error:', err);
             const chatId = m.from || m.chat;
             await sock.sendMessage(chatId, {
-                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                caption: `> 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸: Online`
+                text: `❌ Error: ${err.message}`
             }, { quoted: m });
         }
     }

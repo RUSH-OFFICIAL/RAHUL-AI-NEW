@@ -7,19 +7,18 @@ module.exports = {
 
     async execute(sock, m, args) {
         try {
-            // First reaction and initial message
+            // First reaction
             await m.react('⚡');
             const start = Date.now();
             
-            // Send initial message with image and caption
+            // Send initial text message
             const sentMsg = await sock.sendMessage(m.from, {
-                image: { url: 'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg' },
-                caption: '```🔄 Calculating RAHUL-AI Latency...```'
+                text: '```🔄 Initializing RAHUL-AI Latency Test...```'
             }, { quoted: m });
 
             const latency = Date.now() - start;
 
-            // Stylish modern dashboard design
+            // Stylish modern dashboard design including the image link aesthetic
             const pingText = 
                 `╭────────────────────────╮\n` +
                 `│   🚀 **RAHUL-AI STATUS**   │\n` +
@@ -27,9 +26,10 @@ module.exports = {
                 `│ ⚡ **Speed:** ${latency} ms\n` +
                 `│ 🟢 **Status:** Online\n` +
                 `│ 🛡️ **System:** Active\n` +
-                `╰────────────────────────╯`;
+                `╰────────────────────────╯\n` +
+                `🖼️ *Media:* https://sam-cdn.zone.id/files/xQer9GrIVT.jpg`;
 
-            // Edit the caption of the sent image message
+            // Seamlessly edit the text message without any crash
             await sock.sendMessage(m.from, {
                 text: pingText,
                 edit: sentMsg.key

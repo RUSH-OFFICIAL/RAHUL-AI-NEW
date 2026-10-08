@@ -1,5 +1,147 @@
 module.exports = {
     name: 'menu',
+    description: 'Automatic Random Changing Styles and Images Menu',
+    aliases: ['help', 'cmdlist', 'commands'],
+
+    async execute(sock, m) {
+        try {
+            await sock.sendMessage(m.chat, { 
+                react: { text: '⚡', key: m.key } 
+            }).catch(() => {});
+        } catch (e) {}
+        
+        const prefix = global.BOT_PREFIX || '.';
+        const now = new Date();
+
+        const date = now.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            timeZone: 'Asia/Kolkata'
+        });
+
+        const time = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Kolkata'
+        });
+
+        const botOwner = global.ownerName || '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+        const user = m.pushName || m.sender?.split('@')[0] || 'User';
+        const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
+        
+        // 🌟 Automatic Rotating Image Links (Pratyek veles random image yeil)
+        const menuImages = [
+            'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
+            'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
+            'https://files.catbox.moe/57j7w5.jpg',
+            'https://files.catbox.moe/g24h0f.jpg'
+        ];
+        const randomImage = menuImages[Math.floor(Math.random() * menuImages.length)];
+
+        // Commands List
+        const c = {
+            general: `${prefix}alive | ${prefix}ping | ${prefix}uptime | ${prefix}owner`,
+            downloader: `${prefix}tiktok | ${prefix}ytmp3 | ${prefix}ig`,
+            tools: `${prefix}sticker | ${prefix}ocr | ${prefix}tts | ${prefix}shazam`,
+            ai: `${prefix}ai | ${prefix}ai-search | ${prefix}gen`,
+            group: `${prefix}tagall | ${prefix}group | ${prefix}kick`
+        };
+
+        // 🌟 Automatic Rotating Menu Styles (Pratyek veles random style yeil)
+        const menuStyles = [
+            // Style 1: Matrix Theme
+            `╔════════════════════════════╗
+║ 🧬 *⚡ 𝑹𝑨𝑯𝑼𝑳-𝑨𝑰 𝙼𝙰𝚃𝚁𝙸𝚇 ⚡* 🧬
+╚════════════════════════════╝
+│ 👑 Founder : ${Founder}
+│ ⚡ Owner   : ${botOwner}
+│ 👤 User    : ${user}
+│ 📅 Date    : ${date}
+│ ⏰ Time    : ${time}
+│ ⚙️ Prefix  : ${prefix}
+╚════════════════════════════╝
+
+┌─〔 🚀 ɢᴇɴᴇʀᴀʟ 〕
+│ ⚡ ${c.general}
+└───────────────◆
+
+┌─〔 📥 ᴅᴏᴡɴʟᴏᴀᴅꜱ 〕
+│ 📥 ${c.downloader}
+└───────────────◆
+
+┌─〔 🛠️ ᴛᴏᴏʟꜱ 〕
+│ 🛠️ ${c.tools}
+└───────────────◆
+
+> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 1)*`,
+
+            // Style 2: Hologram Theme
+            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 ʜᴏʟᴏɢʀ𝖆ᴍ 〕━━━╮
+┃ 👑 Founder : ${Founder}
+┃ ⚡ Owner   : ${botOwner}
+┃ 👤 User    : ${user}
+┃ 📅 Date    : ${date}
+┃ ⚙️ Prefix  : ${prefix}
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
+
+┌───❖ *🚀 𝐆𝐄𝐍𝐄𝐑𝐀𝐋*
+│ 💎 ${c.general}
+└───────────────◆
+
+┌───❖ *📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒*
+│ 💎 ${c.downloader}
+└───────────────◆
+
+┌───❖ *🤖 𝐀𝐈 & 𝐓𝐎𝐎𝐋𝐒*
+│ 💎 ${c.ai}
+└───────────────◆
+
+> ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 2) ❖`,
+
+            // Style 3: Cyber Console Theme
+            `╔═════════════════════════════╗
+║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
+╚═════════════════════════════╝
+│ » ꜰᴏᴜɴᴅᴇʀ : ${Founder}
+│ » ᴏᴡɴᴇʀ   : ${botOwner}
+│ » ᴜꜱᴇʀ    : ${user}
+│ » ᴛɪᴍᴇ    : ${time}
+╚═════════════════════════════╝
+
+╭─[ ⚡ ᴍᴀɪɴ ᴄᴍᴅꜱ ]
+│ ◈ ${c.general}
+╰───────────────◆
+
+╭─[ 📥 ᴅᴏᴡɴʟᴏᴀᴅꜱ ]
+│ ◈ ${c.downloader}
+╰───────────────◆
+
+╭─[ 👥 ɢʀᴏᴜᴘ ]
+│ ◈ ${c.group}
+╰───────────────◆
+
+> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 3)`
+        ];
+
+        const randomText = menuStyles[Math.floor(Math.random() * menuStyles.length)];
+
+        // Send with automatic image and automatic style
+        try {
+            await sock.sendMessage(m.chat, {
+                image: { url: randomImage },
+                caption: randomText
+            }, { quoted: m });
+        } catch (err) {
+            // Fallback text just in case image fails
+            await sock.sendMessage(m.chat, { text: randomText }, { quoted: m });
+        }
+    }
+};
+ = {
+    name: 'menu',
     description: 'Show available bot commands with ultimate auto-changing styles & direct image url',
     aliases: ['help', 'cmdlist', 'commands'],
 

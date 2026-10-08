@@ -31,7 +31,7 @@ module.exports = {
         const uptime = `${hours}h ${minutes}m ${seconds}s`;
 
         const menuText = `
-⭕ ─── *ＲＡＨＵＬ-ＭＡＳＴＥＲ* ─── ⭕
+⭕ ─── *𝗥𝗔𝗛𝗨𝗟-𝗔𝗜* ─── ⭕
 │
 │ 👤 User   : *${user}*
 │ ⏱️ Uptime : *${uptime}*

@@ -32,12 +32,16 @@ module.exports = {
             await new Promise(resolve => setTimeout(resolve, 300));
             await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
-            // Corrected API endpoint with query parameter properly attached
             const apiUrl = `https://api.aswinsparky.qzz.io/api/downloader/igdl?url=${encodeURIComponent(url)}`;
             
+            // Added headers to bypass basic 401 Unauthorized blocks (User-Agent & Referer)
             const response = await axios({
                 method: 'get',
                 url: apiUrl,
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Referer': 'https://instagram.com'
+                },
                 timeout: 30000
             });
             
@@ -54,11 +58,14 @@ module.exports = {
             }
             
             await new Promise(resolve => setTimeout(resolve, 300));
-            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜﾙ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
+            await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ ✨ *PROCESSING... [ ████████░░ ] 85%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             const mediaResponse = await axios({
                 method: 'get',
                 url: mediaUrl,
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                },
                 responseType: 'arraybuffer',
                 timeout: 60000
             });

@@ -46,7 +46,7 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            await m.react('⚡');
+            await m.react('🔥');
 
             // Dynamic Uptime Calculation
             const uptimeSeconds = process.uptime();
@@ -60,27 +60,35 @@ module.exports = {
             const totalMem = (os.totalmem() / 1024 / 1024).toFixed(0);
             const freeMem = (os.freemem() / 1024 / 1024).toFixed(0);
             const usedMem = totalMem - freeMem;
+            const ramPercentage = ((usedMem / totalMem) * 100).toFixed(1);
 
             // Current Time & Date (Asia/Kolkata)
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
             const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-            // Image Thumbnail Generation
+            // New Image Thumbnail URL (Tumchi navin style image link yithe taka)
             const imageResponse = await fetch('https://sam-cdn.zone.id/files/rkDfPAPiha.jpg');
             const imageBuffer = await imageResponse.arrayBuffer();
             const img = await pix.read(Buffer.from(imageBuffer));
             const resized = await img.resize(300, 300, { fit: 'cover' });
             const thumb = await resized.toBuffer({ format: 'jpeg', quality: 50 });
 
-            // Unique Layout Caption
-            const aliveCaption = `╭━━━〔 *SYSTEM STATUS* 〕━━━⬣
-┃ 🟢 *Bot:* Online & Active
-┃ ⏱️ *Uptime:* ${uptimeString}
-┃ 💾 *RAM:* ${usedMem}MB / ${totalMem}MB
-┃ 📅 *Date:* ${dateString}
-┃ ⏰ *Time:* ${timeString}
-╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
+            // Brand New Stylish Caption Layout
+            const aliveCaption = `┏━━━━━━━━━━━━━━━━━━━━┓
+┃     ⚡ *SYSTEM STATUS* ⚡     
+┗━━━━━━━━━━━━━━━━━━━━┛
+  │
+  ├ 👤 *User:* @${m.sender.split('@')[0]}
+  ├ 🟢 *Status:* Online & Stable
+  ├ ⏱️ *Uptime:* ${uptimeString}
+  ├ 💾 *Memory:* ${usedMem}MB / ${totalMem}MB (${ramPercentage}%)
+  ├ 💻 *Platform:* ${os.type()} (${os.arch()})
+  ├ 📅 *Date:* ${dateString}
+  ├ ⏰ *Time:* ${timeString}
+  │
+  └───────────────────⭔
+  _✨ Powered by PixCore & FFmpeg_`;
 
             // Audio Fetch & Conversion
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
@@ -96,13 +104,14 @@ module.exports = {
                     remoteJid: m.from,
                     fromMe: false,
                     participant: m.sender,
-                    id: 'ALIVE_STATUS_' + Date.now()
+                    id: 'NEW_ALIVE_' + Date.now()
                 },
                 message: {
                     imageMessage: {
                         mimetype: 'image/jpeg',
                         jpegThumbnail: thumb,
-                        caption: aliveCaption
+                        caption: aliveCaption,
+                        mentions: [m.sender]
                     }
                 }
             };

@@ -35,11 +35,17 @@ module.exports = {
 
         const menuText = `
 Bot Information:
+
 - Founder : ${Founder}
+
 - Owner   : ${botOwner}
+
 - User    : ${user}
+
 - Date    : ${date}
-- Time    : ${time} (GMT)
+
+- Time    : ${time} 
+
 - Prefix  : ${prefix}
 
 General Commands:

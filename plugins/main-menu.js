@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 module.exports = {
     name: 'menu',
     description: 'Show available bot commands with auto-changing styles and images',
@@ -35,7 +33,7 @@ module.exports = {
         const user = m.pushName || m.sender?.split('@')[0] || 'User';
         const Founder = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴🇷';
 
-        // 🌟 Automatic Rotating Image URLs (Pratyek veles navin image yeil)
+        // 🌟 Automatic Rotating Image URLs (Direct URL passing - No Axios Crash)
         const menuImages = [
             'https://sam-cdn.zone.id/files/QyFk2yt61I.jpg',
             'https://sam-cdn.zone.id/files/xQer9GrIVT.jpg',
@@ -44,7 +42,7 @@ module.exports = {
         ];
         const randomImage = menuImages[Math.floor(Math.random() * menuImages.length)];
 
-        // Commands block (Tuza original format)
+        // Commands block
         const cmdList = `
 ├─ム *ɢᴇɴᴇʀᴀʟ*
 │ ᪣ ${prefix}ᴀʟɪᴠᴇ
@@ -115,7 +113,6 @@ module.exports = {
 
         // 🌟 Automatic Rotating 5 Different Styles
         const menuStyles = [
-            // Style 1 (Tuza original format)
             `┌─ム 𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 ᴍᴜʟᴛɪᴅᴇᴠɪᴄᴇ (STYLE 1)
 │ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
 │ *ᴏᴡɴᴇʀ:* ${botOwner}
@@ -131,8 +128,7 @@ ${cmdList}
 
 > 「 ᴩᴏᴡᴇʀᴇᴅ - ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ 」`,
 
-            // Style 2 (Hologram style)
-            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 ʜᴏʟᴏɢʀᴀᴍ 〕━━━╮
+            `╭━━━〔 💫 𝕽𝙰𝙷𝚄𝙻-𝙰𝙸 ʜᴏʟᴏɢʀ𝖆ᴍ 〕━━━╮
 ┃ *ғᴏᴜɴᴅᴇʀ:* ${Founder}
 ┃ *ᴏᴡɴᴇʀ:* ${botOwner}
 ┃ *ᴜsᴇʀ:* ${user}
@@ -146,7 +142,6 @@ ${cmdList}
 
 > ❖ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 2)`,
 
-            // Style 3 (Matrix style)
             `╔════════════════════════════╗
 ║ 🧬 *⚡ 𝑹𝑨𝙷𝚄𝙻-𝑨𝙸 𝙼𝙰𝚃𝚁𝙸𝚇 ⚡* 🧬
 ╚════════════════════════════╝
@@ -160,9 +155,8 @@ ${cmdList}
 ${cmdList}
 └───────────────◆
 
-> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 3)*`,
+> 💫 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 3)*`,
 
-            // Style 4 (Cyber Console)
             `╔═════════════════════════════╗
 ║ 🤖 ʀᴀʜᴜʟ-ᴀɪ ᴄʏʙᴇʀ ᴄᴏɴꜱᴏʟᴇ  ║
 ╚═════════════════════════════╝
@@ -176,9 +170,8 @@ ${cmdList}
 ${cmdList}
 ╰───────────────◆
 
-> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 4)`,
+> ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 4)`,
 
-            // Style 5 (Royal Frame)
             `╔════════════════════════════╗
 ║ 👑 *𝚁𝙰𝙷𝚄𝙻-𝙰𝙸 𝚁𝙾𝚈𝙰𝙻 𝙼𝙴𝙽𝚄* 👑
 ╚════════════════════════════╝
@@ -187,30 +180,25 @@ ${cmdList}
 │ ❖ ᴜꜱᴇʀ    : ${user}
 ╚════════════════════════════╝
 
-🚀 *[ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅꜱ ]*
+🚀 *[ ᴀʟʟ ᴄᴏᴍᴍᱟɴᴅꜱ ]*
 ${cmdList}
 
-> 💎 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴀɪ (STYLE 5)*`
+> 💎 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜ𝚕-ᴀɪ (STYLE 5)*`
         ];
 
         // Randomly select one style automatically
         const randomMenuText = menuStyles[Math.floor(Math.random() * menuStyles.length)].trim();
 
         try {
-            // Fetch image via axios buffer safely
-            const response = await axios.get(randomImage, {
-                responseType: 'arraybuffer',
-                timeout: 5000
-            });
-
+            // Direct safe URL sending (No Axios Buffer needed)
             await sock.sendMessage(m.chat, {
-                image: Buffer.from(response.data),
+                image: { url: randomImage },
                 caption: randomMenuText
             }, { quoted: m });
 
         } catch (err) {
             console.error('Menu error:', err);
-            // Fallback to text message if image fails to download
+            // Fallback text just in case
             await sock.sendMessage(m.chat, { text: randomMenuText }, { quoted: m });
         }
     }

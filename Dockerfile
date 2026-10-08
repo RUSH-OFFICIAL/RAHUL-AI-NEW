@@ -1,10 +1,11 @@
-FROM node:22-bookworm
+FROM node:18-slim
 
-USER root
-
-RUN apt-get update && \
-    apt-get install -y ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
+# Install FFmpeg and required dependencies
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libwebp-dev \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -13,4 +14,6 @@ RUN npm install
 
 COPY . .
 
-CMD ["node", "index.js"]
+EXPOSE 3000
+
+CMD ["npm", "start"]

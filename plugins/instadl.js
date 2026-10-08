@@ -1,48 +1,73 @@
-});
+const axios = require('axios');
 
-System({
-    pattern: 'insta',
-    fromMe: isPrivate,
-    type: 'download',
-    desc: 'instagram downloader',
-}, async (message, match) => {
-    const url = (await extractUrlsFromText(match || message.reply_message.text))[0];
-    if (!url) return await message.reply('Please provide an Instagram *url*'); 
-    if (!isUrl(url)) return await message.reply("Please provide a valid Instagram *url*");
-    if (!url.includes("instagram.com")) return await message.reply("*Please provide a valid Instagram url*");
-    const data = await instaDL(url);
-    if (!data || data.length === 0) return await message.reply("*No content found at the provided URL*");
-    for (const imageUrl of data) {
-        if (imageUrl) await message.sendFromUrl(imageUrl.url, { quoted: message.data });
+module.exports = {
+    name: 'instadl',
+    aliases: ['insta', 'instagram', 'ig'],
+    
+    async execute(sock, m, args) {
+         
+            await m.react('📥');
+        if (!args.length) {
+            return m.reply(`📸 ɪɴsᴛᴀɢʀᴀᴍ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ\n\nᴜsᴀɢᴇ: .ɪɢᴅʟ <ɪɴsᴛᴀɢʀᴀᴍ ᴜʀʟ>\n\nexᴀᴍᴘʟᴇ: .ɪɢᴅʟ ʜᴛᴛᴘs://ᴡᴡᴡ.ɪɴsᴛᴀɢʀᴀᴍ.ᴄᴏᴍ/ʀᴇᴇʟ/xxxxxxxx`);
+        }
+        
+        const url = args[0];
+        
+        if (!url.includes('instagram.com')) {
+            return m.reply('❌ ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɪɴsᴛᴀɢʀᴀᴍ ᴜʀʟ');
+        }
+        
+        await m.reply(`⏳ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ɪɴsᴛᴀɢʀᴀᴍ ᴄᴏɴᴛᴇɴᴛ...`);
+        
+        try {
+            const apiUrl = `https://api-rebix.zone.id/api/igdl?quality=480&url=${encodeURIComponent(url)}`;
+            
+            const response = await axios({
+                method: 'get',
+                url: apiUrl,
+                timeout: 30000
+            });
+            
+            if (!response.data.status || !response.data.result) {
+                throw new Error('API returned error');
+            }
+            
+            const result = response.data.result;
+            const metadata = result.metadata;
+            const mediaUrl = result.url[0];
+            
+            const mediaResponse = await axios({
+                method: 'get',
+                url: mediaUrl,
+                responseType: 'arraybuffer',
+                timeout: 60000
+            });
+            
+            const buffer = Buffer.from(mediaResponse.data);
+            
+            const caption = `📸 *ɪɴsᴛᴀɢʀᴀᴍ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ*\n\n` +
+                           `👤 *ᴜsᴇʀ:* ${metadata.username}\n` +
+                           `❤️ *ʟɪᴋᴇs:* ${metadata.like}\n` +
+                           `💬 *ᴄᴏᴍᴍᴇɴᴛs:* ${metadata.comment}\n` +
+                           `📝 *ᴄᴀᴘᴛɪᴏɴ:* ${metadata.caption || 'No caption'}\n\n` +
+                           `> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ`;
+            
+            if (metadata.isVideo) {
+                await m.reply(buffer, { 
+                    caption: caption,
+                    video: buffer,
+                    mimetype: 'video/mp4'
+                });
+            } else {
+                await m.reply(buffer, { 
+                    caption: caption,
+                    image: buffer
+                });
+            }
+            
+        } catch (err) {
+            console.error('instadl error:', err);
+            await m.reply(`❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ ɪɴsᴛᴀɢʀᴀᴍ ᴄᴏɴᴛᴇɴᴛ\n\n${err.message}`);
+        }
     }
-});
-
-System({
-  pattern: "story",
-  fromMe: isPrivate,
-  type: "download",
-  desc: "To download insta story",
-}, async (message, match) => {
-  match = match || message.reply_message.text;
-  if (!isUrl(match)) {
-    const { media: result } = await getJson(IronMan("ironman/ig/story?user=" + match));
-    if (!result) return await message.reply("*Exᴀᴍᴘʟᴇ: .story username/link*");
-    if(result.length === 1) return await message.sendFromUrl(result[0], { caption: "*done ♥️*", quoted: message });
-    const options = result.map((u, index) => ({ displayText:`${index + 1}/${result.length}`, id: `sendurl ${u}` }));
-    if(message.isGroup) return await message.send("\n*Story downloader*\n", { values: options, withPrefix: true, participates: [message.sender] }, "poll");
-    for (const media of result) {
-      await message.sendFromUrl(media, { quoted: message.data });
-    }
-    return;
-  }
-  const url = (await extractUrlsFromText(match))[0];
-  if (!url.includes("instagram.com")) return message.reply("_*Provide a valid Instagram story URL*_");
-  const result = await instaDL(url);
-  if (!result || result.length === 0) return await message.reply("*Exᴀᴍᴘʟᴇ: .story username/link*");
-  if(result.length === 1) return await message.sendFromUrl(result[0].url, { caption: "*done ♥️*", quoted: message });
-  const options = result.map((u, index) => ({ displayText:`${index + 1}/${result.length}`, id: `sendurl ${u.url}` }));
-  if(message.isGroup) return await message.send("\n*Story downloader*\n", { values: options, withPrefix: true, participates: [message.sender] }, "poll");
-  for (const media of result) {
-    await message.sendFromUrl(media.url, { quoted: message.data });
-  }
-});
+};

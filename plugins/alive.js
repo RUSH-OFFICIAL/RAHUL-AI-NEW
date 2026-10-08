@@ -67,7 +67,7 @@ module.exports = {
             const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
             // Image Thumbnail Generation
-            const imageResponse = await fetch('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60');
+            const imageResponse = await fetch('https://spider-avik.zone.id/file/5b2kfp.jpeg');
             const imageBuffer = await imageResponse.arrayBuffer();
             const img = await pix.read(Buffer.from(imageBuffer));
             const resized = await img.resize(300, 300, { fit: 'cover' });

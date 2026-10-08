@@ -46,9 +46,10 @@ module.exports = {
 ┃ ⏰ *Time:* ${timeString}
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
 
-            // Audio Fetch (Using a stable raw link, you can replace with your own audio raw link)
+            // Audio Fetch with Error Handling
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
+            if (!audioResponse.ok) throw new Error('Failed to fetch audio');
             const audioBuffer = await audioResponse.arrayBuffer();
 
             const fakeQuoted = {
@@ -69,7 +70,7 @@ module.exports = {
 
             await sock.sendMessage(m.from, {
                 audio: Buffer.from(audioBuffer),
-                mimetype: 'audio/ogg; codecs=opus', // Fix for audio playback error
+                mimetype: 'audio/mp4', // Koyeb/Baileys par agar ogg/opus play na ho toh 'audio/mp4' ya 'audio/mpeg' try karein
                 ptt: true
             }, { quoted: fakeQuoted });
 

@@ -33,7 +33,7 @@ module.exports = {
             await sock.sendMessage(m.chat, { text: "╭━━━〔 🌐 *ʀᴀʜᴜʟ - ᴀɪ* 〕━━━⬣\n┃ 📥 *FETCHING... [ ████░░░░░░ ] 50%*\n╰━━━━━━━━━━━━━━━━━━⬣", edit: loadMsg.key }).catch(() => {});
 
             // Stable working endpoint from Siputzx API
-            const apiUrl = `https://api.siputzx.my.id/api/d/fastdl?url=${encodeURIComponent(url)}`;
+            const apiUrl = `https://api.aswinsparky.qzz.io/api/downloader/igdl${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',

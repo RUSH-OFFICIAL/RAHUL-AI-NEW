@@ -1,37 +1,44 @@
-const { exec } = require('child_process');
+const axios = require('axios');
 
 module.exports = {
     name: 'update',
-    alias: ['up', 'upgrade', 'gitupdate'],
-    description: 'Updates the bot using git pull from the GitHub repository.',
+    alias: ['up', 'upgrade', 'deploy'],
+    description: 'Triggers a fresh deployment on Koyeb via API to update the bot.',
     category: 'owner',
-    async execute(conn, m, { args, reply }) {
+    async execute(conn, m, { reply }) {
         try {
-            await reply('🔄 *Checking for updates via Git...*');
+            await reply('🔄 *Triggering update on Koyeb Cloud... Please wait.*');
 
-            exec('git pull', async (err, stdout, stderr) => {
-                if (err) {
-                    return reply(`❌ *Git Error:* \n\`\`\`${err.message}\`\`\``);
+            // Yahan apni Koyeb details dalein
+            const KOYEB_API_TOKEN = process.env.KOYEB_API_TOKEN || 'YOUR_KOYEB_API_TOKEN';
+            const SERVICE_ID = process.env.KOYEB_SERVICE_ID || 'YOUR_SERVICE_ID';
+
+            if (KOYEB_API_TOKEN === 'YOUR_KOYEB_API_TOKEN' || SERVICE_ID === 'YOUR_SERVICE_ID') {
+                return reply('❌ *Configuration Missing:* Please add `KOYEB_API_TOKEN` and `KOYEB_SERVICE_ID` in your Koyeb Environment Variables.');
+            }
+
+            // Koyeb API call to redeploy service
+            const response = await axios.post(
+                `https://app.koyeb.com/v1/services/${SERVICE_ID}/redeploy`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${KOYEB_API_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
                 }
+            );
 
-                if (stdout && (stdout.includes('Already up to date.') || stdout.includes('Already up-to-date.'))) {
-                    return reply('✅ *Your bot is already up-to-date! No new changes found.*');
-                }
+            if (response.status === 200 || response.status === 201) {
+                await reply('✨ *Update triggered successfully!*\n\n🚀 Koyeb is now pulling the latest changes from your GitHub repository and rebuilding the bot. It will restart shortly.');
+            } else {
+                reply('⚠️ Update triggered, but received an unexpected response from Koyeb API.');
+            }
 
-                let responseText = `✨ *Bot Updated Successfully!*\n\n`;
-                responseText += `📦 *Git Output:*\n\`\`\`${stdout.trim()}\`\`\`\n\n`;
-                responseText += `🔄 *Restarting process to apply updates...*`;
-
-                await reply(responseText);
-
-                // Bot restart to apply changes
-                setTimeout(() => {
-                    process.exit(0);
-                }, 3000);
-            });
         } catch (e) {
-            console.error(e);
-            reply(`❌ *Error executing update:* ${e.message}`);
+            console.error(e.response?.data || e.message);
+            const errorMsg = e.response?.data?.message || e.message;
+            reply(`❌ *Update Failed:* \n\`\`\`${errorMsg}\`\`\``);
         }
     }
 };

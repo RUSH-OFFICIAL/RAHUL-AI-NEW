@@ -1,3 +1,11 @@
+/**
+ * ╔════════════════════════════════════════╗
+ * ║          ✨ ʀᴀʜᴜʟ - ᴀɪ ✨             ║
+ * ║   Powered by Rahul Master              ║
+ * ║   Module: YouTube MP4 Downloader       ║
+ * ╚════════════════════════════════════════╝
+ */
+
 const yts = require('yt-search');
 
 module.exports = {
@@ -12,7 +20,7 @@ module.exports = {
         const input = args.join(" ").trim();
 
         if (!input) {
-            return m.reply("Usage:\n.ymp4 <youtube link or search query>");
+            return m.reply("┏━━━━━━━━━━━━━━━┓\n┃ 🎬 *Rahul AI - YMP4*\n┗━━━━━━━━━━━━━━━┛\n\nUsage:\n`.ymp4 <youtube link or search query>`");
         }
 
         try {
@@ -27,7 +35,7 @@ module.exports = {
                 const results = await yts(input);
 
                 if (!results?.videos?.length) {
-                    return m.reply("No results found on YouTube.");
+                    return m.reply("❌ Rahul AI: No results found on YouTube.");
                 }
 
                 searchInfo = results.videos[0];
@@ -42,7 +50,7 @@ module.exports = {
 
             if (!apiRes.ok || !data?.status || !data?.data?.download_url) {
                 return m.reply(
-                    `API Error: ${data?.message || "Failed to get download URL."}`
+                    `❌ Rahul AI API Error: ${data?.message || "Failed to get download URL."}`
                 );
             }
 
@@ -93,13 +101,13 @@ module.exports = {
                     video: buffer,
                     mimetype: "video/mp4",
                     fileName: `${safeName}.mp4`,
-                    caption: title,
+                    caption: `╭━━━〔 🎬 ʀᴀʜᴜʟ-ᴀɪ 🎬 〕━━━⬣\n┃ 📌 *Title:* ${title}\n╰━━━━━━━━━━━━━━━⬣`,
                     contextInfo: {
                         forwardingScore: 999,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
                             newsletterJid: '@newsletter',
-                            newsletterName: 'ʀᴀʜᴜʟ-ᴀɪ「 𝙿𝙾𝚆𝙴𝚁𝙰𝙳 𝙱𝚈 𝚁𝙰𝙷𝚄𝙻 𝙼𝙰𝚂𝚃𝙴𝚁 」',
+                            newsletterName: 'ʀᴀʜᴜʟ-ᴀɪ「 𝙿O𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚁𝙰𝙷𝚄𝙻 𝙼𝙰𝚂𝚃𝙴𝚁 」',
                             serverMessageId: 1
                         }
                     }
@@ -116,7 +124,7 @@ module.exports = {
             );
 
             await m.reply(
-                `❌ Failed to process request.\n\n${err.message || "Unknown error"}`
+                `❌ *Rahul AI Error*\n\nFailed to process request.\n_${err.message || "Unknown error"}_`
             );
         }
     }

@@ -1,2 +1,12 @@
-// ⚡ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐑𝐀𝐇𝐔𝐋-𝐌𝐀𝐒𝐓𝐄𝐑 | 𝐑𝐀𝐇𝐔𝐋-𝐀𝐈 ⚡
-;(_0x5b32=function(_0x32a1,_0x4e2d){const _0x1c83=['length','charAt','charCodeAt','fromCharCode','split','reverse','join','replace'];return(_0x5b32=function(_0x33e5,_0x448a){_0x33e5=_0x33e5-0x12a;let _0x21b3=_0x1c83[_0x33e5];return _0x21b3;})(_0x32a1,_0x4e2d);}((_0x5e23,0x356),function(){const _0x2a1e=function(_0x321a){return eval;};try{const _0x51ab=(_0x5b32(0x12f));process[_0x5b32(0x131)]('dotenv')['config']();global['sessionid']=process['env']['SESSION_ID']||'Xlicon-zZRaSLHFJr';global['BOT_PREFIX']='.';global['owners']=['91935673]236'];global['dev']=['@s.whatsapp.net'];global['menuImage']='https://i.ibb.co/wnWJtrP/8a55300e87bc.jpg';global['ownerName']='𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';}catch(_0x2213){}}()));console.log('\u26a1 \U0001d40f\U0001d41a\U0001d43f\U0001d42d\U0001d42b\U0001d428\U0001d43\U0001d41b\U0001d432 \U0001d411\U0001d41a\U0001d421\U0001d42e\U0001d425-\U0001d40c\U0001d41a\U0001d42\U0001d42d\U0001d41e\U0001d42b | \U0001d411\U0001d41a\U0001d421\U0001d42e\U0001d425-\U0001d400\U0001d408 \u26a1');
+// ⚡ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐑𝐀𝐇𝐔𝐋-𝐌𝐀𝐒𝐓𝐄𝐑 | 𝐑𝐀𝐇𝐔𝙻-𝐀𝐈 ⚡
+
+require('dotenv').config();
+
+global.sessionid = process.env.SESSION_ID || 'Xlicon-zZRaSLHFJr';
+global.BOT_PREFIX = '.';
+global.owners = ['91935673236']; // Tyatla extra bracket kadhun number fix kela ahe
+global.dev = ['@s.whatsapp.net'];
+global.menuImage = 'https://i.ibb.co/wnWJtrP/8a55300e87bc.jpg';
+global.ownerName = '𝚁𝙰𝙷𝚄𝙻-𝙼𝙰𝚂𝚃𝙴𝚁';
+
+console.log('⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ-ᴍᴀsᴛᴇʀ | ʀᴀʜᴜʟ-ᴀɪ ⚡');

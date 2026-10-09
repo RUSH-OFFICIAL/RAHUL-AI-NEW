@@ -35,7 +35,7 @@ module.exports = {
             }
 
             const apiUrl =
-                `https://api.sayan-nexuswork.workers.dev/video?query=${encodeURIComponent(finalUrl)}&format=720`;
+                `https://api-abztech.zone.id/download/ytdlvip?url=${encodeURIComponent(finalUrl)}&format=720`;
 
             const apiRes = await fetch(apiUrl);
             const data = await apiRes.json();

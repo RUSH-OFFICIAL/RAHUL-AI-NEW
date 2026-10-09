@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 module.exports = {
     name: 'update',
     alias: ['up', 'upgrade', 'deploy'],
@@ -9,36 +7,35 @@ module.exports = {
         try {
             await reply('🔄 *Triggering update on Koyeb Cloud... Please wait.*');
 
-            // Apni Koyeb details yaha check karein
-            const KOYEB_API_TOKEN = process.env.KOYEB_API_TOKEN || 'zk3vy4zc6a7ui5ni32shqxhr91yf6if28n63rcq198md0j33gbowidy0h4c8f80i';
+            const KOYEB_API_TOKEN = process.env.KOYEB_API_TOKEN;
+            // Aapki current service ID jo screenshot me hai
             const SERVICE_ID = process.env.KOYEB_SERVICE_ID || '5dda4504-94d8-446a-802b-0e807984bc4a';
 
-            if (!KOYEB_API_TOKEN || !SERVICE_ID) {
-                return reply('❌ *Configuration Missing:* Please add `KOYEB_API_TOKEN` and `KOYEB_SERVICE_ID` in your Environment Variables.');
+            if (!KOYEB_API_TOKEN) {
+                return reply('❌ *Configuration Missing:* Please add `KOYEB_API_TOKEN` in your Koyeb Environment Variables.');
             }
 
-            // Koyeb API call to redeploy service
-            const response = await axios.post(
-                `https://app.koyeb.com/v1/services/${SERVICE_ID}/redeploy`,
-                {},
-                {
-                    headers: {
-                        'Authorization': `Bearer ${KOYEB_API_TOKEN.trim()}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
+            const response = await fetch(`https://app.koyeb.com/v1/services/${SERVICE_ID}/redeploy`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${KOYEB_API_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            });
 
-            if (response.status === 200 || response.status === 201) {
-                await reply('✨ *Update triggered successfully!*\n\n🚀 Koyeb is now pulling the latest changes from your GitHub repository and rebuilding the bot. It will restart shortly.');
+            const data = await response.json();
+
+            if (response.ok) {
+                await reply('✨ *Update triggered successfully!*\n\n🚀 Koyeb is pulling the latest changes from GitHub (`R-A-H-U-L-M-A-S-T-E-R/RAHUL-AI-NEW`) and rebuilding your bot. It will restart shortly.');
             } else {
-                await reply('⚠️ Update triggered, but received an unexpected response from Koyeb API.');
+                const errMsg = data.message || JSON.stringify(data);
+                reply(`❌ *Koyeb API Error:* \n\`\`\`${errMsg}\`\`\``);
             }
 
         } catch (e) {
-            console.error("Koyeb Update Error:", e.response?.data || e.message);
-            const errorMsg = e.response?.data?.message || e.message || 'Unknown error occurred';
-            await reply(`❌ *Update Failed:* \n\`\`\`${errorMsg}\`\`\``);
+            console.error(e);
+            reply(`❌ *Error running command:* \n\`\`\`${e.message}\`\`\``);
         }
     }
 };

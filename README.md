@@ -66,7 +66,7 @@ NOW Deploy👇
 <br>
 ## DEPLOY IN KOYEB  
 
-[![Deploy on Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/services/c8796460-33eb-41ea-9b46-85594eb11374/settings)
+[![Deploy on Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?name=rahul-ai-new&type=git&repository=R-A-H-U-L-M-A-S-T-E-R%2FRAHUL-AI-NEW&branch=main&builder=dockerfile&instance_type=free&regions=fra&instances_min=0&autoscaling_sleep_idle_delay=3900&env%5BSESSION_ID%5D=+Xlicon-sDN2yTSt7t)
 <br>
 <p> AFTER CLICKING ON THE KOYEB BUTTON KINDLY CLICK ON VARIABLE AND ADD THE NECESSARY VARIABLE</p>
 

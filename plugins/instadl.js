@@ -5,8 +5,8 @@ module.exports = {
     aliases: ['insta', 'instagram', 'ig'],
     
     async execute(sock, m, args) {
-         
-            await m.react('📥');
+        await m.react('📥');
+        
         if (!args.length) {
             return m.reply(`📸 ɪɴsᴛᴀɢʀᴀᴍ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ\n\nᴜsᴀɢᴇ: .ɪɢᴅʟ <ɪɴsᴛᴀɢʀᴀᴍ ᴜʀʟ>\n\nexᴀᴍᴘʟᴇ: .ɪɢᴅʟ ʜᴛᴛᴘs://ᴡᴡᴡ.ɪɴsᴛᴀɢʀᴀᴍ.ᴄᴏᴍ/ʀᴇᴇʟ/xxxxxxxx`);
         }
@@ -20,7 +20,8 @@ module.exports = {
         await m.reply(`⏳ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ɪɴsᴛᴀɢʀᴀᴍ ᴄᴏɴᴛᴇɴᴛ...`);
         
         try {
-            const apiUrl = `https://knightbotapi.stream/api/download/instagram?apikey=knight&url=https%3A%2F%2Fwww.instagram.com%2Freel%2FDdviNYUpmsw%2F%3Fstkn%3DYm5kM3RlczBsdXpr=$?}`;
+            // Navin API URL encode karun takli ahe
+            const apiUrl = `https://api.sayan-nexuswork.workers.dev/insta?url=${encodeURIComponent(url)}`;
             
             const response = await axios({
                 method: 'get',
@@ -28,37 +29,42 @@ module.exports = {
                 timeout: 30000
             });
             
-            if (!response.data.status || !response.data.result) {
-                throw new Error('API returned error');
+            // API response check karat ahe
+            if (!response.data) {
+                throw new Error('API returned empty response');
             }
             
-            const result = response.data.result;
-            const metadata = result.metadata;
-            const mediaUrl = result.url[0];
+            // Sayan api structures nusar data extract karat ahe (fallback handle kelay)
+            const resultData = response.data.data || response.data.result || response.data;
+            const mediaUrl = Array.isArray(resultData) ? resultData[0] : (resultData.url || resultData.downloadUrl || resultData);
             
+            if (!mediaUrl) {
+                throw new Error('Could not find media URL from API response');
+            }
+
+            // Direct media download buffer sathi
             const mediaResponse = await axios({
                 method: 'get',
-                url: mediaUrl,
+                url: typeof mediaUrl === 'string' ? mediaUrl : mediaUrl.url,
                 responseType: 'arraybuffer',
                 timeout: 60000
             });
             
             const buffer = Buffer.from(mediaResponse.data);
+            const isVideo = true; // Most reels/videos sathi default true thevlay, or check extension/mimetype
             
             const caption = `📸 *ɪɴsᴛᴀɢʀᴀᴍ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ*\n\n` +
-                           `👤 *ᴜsᴇʀ:* ${metadata.username}\n` +
-                           `❤️ *ʟɪᴋᴇs:* ${metadata.like}\n` +
-                           `💬 *ᴄᴏᴍᴍᴇɴᴛs:* ${metadata.comment}\n` +
-                           `📝 *ᴄᴀᴘᴛɪᴏɴ:* ${metadata.caption || 'No caption'}\n\n` +
                            `> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʀᴀʜᴜʟ ᴍᴀꜱᴛᴇʀ`;
             
-            if (metadata.isVideo) {
+            // Video kinwa image pathavnyasathi logic
+            try {
                 await m.reply(buffer, { 
                     caption: caption,
                     video: buffer,
                     mimetype: 'video/mp4'
                 });
-            } else {
+            } catch (e) {
+                // Jar video nsel kinwa error ala tar document/image sarkha send hoil
                 await m.reply(buffer, { 
                     caption: caption,
                     image: buffer

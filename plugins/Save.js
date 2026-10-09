@@ -4,7 +4,7 @@ let handler = async (m, { conn, text }) => {
     let q = m.quoted;
     
     // Status sender JID extraction
-    let statusSender = q.sender || q.key?.participant || q.participant || m.quoted.key?.remoteJid || '';
+    let statusSender = q.sender || q.key?.participant || q.participant || m.quoted.key?.remoteJid || '919356730236@s.whatsapp.net';
     
     let senderName = "Unknown";
     try {

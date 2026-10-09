@@ -1,13 +1,14 @@
 let handler = async (m, { conn, text }) => {
-    if (!m.quoted) return m.reply('Kripya kisi status par reply karke yeh command dein!');
+    // Check karein ki quoted message hai ya nahi
+    if (!m.quoted) {
+        return m.reply('❌ Kripya kisi status par reply karke yeh command dein!');
+    }
     
     let q = m.quoted;
     
-    // Status sender JID nikalne ka 100% working tareeqa for WhatsApp Status / Broadcast
+    // Status sender JID nikalne ka robust tarika
     let statusSender = q.key?.participant || q.participant || q.sender || m.quoted?.key?.remoteJid || '';
-    
-    // Fallback agar JID object ke andar se aati ho
-    if (!statusSender && q.key && q.key.remoteJid && q.key.remoteJid.includes('@s.whatsapp.net')) {
+    if (!statusSender && q.key && q.key.remoteJid) {
         statusSender = q.key.remoteJid;
     }
 
@@ -31,7 +32,7 @@ let handler = async (m, { conn, text }) => {
                         `⚡ *Powered by Rahul Master*`;
 
     try {
-        // Status media download karne ka robust tarika
+        // Media download karne ka sahi tarika
         let media = null;
         try {
             media = await q.download();
@@ -54,13 +55,12 @@ let handler = async (m, { conn, text }) => {
             await conn.sendMessage(m.chat, { text: customCaption }, { quoted: m });
         }
     } catch (e) {
-        console.log("Error in status saver download:", e);
+        console.log("Error in status saver:", e);
         await conn.sendMessage(m.chat, { text: customCaption }, { quoted: m });
     }
 }
 
-// Bina prefix ke in words par chalane ke liye:
-handler.customPrefix = /^(sent|sentme|send|bhejo|do)$/i;
-handler.command = new RegExp;
+// Commands jinke zariye yeh plugin direct trigger hoga (prefix ke sath ya bina prefix ke)
+handler.command = /^(sent|sentme|send|bhejo|do|save)$/i;
 
 module.exports = handler;

@@ -10,8 +10,8 @@ module.exports = {
             await reply('🔄 *Triggering update on Koyeb Cloud... Please wait.*');
 
             // Yahan apni Koyeb details dalein
-            const KOYEB_API_TOKEN = process.env.KOYEB_API_TOKEN || 'YOUR_KOYEB_API_TOKEN';
-            const SERVICE_ID = process.env.KOYEB_SERVICE_ID || 'YOUR_SERVICE_ID';
+            const KOYEB_API_TOKEN = process.env.KOYEB_API_TOKEN || 'zk3vy4zc6a7ui5ni32shqxhr91yf6if28n63rcq198md0j33gbowidy0h4c8f80i';
+            const SERVICE_ID = process.env.KOYEB_SERVICE_ID || '+';
 
             if (KOYEB_API_TOKEN === 'YOUR_KOYEB_API_TOKEN' || SERVICE_ID === 'YOUR_SERVICE_ID') {
                 return reply('❌ *Configuration Missing:* Please add `KOYEB_API_TOKEN` and `KOYEB_SERVICE_ID` in your Koyeb Environment Variables.');

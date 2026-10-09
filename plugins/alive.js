@@ -1,4 +1,3 @@
-const pix = require('pixcore');
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
@@ -39,14 +38,14 @@ async function convertToPtt(buffer) {
 
 module.exports = {
     name: 'alive',
-    description: 'RAHUL-AI Matrix Neon Animated Status with Voice Note',
+    description: 'RAHUL-AI 24x7 Automatic Lighting Animation & Status',
     aliases: ['status', 'runtime'],
     tags: ['main'],
     command: /^(alive|status|runtime)$/i,
 
     async execute(sock, m) {
         try {
-            await m.react('💥');
+            await m.react('🔥');
 
             // Dynamic Uptime Calculation
             const uptimeSeconds = process.uptime();
@@ -66,37 +65,35 @@ module.exports = {
             const timeString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
             const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-            // Brand New Matrix Neon Banner Layout
-            const aliveCaption = `╭───────────────⚡───────────────╮
-    🔥 *RAHUL-AI IS 24×7 ALIVE NOW* 🔥
-╰───────────────⚡───────────────╯
-╔═════════════════════════════════╗
-║ ⚡ *Core Status* : 🟢 [ ACTIVE ]
-║ ⏱️ *Uptime*      : ${uptimeString}
-║ 💾 *Memory*      : ${usedMem}MB / ${totalMem}MB
-║ 📅 *Date*        : ${dateString}
-║ ⏰ *Time*        : ${timeString}
-╚═════════════════════════════════╝
-    🔮 _[ RAHUL AI LIGHTING : ON ]_ 🔮`;
+            // Lighting & Animated Text Layout with Your Name
+            const aliveCaption = `╭━━━❮ *⚡ RAHUL-AI 24×7 ALIVE ⚡* ❯━━━╮
+┃ 🚀 *Status* : 🟢 [• LIGHTING ACTIVE •]
+┃ ⏱️ *Uptime* : ${uptimeString}
+┃ 💾 *RAM*    : ${usedMem}MB / ${totalMem}MB
+┃ 📅 *Date*   : ${dateString}
+┃ ⏰ *Time*   : ${timeString}
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
+⚡ _[ AUTOMATIC LIGHTING : ON ]_ ⚡`;
 
-            // Fresh Electric Grid / Matrix Pulse Animation GIF Link
-            const mediaUrl = 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif';
+            // 1. Send Animated Sticker URL (Stickers automatically loop and animate on WhatsApp without clicking!)
+            const stickerUrl = 'https://raw.githubusercontent.com/Afx-Dev/Database/main/sticker/lighting.webp'; 
+            
+            // Fallback to media gif if sticker link is empty, but sticker auto-plays instantly
+            await sock.sendMessage(m.from, { 
+                sticker: { url: stickerUrl } 
+            }, { quoted: m });
 
-            // Audio Fetch & Conversion for Voice Note
+            // Send Text Status separately so it looks clean and modern
+            await sock.sendMessage(m.from, { text: aliveCaption }, { quoted: m });
+
+            // Audio Fetch & Conversion for Voice Note (PTT)
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
             if (!audioResponse.ok) throw new Error('Failed to fetch audio url');
             const rawAudioBuffer = await audioResponse.arrayBuffer();
             const pttBuffer = await convertToPtt(Buffer.from(rawAudioBuffer));
 
-            // 1. Send Animated Media with New Banner Caption
-            await sock.sendMessage(m.from, {
-                video: { url: mediaUrl },
-                gifPlayback: true,
-                caption: aliveCaption
-            }, { quoted: m });
-
-            // 2. Send Audio Voice Note (PTT)
+            // Send Audio Voice Note (PTT) Automatically After
             await sock.sendMessage(m.from, {
                 audio: pttBuffer,
                 mimetype: 'audio/ogg; codecs=opus',

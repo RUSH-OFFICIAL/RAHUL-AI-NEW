@@ -3,9 +3,14 @@ let handler = async (m, { conn, text }) => {
     
     let q = m.quoted;
     
-    // Status sender JID extraction
-    let statusSender = q.sender || q.key?.participant || q.participant || m.quoted.key?.remoteJid || '919356730236@s.whatsapp.net';
+    // Status sender JID nikalne ka 100% working tareeqa for WhatsApp Status / Broadcast
+    let statusSender = q.key?.participant || q.participant || q.sender || m.quoted?.key?.remoteJid || '';
     
+    // Fallback agar JID object ke andar se aati ho
+    if (!statusSender && q.key && q.key.remoteJid && q.key.remoteJid.includes('@s.whatsapp.net')) {
+        statusSender = q.key.remoteJid;
+    }
+
     let senderName = "Unknown";
     try {
         if (statusSender) {
@@ -20,17 +25,17 @@ let handler = async (m, { conn, text }) => {
 
     let originalCaption = q.text || q.caption || text || '';
     
+    // Custom caption with status sender & powered by Rahul Master
     let customCaption = `📌 *Status Sender:* ${senderName}\n` +
                         `💬 *Caption:* ${originalCaption}\n\n` +
                         `⚡ *Powered by Rahul Master*`;
 
     try {
-        // Status media download karne ka robust tarika (Baileys stream handler)
+        // Status media download karne ka robust tarika
         let media = null;
         try {
             media = await q.download();
         } catch (err) {
-            // Fallback method for status media decryption if direct download fails
             if (conn.downloadMediaMessage) {
                 media = await conn.downloadMediaMessage(q);
             }
@@ -54,6 +59,7 @@ let handler = async (m, { conn, text }) => {
     }
 }
 
+// Bina prefix ke in words par chalane ke liye:
 handler.customPrefix = /^(sent|sentme|send|bhejo|do)$/i;
 handler.command = new RegExp;
 

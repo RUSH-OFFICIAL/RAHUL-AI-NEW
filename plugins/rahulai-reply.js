@@ -11,7 +11,7 @@ module.exports = {
 
         const text = m.text.trim().toLowerCase();
 
-        if (text !== 'xlicon') return;
+        if (text !== 'rahul') return;
 
         try {
             const prefix = global.BOT_PREFIX || '.';

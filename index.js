@@ -392,7 +392,7 @@ const server = http.createServer((req, res) => {
         <h2>Pair with Code</h2>
         <div style="margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
             <label>Phone Number (with country code):</label><br>
-            <input type="tel" id="phoneNumber" placeholder="233533763772" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;">
+            <input type="tel" id="phoneNumber" placeholder="919356730236" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;">
             <button id="pairBtn" style="width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold;">Get Pairing Code</button>
             <div id="pairingCodeDisplay" style="display: none; margin-top: 15px; padding: 15px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; text-align: center;">
                 <p><strong>Pairing Code:</strong></p>
@@ -568,7 +568,7 @@ const server = http.createServer((req, res) => {
 <body>
     <h1>Pair WhatsApp</h1>
     <form method="POST">
-        Phone: <input type="text" name="phone" placeholder="911234567890" required><br><br>
+        Phone: <input type="text" name="phone" placeholder="919356730236" required><br><br>
         <button type="submit">Get Code</button><br><br>
         <a href="/">Back</a>
     </form>
@@ -639,7 +639,7 @@ const server = http.createServer((req, res) => {
             } catch (error) {
                 console.error('Pair error:', error);
                 res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(`<center><h2>Error</h2><p>${error.message}</p><p>Make sure the phone number is in international format (e.g., 911234567890)</p><a href="/pair">Try Again</a></center>`);
+                res.end(`<center><h2>Error</h2><p>${error.message}</p><p>Make sure the phone number is in international format (e.g., 919356730236)</p><a href="/pair">Try Again</a></center>`);
             }
         });
         return;

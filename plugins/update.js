@@ -1,50 +1,36 @@
 const { exec } = require('child_process');
-const simpleGit = require('simple-git'); // Optional: Agar git installed ho to fast update ke liye
-const fs = require('fs');
-const path = require('path');
 
 module.exports = {
     name: 'update',
-    alias: ['up', 'upgrade'],
-    description: 'Check for updates and update the bot from GitHub repository.',
-    category: 'system',
-    async execute(m, client, args, sharedData) {
-        const prefix = sharedData?.prefix || '.';
-        
-        // Check owner or admin permissions if needed
-        // const isOwner = ...; 
+    alias: ['up', 'upgrade', 'gitupdate'],
+    description: 'Updates the bot using git pull from the GitHub repository.',
+    category: 'owner',
+    async execute(m, client, args) {
+        // Optional: Owner check lagana ho toh yahan laga sakte hain
+        // const ownerNumber = "YOUR_NUMBER@s.whatsapp.net";
+        // if (m.sender !== ownerNumber) return m.reply('❌ This command is only for the owner!');
 
-        await m.reply('🔄 *Checking for updates, please wait...*');
+        await m.reply('🔄 *Checking for updates via Git...*');
 
-        // Method using git command (Standard for Node.js bots running on VPS/Termux/Panel)
-        exec('git pull', async (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Update Error: ${error.message}`);
-                return m.reply(`❌ *Update Failed:* \n\`\`\`${error.message}\`\`\``);
+        exec('git pull', async (err, stdout, stderr) => {
+            if (err) {
+                return m.reply(`❌ *Git Error:* \n\`\`\`${err.message}\`\`\``);
             }
 
-            if (stderr && stderr.includes('Already up to date.')) {
-                return m.reply('✅ *Your bot is already on the latest version!*');
+            if (stdout && stdout.includes('Already up to date.')) {
+                return m.reply('✅ *Your bot is already up-to-date! No new changes found.*');
             }
 
-            if (stdout) {
-                if (stdout.includes('Already up to date.') || stdout.includes('Already up-to-date.')) {
-                    return m.reply('✅ *Bot is already up to date!*');
-                }
+            let responseText = `✨ *Bot Updated Successfully!*\n\n`;
+            responseText += `📦 *Git Output:*\n\`\`\`${stdout.trim()}\`\`\`\n\n`;
+            responseText += `🔄 *Restarting process to apply updates...*`;
 
-                let updateMsg = `✨ *Bot Updated Successfully!*\n\n`;
-                updateMsg += `📦 *Logs:* \n\`\`\`${stdout.slice(0, 1000)}\`\`\`\n\n`;
-                updateMsg += `🔄 *Restarting bot to apply changes...*`;
+            await m.reply(responseText);
 
-                await m.reply(updateMsg);
-
-                // Restart process (PM2 or standard Node process exit for auto-restart)
-                setTimeout(() => {
-                    process.exit(0);
-                }, 2000);
-            } else {
-                m.reply('⚠️ Update executed, but no response output received. Try restarting manually.');
-            }
+            // Bot ko restart karne ke liye (Agar PM2 ya Node process manager use ho raha hai)
+            setTimeout(() => {
+                process.exit(0);
+            }, 3000);
         });
     }
 };

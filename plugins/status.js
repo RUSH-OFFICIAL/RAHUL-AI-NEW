@@ -3,7 +3,21 @@ let handler = async (m, { conn, text }) => {
     if (!m.quoted) return m.reply('Kripya kisi status par reply karke yeh command dein!');
     
     let q = m.quoted ? m.quoted : m;
-    let senderName = m.pushName || "Unknown";
+    
+    // Status sender ka JID nikalne ke liye (Group/Status broadcast handling)
+    let senderJid = q.participant || q.key?.participant || q.sender || m.sender;
+    
+    // Sender ka naam fetch karne ki koshish (PushName ya fir number fallback)
+    let senderName = "Unknown";
+    try {
+        if (senderJid) {
+            let contact = await conn.getName(senderJid);
+            senderName = contact || senderJid.split('@')[0];
+        }
+    } catch (e) {
+        senderName = senderJid ? senderJid.split('@')[0] : "Unknown";
+    }
+
     let originalCaption = q.text || q.caption || text || '';
     
     // Status sender, original caption aur powered by add karne ka format
@@ -14,8 +28,11 @@ let handler = async (m, { conn, text }) => {
     let media = await q.download?.();
     if (media) {
         // Agar media (Image/Video) hai toh uske sath bhejega
+        let mtype = Object.keys(q.message || q)[0] || q.mtype;
+        let cleanType = mtype ? mtype.replace(/message/i, '').toLowerCase() : 'image';
+        
         await conn.sendMessage(m.chat, { 
-            [q.mtype.replace(/message/i, '')]: media, 
+            [cleanType]: media, 
             caption: customCaption 
         }, { quoted: m });
     } else {

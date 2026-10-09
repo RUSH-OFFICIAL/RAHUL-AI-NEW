@@ -20,7 +20,7 @@ module.exports = {
         await m.reply(`⏳ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ɪɴsᴛᴀɢʀᴀᴍ ᴄᴏɴᴛᴇɴᴛ...`);
         
         try {
-            const apiUrl = `https://knightbotapi.stream/api/download/instagram?apikey=${encodeURIComponent(url)}`;
+            const apiUrl = `https://knightbotapi.stream/api/download/instagram?apikey=knight&url=https%3A%2F%2Fwww.instagram.com%2Freel%2FDdviNYUpmsw%2F%3Fstkn%3DYm5kM3RlczBsdXpr=$?}`;
             
             const response = await axios({
                 method: 'get',

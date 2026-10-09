@@ -97,8 +97,9 @@ module.exports = {
 ⚪ ${prefix}promote
 ⚪ ${prefix}demote
 ⚪ ${prefix}hidetag
-⚪ ${prefix}antilink
-🔴 🔴 🔴 🔵 🔵 🔵
+⚪ ${prefix}antilink 
+⚪ ${prefix}save
+🔴 🔴 🔴 🔵 🔵 🔵 🔴
 ⭕──────────────────────────────⭕
 > *✨ RAHUL-AI MENU COMPLETED*`.trim();
 

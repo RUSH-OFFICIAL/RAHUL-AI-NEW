@@ -5,32 +5,33 @@ module.exports = {
     alias: ['up', 'upgrade', 'gitupdate'],
     description: 'Updates the bot using git pull from the GitHub repository.',
     category: 'owner',
-    async execute(m, client, args) {
-        // Optional: Owner check lagana ho toh yahan laga sakte hain
-        // const ownerNumber = "YOUR_NUMBER@s.whatsapp.net";
-        // if (m.sender !== ownerNumber) return m.reply('❌ This command is only for the owner!');
+    async execute(conn, m, { args, reply }) {
+        try {
+            await reply('🔄 *Checking for updates via Git...*');
 
-        await m.reply('🔄 *Checking for updates via Git...*');
+            exec('git pull', async (err, stdout, stderr) => {
+                if (err) {
+                    return reply(`❌ *Git Error:* \n\`\`\`${err.message}\`\`\``);
+                }
 
-        exec('git pull', async (err, stdout, stderr) => {
-            if (err) {
-                return m.reply(`❌ *Git Error:* \n\`\`\`${err.message}\`\`\``);
-            }
+                if (stdout && (stdout.includes('Already up to date.') || stdout.includes('Already up-to-date.'))) {
+                    return reply('✅ *Your bot is already up-to-date! No new changes found.*');
+                }
 
-            if (stdout && stdout.includes('Already up to date.')) {
-                return m.reply('✅ *Your bot is already up-to-date! No new changes found.*');
-            }
+                let responseText = `✨ *Bot Updated Successfully!*\n\n`;
+                responseText += `📦 *Git Output:*\n\`\`\`${stdout.trim()}\`\`\`\n\n`;
+                responseText += `🔄 *Restarting process to apply updates...*`;
 
-            let responseText = `✨ *Bot Updated Successfully!*\n\n`;
-            responseText += `📦 *Git Output:*\n\`\`\`${stdout.trim()}\`\`\`\n\n`;
-            responseText += `🔄 *Restarting process to apply updates...*`;
+                await reply(responseText);
 
-            await m.reply(responseText);
-
-            // Bot ko restart karne ke liye (Agar PM2 ya Node process manager use ho raha hai)
-            setTimeout(() => {
-                process.exit(0);
-            }, 3000);
-        });
+                // Bot restart to apply changes
+                setTimeout(() => {
+                    process.exit(0);
+                }, 3000);
+            });
+        } catch (e) {
+            console.error(e);
+            reply(`❌ *Error executing update:* ${e.message}`);
+        }
     }
 };

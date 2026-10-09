@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { downloadMediaMessage } = require('@whiskeysockets/baileys'); // Ya aapka jo bhi media download method ho
+const { downloadMediaMessage } = require('@whiskeysockets/baileys');
 const ffmpeg = require('fluent-ffmpeg');
 
 module.exports = {
@@ -13,23 +13,38 @@ module.exports = {
         await m.react('🔄');
         const chatId = m.key.remoteJid;
 
-        // Check karo ki user ne kisi video message ko reply/quote kiya hai ya nahi
-        const quoted = m.msg?.contextInfo?.quotedMessage;
-        const isVideo = m.msg?.mimetype?.startsWith('video') || quoted?.videoMessage;
+        // Check karo ki message khud video hai, ya kisi video ko reply kiya gaya hai
+        const messageType = m.mtype || Object.keys(m.message || {})[0];
+        const quotedMessage = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        
+        const isDirectVideo = messageType === 'videoMessage' || m.msg?.mimetype?.startsWith('video');
+        const isQuotedVideo = quotedMessage && (quotedMessage.videoMessage || quotedMessage.documentMessage);
 
-        if (!isVideo) {
-            return m.reply("Kripya kisi video file ko reply karke ye command dein: `.tomp3`");
+        if (!isDirectVideo && !isQuotedVideo) {
+            return m.reply("Kripya ya toh koi video bhejte waqt caption mein `.tomp3` likhein, ya kisi video ko reply karke `.tomp3` bhejein!");
         }
 
         try {
             await sock.sendMessage(chatId, { react: { text: '🎵', key: m.key } });
 
-            // Video message message object nikalein
-            const targetMessage = quoted ? { key: { remoteJid: chatId, id: m.msg.contextInfo.stanzaId, fromMe: false }, message: quoted } : m;
+            // Target message decide karna (direct ya quoted)
+            let targetMsg = m;
+            if (isQuotedVideo) {
+                const quotedContext = m.message.extendedTextMessage.contextInfo;
+                targetMsg = {
+                    key: {
+                        remoteJid: chatId,
+                        id: quotedContext.stanzaId,
+                        participant: quotedContext.participant,
+                        fromMe: false
+                    },
+                    message: quotedMessage
+                };
+            }
 
             // Media download karein
             const buffer = await downloadMediaMessage(
-                targetMessage,
+                targetMsg,
                 'buffer',
                 {},
                 { logger: console }
@@ -55,10 +70,10 @@ module.exports = {
             await sock.sendMessage(chatId, {
                 audio: { url: outputPath },
                 mimetype: 'audio/mp4',
-                ptt: false // false matlab normal audio song ki tarah jayegi
+                ptt: false 
             }, { quoted: m });
 
-            // Temporary files delete kar dein taaki storage na bhare
+            // Temporary files delete kar dein
             if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
             if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
             
@@ -66,7 +81,7 @@ module.exports = {
 
         } catch (err) {
             console.error('Video to MP3 conversion error:', err);
-            m.reply('Video ko MP3 me convert karne me fail ho gaya. Make sure aapke system me ffmpeg installed hai.');
+            m.reply('Video ko MP3 me convert karne mein fail ho gaya. Make sure FFmpeg installed hai.');
         }
     }
 };

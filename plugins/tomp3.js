@@ -1,11 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+const axios = require('axios');
 const { downloadMediaMessage } = require('@whiskeysockets/baileys');
-const ffmpeg = require('fluent-ffmpeg');
+const FormData = require('form-data');
 
 module.exports = {
     name: 'tomp3',
-    description: 'Convert any video file or video message to MP3 audio',
+    description: 'Convert video to MP3 using an API',
     aliases: ['toaudio', 'mp3'],
     command: /^.?(tomp3|toaudio|mp3)/i,
 
@@ -13,32 +12,37 @@ module.exports = {
         await m.react('🔄');
         const chatId = m.key.remoteJid;
 
-        // Check karo ki message khud video hai, ya kisi video ko reply kiya gaya hai
-        const quotedMessage = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-        const isDirectVideo = m.mtype === 'videoMessage' || m.msg?.mimetype?.startsWith('video');
-        const isQuotedVideo = quotedMessage && (quotedMessage.videoMessage || quotedMessage.documentMessage);
+        let targetMsg = null;
+        let isVideoFound = false;
 
-        if (!isDirectVideo && !isQuotedVideo) {
-            return m.reply("Kripya ya toh koi video bhejte waqt caption mein `.tomp3` likhein, ya kisi video ko reply karke `.tomp3` bhejein!");
+        // Check karo ki video ko reply kiya hai ya direct video bheja hai
+        const quoted = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        if (quoted && (quoted.videoMessage || quoted.documentMessage)) {
+            const quotedContext = m.message.extendedTextMessage.contextInfo;
+            targetMsg = {
+                key: {
+                    remoteJid: chatId,
+                    id: quotedContext.stanzaId,
+                    participant: quotedContext.participant,
+                    fromMe: false
+                },
+                message: quoted
+            };
+            isVideoFound = true;
+        } else if (m.message?.videoMessage || m.msg?.mimetype?.startsWith('video')) {
+            targetMsg = m;
+            isVideoFound = true;
+        }
+
+        if (!isVideoFound) {
+            return m.reply("Kripya kisi video ko reply karke ya video ke sath `.tomp3` likhein!");
         }
 
         try {
-            await sock.sendMessage(chatId, { react: { text: '🎵', key: m.key } });
+            await sock.sendMessage(chatId, { react: { text: '⏳', key: m.key } });
+            await m.reply("📥 Video download ho raha hai, thoda intezaar karein...");
 
-            // Target message decide karna (direct ya quoted)
-            let targetMsg = m;
-            if (isQuotedVideo) {
-                targetMsg = {
-                    key: {
-                        remoteJid: chatId,
-                        id: m.message.extendedTextMessage.contextInfo.stanzaId,
-                        participant: m.message.extendedTextMessage.contextInfo.participant
-                    },
-                    message: quotedMessage
-                };
-            }
-
-            // Media download karein
+            // Video buffer download karo WhatsApp se
             const buffer = await downloadMediaMessage(
                 targetMsg,
                 'buffer',
@@ -46,38 +50,37 @@ module.exports = {
                 { logger: console }
             );
 
-            const inputPath = path.join(__dirname, `../../temp_${Date.now()}.mp4`);
-            const outputPath = path.join(__dirname, `../../output_${Date.now()}.mp3`);
+            // API par video upload karke MP3 convert karne ka setup
+            // Yaha hum FormData ka use karke video file ko API par bhejenge
+            const form = new FormData();
+            form.append('file', buffer, { filename: 'video.mp4', contentType: 'video/mp4' });
 
-            // Temporary file save karein
-            fs.writeFileSync(inputPath, buffer);
-
-            // FFmpeg se Video ko MP3 me convert karein
-            await new Promise((resolve, reject) => {
-                ffmpeg(inputPath)
-                    .audioCodec('libmp3lame')
-                    .toFormat('mp3')
-                    .on('end', resolve)
-                    .on('error', reject)
-                    .save(outputPath);
+            // Example API endpoint (Aap apne hisab se koi bhi working video-to-audio convert API laga sakte ho)
+            const apiRes = await axios.post('https://api.siputzx.my.id/api/convert/toaudio', form, {
+                headers: {
+                    ...form.getHeaders()
+                }
             });
 
-            // Convert hone ke baad audio send karein (mimetype corrected)
+            const result = apiRes.data;
+            const audioUrl = result?.data?.url || result?.url || result?.audio;
+
+            if (!audioUrl) {
+                return m.reply("Video ko MP3 me convert karne mein API fail ho gayi.");
+            }
+
+            // Convert hone ke baad audio file send kar do
             await sock.sendMessage(chatId, {
-                audio: { url: outputPath },
-                mimetype: 'audio/mpeg',
-                ptt: false 
+                audio: { url: audioUrl },
+                mimetype: 'audio/mp4',
+                ptt: false
             }, { quoted: m });
 
-            // Temporary files delete kar dein
-            if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
-            if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
-            
             await m.react('✅');
 
         } catch (err) {
-            console.error('Video to MP3 conversion error:', err);
-            m.reply('Video ko MP3 me convert karne mein fail ho gaya. Make sure FFmpeg installed hai.');
+            console.error('API Video to MP3 Error:', err);
+            m.reply('Video convert karne mein error aa gaya.');
         }
     }
 };

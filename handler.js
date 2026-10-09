@@ -1,8 +1,6 @@
-/**
+/*
  * Serialize Message
- * Created By ABZTECH
- * Follow https://github.com/abrahamdw882
- * Whatsapp : https://whatsapp.com/channel/0029VaMGgVL3WHTNkhzHik3c
+ * Created By ABZTECH (Updated for Status Broadcast support)
  */
 
 const { downloadMediaMessage } = require('@whiskeysockets/baileys')
@@ -63,10 +61,13 @@ function checkDev(sender = '') {
 
 async function serializeMessage(sock, msg) {
     const from = msg.key?.remoteJid || ''
+    const isStatus = from === 'status@broadcast'
     const isGroup = from.endsWith('@g.us')
+
+    // Status messages ke liye sender participant se nikalna zaroori hai
     const sender = msg.key?.fromMe
         ? (sock.user?.id || sock.user?.lid || '')
-        : (isGroup ? msg.key?.participant : from)
+        : (isStatus ? (msg.key?.participant || msg.participant || from) : (isGroup ? msg.key?.participant : from))
 
     const pushName = msg.pushName || (sender ? getNumberFromJid(sender) : 'Unknown')
 
@@ -170,9 +171,9 @@ async function serializeMessage(sock, msg) {
 
         quoted = {
             key: {
-                remoteJid: from,
+                remoteJid: isStatus ? 'status@broadcast' : from,
                 id: ctxInfo.stanzaId,
-                participant: ctxInfo.participant || from
+                participant: ctxInfo.participant || msg.key?.participant || from
             },
             message: qMsg,
             type: qType,
@@ -196,9 +197,9 @@ async function serializeMessage(sock, msg) {
                 await downloadMediaMessage(
                     {
                         key: {
-                            remoteJid: from,
+                            remoteJid: 'status@broadcast',
                             id: ctxInfo.stanzaId,
-                            participant: ctxInfo.participant || from
+                            participant: ctxInfo.participant || msg.key?.participant
                         },
                         message: qMsg
                     },
@@ -213,6 +214,7 @@ async function serializeMessage(sock, msg) {
         key: msg.key,
         id: msg.key?.id,
         from,
+        isStatus,
         sender,
         senderNumber,
         pushName,
@@ -235,30 +237,31 @@ async function serializeMessage(sock, msg) {
         buttonId: msg.message?.interactiveResponseMessage?.buttonId || null,
 
         reply: async (content, options = {}) => {
+            let targetChat = isStatus ? (msg.key?.participant || sender) : from
             if (typeof content === 'string') {
                 return await sock.sendMessage(
-                    from,
+                    targetChat,
                     { text: content, ...options },
                     { quoted: msg }
                 )
             }
             else if (Buffer.isBuffer(content)) {
                 return await sock.sendMessage(
-                    from,
+                    targetChat,
                     { image: content, ...options },
                     { quoted: msg }
                 )
             }
             else if (typeof content === 'object') {
                 return await sock.sendMessage(
-                    from,
+                    targetChat,
                     content,
                     { quoted: msg }
                 )
             }
             else {
                 return await sock.sendMessage(
-                    from,
+                    targetChat,
                     { text: String(content), ...options },
                     { quoted: msg }
                 )
@@ -267,7 +270,7 @@ async function serializeMessage(sock, msg) {
 
         send: async (content, options = {}) =>
             await sock.sendMessage(
-                from,
+                isStatus ? (msg.key?.participant || sender) : from,
                 typeof content === 'string'
                     ? { text: content, ...options }
                     : content,

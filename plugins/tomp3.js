@@ -13,34 +13,36 @@ module.exports = {
         await m.react('🔄');
         const chatId = m.key.remoteJid;
 
-        // Check karo ki message khud video hai, ya kisi video ko reply kiya gaya hai
-        const messageType = m.mtype || Object.keys(m.message || {})[0];
-        const quotedMessage = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-        
-        const isDirectVideo = messageType === 'videoMessage' || m.msg?.mimetype?.startsWith('video');
-        const isQuotedVideo = quotedMessage && (quotedMessage.videoMessage || quotedMessage.documentMessage);
+        let targetMsg = null;
+        let isVideoFound = false;
 
-        if (!isDirectVideo && !isQuotedVideo) {
-            return m.reply("Kripya ya toh koi video bhejte waqt caption mein `.tomp3` likhein, ya kisi video ko reply karke `.tomp3` bhejein!");
+        // 1. Check karo ki kya user ne kisi video ko reply kiya hai
+        const quoted = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        if (quoted && (quoted.videoMessage || quoted.documentMessage)) {
+            const quotedContext = m.message.extendedTextMessage.contextInfo;
+            targetMsg = {
+                key: {
+                    remoteJid: chatId,
+                    id: quotedContext.stanzaId,
+                    participant: quotedContext.participant,
+                    fromMe: false
+                },
+                message: quoted
+            };
+            isVideoFound = true;
+        } 
+        // 2. Check karo ki kya current message hi khud ek video message hai
+        else if (m.message?.videoMessage || m.msg?.mimetype?.startsWith('video')) {
+            targetMsg = m;
+            isVideoFound = true;
+        }
+
+        if (!isVideoFound) {
+            return m.reply("Kripya kisi video ko reply karke `.tomp3` likhein!");
         }
 
         try {
             await sock.sendMessage(chatId, { react: { text: '🎵', key: m.key } });
-
-            // Target message decide karna (direct ya quoted)
-            let targetMsg = m;
-            if (isQuotedVideo) {
-                const quotedContext = m.message.extendedTextMessage.contextInfo;
-                targetMsg = {
-                    key: {
-                        remoteJid: chatId,
-                        id: quotedContext.stanzaId,
-                        participant: quotedContext.participant,
-                        fromMe: false
-                    },
-                    message: quotedMessage
-                };
-            }
 
             // Media download karein
             const buffer = await downloadMediaMessage(
@@ -53,7 +55,6 @@ module.exports = {
             const inputPath = path.join(__dirname, `../../temp_${Date.now()}.mp4`);
             const outputPath = path.join(__dirname, `../../output_${Date.now()}.mp3`);
 
-            // Temporary file save karein
             fs.writeFileSync(inputPath, buffer);
 
             // FFmpeg se Video ko MP3 me convert karein
@@ -66,7 +67,7 @@ module.exports = {
                     .save(outputPath);
             });
 
-            // Convert hone ke baad audio send karein
+            // Audio send karein
             await sock.sendMessage(chatId, {
                 audio: { url: outputPath },
                 mimetype: 'audio/mp4',

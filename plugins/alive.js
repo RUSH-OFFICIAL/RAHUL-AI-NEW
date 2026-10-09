@@ -39,14 +39,14 @@ async function convertToPtt(buffer) {
 
 module.exports = {
     name: 'alive',
-    description: 'Check bot status with voice note and dynamic info',
+    description: 'RAHUL-AI Matrix Neon Animated Status with Voice Note',
     aliases: ['status', 'runtime'],
     tags: ['main'],
     command: /^(alive|status|runtime)$/i,
 
     async execute(sock, m) {
         try {
-            await m.react('⚡');
+            await m.react('💥');
 
             // Dynamic Uptime Calculation
             const uptimeSeconds = process.uptime();
@@ -66,52 +66,42 @@ module.exports = {
             const timeString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
             const dateString = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-            // Image Thumbnail Generation
-            const imageResponse = await fetch('https://spider-avik.zone.id/file/5b2kfp.jpeg');
-            const imageBuffer = await imageResponse.arrayBuffer();
-            const img = await pix.read(Buffer.from(imageBuffer));
-            const resized = await img.resize(300, 300, { fit: 'cover' });
-            const thumb = await resized.toBuffer({ format: 'jpeg', quality: 50 });
+            // Brand New Matrix Neon Banner Layout
+            const aliveCaption = `╭───────────────⚡───────────────╮
+    🔥 *RAHUL-AI IS 24×7 ALIVE NOW* 🔥
+╰───────────────⚡───────────────╯
+╔═════════════════════════════════╗
+║ ⚡ *Core Status* : 🟢 [ ACTIVE ]
+║ ⏱️ *Uptime*      : ${uptimeString}
+║ 💾 *Memory*      : ${usedMem}MB / ${totalMem}MB
+║ 📅 *Date*        : ${dateString}
+║ ⏰ *Time*        : ${timeString}
+╚═════════════════════════════════╝
+    🔮 _[ RAHUL AI LIGHTING : ON ]_ 🔮`;
 
-            // Unique Layout Caption
-            const aliveCaption = `╭━━━〔 *SYSTEM STATUS* 〕━━━⬣
-┃ 🟢 *Bot:* Online & Active
-┃ ⏱️ *Uptime:* ${uptimeString}
-┃ 💾 *RAM:* ${usedMem}MB / ${totalMem}MB
-┃ 📅 *Date:* ${dateString}
-┃ ⏰ *Time:* ${timeString}
-╰━━━━━━━━━━━━━━━━━━━━━━⬣\n_⚡ Powered by Custom Core_`;
+            // Fresh Electric Grid / Matrix Pulse Animation GIF Link
+            const mediaUrl = 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif';
 
-            // Audio Fetch & Conversion
+            // Audio Fetch & Conversion for Voice Note
             const audioUrl = 'https://spider-avik.zone.id/file/jwfyt2.mpeg';
             const audioResponse = await fetch(audioUrl);
             if (!audioResponse.ok) throw new Error('Failed to fetch audio url');
             const rawAudioBuffer = await audioResponse.arrayBuffer();
-
-            // Convert raw audio buffer to real WhatsApp PTT format using FFmpeg
             const pttBuffer = await convertToPtt(Buffer.from(rawAudioBuffer));
 
-            const fakeQuoted = {
-                key: {
-                    remoteJid: m.from,
-                    fromMe: false,
-                    participant: m.sender,
-                    id: 'ALIVE_STATUS_' + Date.now()
-                },
-                message: {
-                    imageMessage: {
-                        mimetype: 'image/jpeg',
-                        jpegThumbnail: thumb,
-                        caption: aliveCaption
-                    }
-                }
-            };
+            // 1. Send Animated Media with New Banner Caption
+            await sock.sendMessage(m.from, {
+                video: { url: mediaUrl },
+                gifPlayback: true,
+                caption: aliveCaption
+            }, { quoted: m });
 
+            // 2. Send Audio Voice Note (PTT)
             await sock.sendMessage(m.from, {
                 audio: pttBuffer,
                 mimetype: 'audio/ogg; codecs=opus',
                 ptt: true
-            }, { quoted: fakeQuoted });
+            }, { quoted: m });
 
         } catch (err) {
             console.error('❌ Alive Error:', err);

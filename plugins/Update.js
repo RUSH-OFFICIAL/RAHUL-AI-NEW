@@ -1,37 +1,50 @@
-import { exec } from 'child_process'
+const { exec } = require('child_process');
+const simpleGit = require('simple-git'); // Optional: Agar git installed ho to fast update ke liye
+const fs = require('fs');
+const path = require('path');
 
-let handler = async (m, { conn, text, isOwner }) => {
-    if (!isOwner) {
-        return m.reply('❌ Ye command sirf bot ka owner use kar sakta hai!')
-    }
-
-    await m.reply('🔄 Bot ko update kiya ja raha hai, kripya intezaar karein...')
-
-    exec('git pull', (err, stdout, stderr) => {
-        if (err) {
-            return m.reply(`❌ Git Pull Error:\n\`\`\`${err.message}\`\`\``)
-        }
+module.exports = {
+    name: 'update',
+    alias: ['up', 'upgrade'],
+    description: 'Check for updates and update the bot from GitHub repository.',
+    category: 'system',
+    async execute(m, client, args, sharedData) {
+        const prefix = sharedData?.prefix || '.';
         
-        if (stdout && stdout.includes('Already up to date.')) {
-            return m.reply('✨ Aapka bot pehle se hi latest version par hai!')
-        }
+        // Check owner or admin permissions if needed
+        // const isOwner = ...; 
 
-        exec('npm install', (npmErr, npmStdout, npmStderr) => {
-            if (npmErr) {
-                return m.reply(`❌ NPM Install Error:\n\`\`\`${npmErr.message}\`\`\``)
+        await m.reply('🔄 *Checking for updates, please wait...*');
+
+        // Method using git command (Standard for Node.js bots running on VPS/Termux/Panel)
+        exec('git pull', async (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Update Error: ${error.message}`);
+                return m.reply(`❌ *Update Failed:* \n\`\`\`${error.message}\`\`\``);
             }
-            
-            m.reply('✅ Bot successfully update ho gaya hai! Restart ho raha hai...')
-            
-            setTimeout(() => {
-                process.exit(0)
-            }, 2000)
-        })
-    })
-}
 
-handler.help = ['update']
-handler.tags = ['owner']
-handler.command = /^update$/i
+            if (stderr && stderr.includes('Already up to date.')) {
+                return m.reply('✅ *Your bot is already on the latest version!*');
+            }
 
-export default handler
+            if (stdout) {
+                if (stdout.includes('Already up to date.') || stdout.includes('Already up-to-date.')) {
+                    return m.reply('✅ *Bot is already up to date!*');
+                }
+
+                let updateMsg = `✨ *Bot Updated Successfully!*\n\n`;
+                updateMsg += `📦 *Logs:* \n\`\`\`${stdout.slice(0, 1000)}\`\`\`\n\n`;
+                updateMsg += `🔄 *Restarting bot to apply changes...*`;
+
+                await m.reply(updateMsg);
+
+                // Restart process (PM2 or standard Node process exit for auto-restart)
+                setTimeout(() => {
+                    process.exit(0);
+                }, 2000);
+            } else {
+                m.reply('⚠️ Update executed, but no response output received. Try restarting manually.');
+            }
+        });
+    }
+};

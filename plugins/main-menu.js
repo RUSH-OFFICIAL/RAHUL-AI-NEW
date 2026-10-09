@@ -57,6 +57,7 @@ module.exports = {
 ⚪ ${prefix}facebook
 ⚪ ${prefix}spotify
 ⚪ ${prefix}pinterest
+🔴 ${prefix}mp3
 
 🔵 *03. TOOLS & AI ENGINE*
 🔴 ${prefix}sticker
